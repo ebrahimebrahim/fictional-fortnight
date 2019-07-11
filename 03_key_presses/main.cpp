@@ -4,8 +4,7 @@
 #include <string>
 #include "main.h"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+
 
 int main( int argc, char* args[] )
 {
@@ -100,7 +99,29 @@ void App::handleEvents(){
 
 
 void App::mainLoop(){
-	SDL_Rect r = {100,100,200,200};
+
+	if (tryMoveState!=TRY_MOVE_STATE_NOT_TRYING){
+		switch (tryMoveState) {
+			case TRY_MOVE_STATE_UP:
+				pos.y--; // TODO: Check that you are not at boundary before finalizing these movements
+				break;
+			case TRY_MOVE_STATE_DOWN:
+				pos.y++;
+				break;
+			case TRY_MOVE_STATE_LEFT:
+				pos.x--;
+				break;
+			case TRY_MOVE_STATE_RIGHT:
+				pos.x++;
+				break;
+			default: break;
+		}
+		tryMoveState=TRY_MOVE_STATE_NOT_TRYING;
+	}
+
+
+	SDL_FillRect(screenSurface,nullptr,SDL_MapRGB(screenSurface->format,0,0,0));
+	SDL_Rect r = {pos.x*TILE_WIDTH,pos.y*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT};
 	SDL_BlitScaled(thingyImages[thingyState],nullptr,screenSurface,&r);
 }
 
@@ -168,15 +189,19 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 	switch (key->keysym.scancode) {
 		case SDL_SCANCODE_LEFT:
 			thingyState = THINGY_LEFT;
+			tryMoveState = TRY_MOVE_STATE_LEFT;
 			break;
 		case SDL_SCANCODE_RIGHT:
 			thingyState = THINGY_RIGHT;
+			tryMoveState = TRY_MOVE_STATE_RIGHT;
 			break;
 		case SDL_SCANCODE_UP:
 			thingyState = THINGY_UP;
+			tryMoveState = TRY_MOVE_STATE_UP;
 			break;
 		case SDL_SCANCODE_DOWN:
 			thingyState = THINGY_DOWN;
+			tryMoveState = TRY_MOVE_STATE_DOWN;
 			break;
 		case SDL_SCANCODE_Q:
 			quit=true;
