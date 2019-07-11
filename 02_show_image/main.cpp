@@ -52,11 +52,39 @@ App::~App() {
 
 
 int App::execute(){
+
 	SDL_FillRect( screenSurface, nullptr, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
 	SDL_BlitScaled(peupImage,nullptr,screenSurface,nullptr);
-	SDL_UpdateWindowSurface( window );
-	SDL_Delay( 1000 );
+
+	while (!quit){
+		handleEvents();
+		mainLoop();
+		render();
+		SDL_Delay( 100 );
+	}
+
 	return 0;
+}
+
+
+void App::handleEvents(){
+	SDL_Event event;
+
+	while(SDL_PollEvent(&event)){
+		if (event.type==SDL_QUIT) {
+			quit=true;
+		}
+	}
+}
+
+
+void App::mainLoop(){
+
+}
+
+
+void App::render(){
+	SDL_UpdateWindowSurface( window );
 }
 
 
