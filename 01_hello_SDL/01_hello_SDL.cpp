@@ -1,42 +1,61 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include "01_hello_SDL.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 int main( int argc, char* args[] )
 {
-	SDL_Window* window = NULL;
 
-	SDL_Surface* screenSurface = NULL;
+	App app{};
 
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-	}
-	else
-	{
-		window = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0 );
-		if( window == NULL )
-		{
-			printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
-		}
-		else
-		{
-			screenSurface = SDL_GetWindowSurface( window );
-
-			//Fill surface white
-			SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-
-			SDL_UpdateWindowSurface( window );
-
-			SDL_Delay( 2000 );
-		}
+	if (app.initialize() < 0) {
+		app.printError("Error encountered while initializing application. Quitting.", false);
+		return -1;
 	}
 
-	SDL_DestroyWindow( window );
+	return app.execute();
+}
 
-	SDL_Quit();
 
+App::App() {
+
+}
+
+
+int App::initialize() {
+	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+		printError("Error initializing SDL");
+		return -1;
+	}
+	window = SDL_CreateWindow( "SDL Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0 );
+	if( window == NULL ) {
+		printError("Error creating window");
+		return -1;
+	}
+	screenSurface = SDL_GetWindowSurface( window );
 	return 0;
+}
+
+
+App::~App() {
+	SDL_DestroyWindow( window );
+	SDL_Quit();
+}
+
+
+int App::execute(){
+	SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+	SDL_UpdateWindowSurface( window );
+	SDL_Delay( 500 );
+	return 0;
+}
+
+
+void App::printError(const char * msg, bool include_sdl_error) {
+	if (include_sdl_error)
+		printf( "%s ; here's the latest SDL error: %s\n",msg, SDL_GetError() );
+	else
+		printf("%s\n",msg);
 }
