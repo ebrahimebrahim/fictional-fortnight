@@ -61,7 +61,7 @@ int App::execute(){
 		handleEvents();
 		mainLoop();
 		render();
-		SDL_Delay( 100 );
+		SDL_Delay( 10 );
 	}
 
 	return 0;
@@ -149,8 +149,10 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 		case SDL_SCANCODE_DOWN:
 			thingyState = THINGY_DOWN;
 			break;
+		case SDL_SCANCODE_Q:
+			quit=true;
+			break;
 		default:
-			thingyState = THINGY_NEUTRAL;
 			break;
 	}
 }
