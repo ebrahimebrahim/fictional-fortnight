@@ -30,7 +30,7 @@ int App::initialize() {
 		return -1;
 	}
 	window = SDL_CreateWindow( "SDL Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0 );
-	if( window == NULL ) {
+	if( window == nullptr ) {
 		printError("Error creating window");
 		return -1;
 	}
@@ -46,7 +46,7 @@ App::~App() {
 
 
 int App::execute(){
-	SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+	SDL_FillRect( screenSurface, nullptr, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
 	SDL_UpdateWindowSurface( window );
 	SDL_Delay( 500 );
 	return 0;

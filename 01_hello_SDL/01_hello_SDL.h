@@ -4,8 +4,8 @@
 
 class App {
   public:
-    SDL_Window * window = NULL;
-    SDL_Surface * screenSurface = NULL;
+    SDL_Window * window = nullptr;
+    SDL_Surface * screenSurface = nullptr;
 
     App();
     ~App();
