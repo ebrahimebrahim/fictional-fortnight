@@ -103,16 +103,16 @@ void App::mainLoop(){
 	if (tryMoveState!=TRY_MOVE_STATE_NOT_TRYING){
 		switch (tryMoveState) {
 			case TRY_MOVE_STATE_UP:
-				pos.y--; // TODO: Check that you are not at boundary before finalizing these movements
+				if (pos.y > 0) pos.y--;
 				break;
 			case TRY_MOVE_STATE_DOWN:
-				pos.y++;
+				if (pos.y < NUM_TILES_Y-1) pos.y++;
 				break;
 			case TRY_MOVE_STATE_LEFT:
-				pos.x--;
+				if (pos.x > 0) pos.x--;
 				break;
 			case TRY_MOVE_STATE_RIGHT:
-				pos.x++;
+				if (pos.x < NUM_TILES_X-1) pos.x++;
 				break;
 			default: break;
 		}
