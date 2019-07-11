@@ -136,6 +136,21 @@ void App::unloadMedia(){
 }
 
 void App::handleKeypress(SDL_KeyboardEvent * key){
-	SDL_Scancode & scancode = key->keysym.scancode;
-	printf("Key pressed: %s\n",(scancode==SDL_SCANCODE_LEFT)?"is left":"isn't left");
+	switch (key->keysym.scancode) {
+		case SDL_SCANCODE_LEFT:
+			thingyState = THINGY_LEFT;
+			break;
+		case SDL_SCANCODE_RIGHT:
+			thingyState = THINGY_RIGHT;
+			break;
+		case SDL_SCANCODE_UP:
+			thingyState = THINGY_UP;
+			break;
+		case SDL_SCANCODE_DOWN:
+			thingyState = THINGY_DOWN;
+			break;
+		default:
+			thingyState = THINGY_NEUTRAL;
+			break;
+	}
 }
