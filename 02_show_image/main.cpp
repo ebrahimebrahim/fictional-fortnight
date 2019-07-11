@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include "main.h"
 
@@ -96,7 +97,7 @@ void App::printError(const char * msg, bool include_sdl_error) {
 }
 
 int App::loadMedia(){
-	peupImage = SDL_LoadBMP("peup.bmp");
+	peupImage = IMG_Load("peup.png");
 	if (peupImage==nullptr) {
 		printError("Error while loading peup.bmp");
 		return -1;
