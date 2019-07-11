@@ -151,6 +151,10 @@ int App::loadMedia(){
 	for (int state = 0; state < THINGY_NUM_STATES; state++){
 
 		thingyImages[state] = loadImage(thingyStateToFilename[state]);
+		if (thingyImages[state] == nullptr){
+			printError("Error: Some media was not loaded.",0);
+			return -1;
+		}
 
 	}
 
