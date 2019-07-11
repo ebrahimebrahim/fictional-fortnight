@@ -99,7 +99,7 @@ void App::printError(const char * msg, bool include_sdl_error) {
 int App::loadMedia(){
 	peupImage = IMG_Load("peup.png");
 	if (peupImage==nullptr) {
-		printError("Error while loading peup.bmp");
+		printError("Error while loading peup.png");
 		return -1;
 	}
 	return 0;
