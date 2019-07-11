@@ -33,7 +33,7 @@ class App {
     int initialize();
     int loadMedia(); // load all media
     void unloadMedia();
-    int loadImage(const char *); // load a single image
+    SDL_Surface * loadImage(const char * filename); // load a single image, returning nullptr on fail
 
     int execute();
 

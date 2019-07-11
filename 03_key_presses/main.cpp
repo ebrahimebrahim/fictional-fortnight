@@ -38,12 +38,21 @@ int App::initialize() {
 		printError("Error initializing SDL");
 		return -1;
 	}
+
+	if ( (IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG) != IMG_INIT_PNG) {
+		std::string error_msg = "Error initializing SDL_Image; last error message from SDL_Image: ";
+		error_msg += IMG_GetError();
+		printError(error_msg.c_str(),false);
+		return -1;
+	}
+
 	window = SDL_CreateWindow( "SDL Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0 );
 	if( window == nullptr ) {
 		printError("Error creating window");
 		return -1;
 	}
 	screenSurface = SDL_GetWindowSurface( window );
+
 	return 0;
 }
 
@@ -51,6 +60,7 @@ int App::initialize() {
 App::~App() {
 	unloadMedia();
 	SDL_DestroyWindow( window );
+	IMG_Quit();
 	SDL_Quit();
 }
 
@@ -90,7 +100,8 @@ void App::handleEvents(){
 
 
 void App::mainLoop(){
-	SDL_BlitScaled(thingyImages[thingyState],nullptr,screenSurface,nullptr);
+	SDL_Rect r = {100,100,200,200};
+	SDL_BlitScaled(thingyImages[thingyState],nullptr,screenSurface,&r);
 }
 
 
@@ -115,18 +126,36 @@ int App::loadMedia(){
 	thingyStateToFilename[THINGY_LEFT]="left.png";
 	thingyStateToFilename[THINGY_RIGHT]="right.png";
 	thingyStateToFilename[THINGY_NEUTRAL]="neutral.png";
+
 	for (int state = 0; state < THINGY_NUM_STATES; state++){
-		thingyImages[state] = IMG_Load(thingyStateToFilename[state]);
-		if (thingyImages[state] == nullptr){
-			std::string error_msg = "Error while loading ";
-			error_msg += thingyStateToFilename[state];
-			printError(error_msg.c_str());
-			return -1;
-		}
+
+		thingyImages[state] = loadImage(thingyStateToFilename[state]);
+
 	}
 
 	return 0;
 }
+
+
+SDL_Surface * App::loadImage(const char * filename){
+	SDL_Surface * img = IMG_Load(filename);
+	if (img==nullptr){
+		std::string error_msg = "Error while loading ";
+		error_msg += filename;
+		printError(error_msg.c_str());
+		return nullptr;
+	}
+	SDL_Surface * img_optimized = SDL_ConvertSurface(img,screenSurface->format,0);
+	SDL_FreeSurface(img);
+	if (img_optimized == nullptr){
+		std::string error_msg = "Error while optimizing ";
+		error_msg += filename;
+		printError(error_msg.c_str());
+		return nullptr;
+	}
+	return img_optimized;
+}
+
 
 void App::unloadMedia(){
 	for (int state = 0; state < THINGY_NUM_STATES; state++){
