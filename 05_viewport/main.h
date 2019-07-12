@@ -47,7 +47,7 @@ class App {
     SDL_Renderer * renderer = nullptr;
 
     // Assets
-    SDL_Texture * thingyImages [THINGY_NUM_STATES];
+    SDL_Texture * thingySprites = nullptr;
 
     // State
     bool quit = false;
@@ -55,9 +55,10 @@ class App {
     TryMoveState tryMoveState = TRY_MOVE_STATE_NOT_TRYING;
     SDL_Point pos = {NUM_TILES_X/2,NUM_TILES_Y/2};
 
-    // Rectangles for viewports
+    // Rectangles for viewports and sprites
     SDL_Rect screen_rect = {0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
     SDL_Rect right_menu_rect = {SCREEN_WIDTH,0,RIGHT_MENU_WIDTH,WINDOW_HEIGHT};
+    SDL_Rect thingyStateToSpriteRect [THINGY_NUM_STATES];
 
 
 

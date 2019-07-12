@@ -26,9 +26,7 @@ int main( int argc, char* args[] )
 
 
 App::App() {
-	for (int state = 0; state < THINGY_NUM_STATES; state++){
-		thingyImages[state] = nullptr; // Is there a better way to null-initialize array of pointers?
-	}
+
 }
 
 
@@ -135,7 +133,7 @@ void App::mainLoop(){
 	SDL_RenderFillRect(renderer,nullptr);
 
 	SDL_Rect r = {pos.x*TILE_WIDTH,pos.y*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT};
-	SDL_RenderCopy(renderer, thingyImages[thingyState], nullptr, &r);
+	SDL_RenderCopy(renderer, thingySprites, &(thingyStateToSpriteRect[thingyState]), &r);
 }
 
 
@@ -154,22 +152,16 @@ void App::printError(const char * msg, bool include_sdl_error) {
 
 int App::loadMedia(){
 
-	const char * thingyStateToFilename [THINGY_NUM_STATES];
-	thingyStateToFilename[THINGY_UP]="up.png";
-	thingyStateToFilename[THINGY_DOWN]="down.png";
-	thingyStateToFilename[THINGY_LEFT]="left.png";
-	thingyStateToFilename[THINGY_RIGHT]="right.png";
-	thingyStateToFilename[THINGY_NEUTRAL]="neutral.png";
-
-	for (int state = 0; state < THINGY_NUM_STATES; state++){
-
-		thingyImages[state] = loadImage(thingyStateToFilename[state]);
-		if (thingyImages[state] == nullptr){
-			printError("Error: Some media was not loaded.",0);
-			return -1;
-		}
-
+	thingySprites = loadImage("thingy.png");
+	if (thingySprites==nullptr){
+		printError("Error: Some media was not loaded.",0);
+		return -1;
 	}
+	thingyStateToSpriteRect[THINGY_NEUTRAL]={0,0,5,5};
+	thingyStateToSpriteRect[THINGY_UP]={5,0,5,5};
+	thingyStateToSpriteRect[THINGY_DOWN]={10,0,5,5};
+	thingyStateToSpriteRect[THINGY_LEFT]={15,0,5,5};
+	thingyStateToSpriteRect[THINGY_RIGHT]={20,0,5,5};
 
 	return 0;
 }
@@ -199,10 +191,10 @@ SDL_Texture	 * App::loadImage(const char * filename){
 
 
 void App::unloadMedia(){
-	for (int state = 0; state < THINGY_NUM_STATES; state++){
-		SDL_DestroyTexture(thingyImages[state]);
-		thingyImages[state] = nullptr;
-	}
+
+	SDL_DestroyTexture(thingySprites);
+	thingySprites = nullptr;
+
 }
 
 void App::handleKeypress(SDL_KeyboardEvent * key){
