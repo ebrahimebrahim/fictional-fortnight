@@ -131,7 +131,7 @@ void App::mainLoop(){
 	SDL_RenderFillRect(renderer,nullptr);
 
   SDL_RenderSetViewport(renderer,&screen_rect);
-	SDL_SetRenderDrawColor(renderer,50,50,50,255);
+	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
 	SDL_Rect r = {pos.x*TILE_WIDTH,pos.y*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT};
@@ -183,6 +183,9 @@ SDL_Texture	 * App::loadImage(const char * filename){
 		printError(error_msg.c_str());
 		return nullptr;
 	}
+
+	SDL_SetColorKey(img,SDL_TRUE,SDL_MapRGB(img->format,255,255,255));
+
 	SDL_Texture * img_texture = SDL_CreateTextureFromSurface(renderer,img);
 	SDL_FreeSurface(img);
 	if (img_texture == nullptr){
