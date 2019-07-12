@@ -126,12 +126,10 @@ void App::mainLoop(){
 		tryMoveState=TRY_MOVE_STATE_NOT_TRYING;
 	}
 
-	SDL_Rect right_menu_rect = {SCREEN_WIDTH,0,RIGHT_MENU_WIDTH,WINDOW_HEIGHT};
 	SDL_RenderSetViewport(renderer,&right_menu_rect);
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
-	SDL_Rect screen_rect = {0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
   SDL_RenderSetViewport(renderer,&screen_rect);
 	SDL_SetRenderDrawColor(renderer,50,50,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
