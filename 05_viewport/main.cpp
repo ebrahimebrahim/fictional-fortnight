@@ -124,6 +124,11 @@ void App::mainLoop(){
 		tryMoveState=TRY_MOVE_STATE_NOT_TRYING;
 	}
 
+}
+
+
+void App::render(){
+
 	SDL_RenderSetViewport(renderer,&right_menu_rect);
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
@@ -132,12 +137,9 @@ void App::mainLoop(){
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
-	SDL_Rect r = {pos.x*TILE_WIDTH,pos.y*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT};
-	SDL_RenderCopy(renderer, thingySprites, &(thingyStateToSpriteRect[thingyState]), &r);
-}
+	SDL_Rect thingy_rect = {pos.x*TILE_WIDTH,pos.y*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT};
+	SDL_RenderCopy(renderer, thingySprites, &(thingyStateToSpriteRect[thingyState]), &thingy_rect);
 
-
-void App::render(){
 	SDL_RenderPresent( renderer );
 }
 
