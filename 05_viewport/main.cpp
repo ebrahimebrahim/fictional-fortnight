@@ -74,6 +74,7 @@ App::~App() {
 	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
 	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -138,22 +139,29 @@ void App::mainLoop(){
 
 void App::render(){
 
+	// Set the renderer's viewport to the right hand menu
 	SDL_RenderSetViewport(renderer,&right_menu_rect);
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
-	// Render text. Generating the text texture should probably be moved to its own method
+	// Render text.
+	// This should all be its own class
+	// The class would initialize the TTF_Font and destroy it at the end,
+	// and it would have a method that can take text and and a renderer and some options and do the rendering
+	// fancy feature: allow multiple lines and do wrapping for long lines
+	// (The class could be called TextBox or MsgBox or something and it would be set to render to a specific place maybe)
+	// fancy feature: cache the texture (whcih it also destroys later) so that if it's called with the same msg it can reuse it.
 	SDL_Color text_color = {0,0,0,255};
 	SDL_Surface * text_surface = TTF_RenderText_Blended(font, "peup",text_color);
 	SDL_Texture * text_texture = SDL_CreateTextureFromSurface(renderer,text_surface);
 	SDL_FreeSurface(text_surface);
 	int w{}, h{};
 	TTF_SizeText(font,"peup",&w,&h);
-	SDL_Rect text_rect = {0,0,w,h};
+	SDL_Rect text_rect = {10,10,w,h};
 	SDL_RenderCopy(renderer, text_texture, nullptr, &text_rect);
 	SDL_DestroyTexture(text_texture);
 
-
+	// Set the renderer's viewport to the left hand screen
   SDL_RenderSetViewport(renderer,&screen_rect);
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
