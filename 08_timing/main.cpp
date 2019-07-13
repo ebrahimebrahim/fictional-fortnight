@@ -167,14 +167,8 @@ void App::render(){
 	// (The class could be called TextBox or MsgBox or something and it would be set to render to a specific place maybe)
 	// fancy feature: cache the texture (whcih it also destroys later) so that if it's called with the same msg it can reuse it.
 	// essential feature: properly handle error cases like when nullptr is returned by the various functions there
-	SDL_Surface * text_surface = TTF_RenderText_Blended(font, "peup", palette[PALETTE_BLACK]);
-	SDL_Texture * text_texture = SDL_CreateTextureFromSurface(renderer,text_surface);
-	SDL_FreeSurface(text_surface);
-	int w{}, h{};
-	TTF_SizeText(font,"peup",&w,&h); // You should also be able to get text size as an attribute of text_surface, which might be better
-	SDL_Rect text_rect = {10,10,w,h};
-	SDL_RenderCopy(renderer, text_texture, nullptr, &text_rect);
-	SDL_DestroyTexture(text_texture);
+	peupTextBox->updateText("peup!");
+	peupTextBox->renderCopy(10,10);
 
 	// Set the renderer's viewport to the left hand screen
   SDL_RenderSetViewport(renderer,&screen_rect);
@@ -209,6 +203,9 @@ int App::loadMedia(){
 		log.TTF_Error("Error loading font");
 		return -1;
 	}
+
+	//Initialize text Textboxes
+	peupTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
 
 
 	return 0;

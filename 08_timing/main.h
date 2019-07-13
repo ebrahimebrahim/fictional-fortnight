@@ -71,6 +71,9 @@ class App {
     SDL_Rect right_menu_rect = {SCREEN_WIDTH,0,RIGHT_MENU_WIDTH,WINDOW_HEIGHT};
     SDL_Rect thingyStateToSpriteRect [THINGY_NUM_STATES];
 
+    // Textboxes
+    TextBox * peupTextBox = nullptr;
+
 
 
     App();
