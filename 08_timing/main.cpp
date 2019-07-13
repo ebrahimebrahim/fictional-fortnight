@@ -98,7 +98,7 @@ int App::execute(){
 		handleEvents();
 		mainLoop();
 		render();
-		SDL_Delay( 10 );
+		SDL_Delay( 20 );
 	}
 
 	return 0;
@@ -133,7 +133,7 @@ void App::mainLoop(){
 	if (tryMoveState!=TRY_MOVE_STATE_NOT_TRYING){
 		switch (tryMoveState) {
 			case TRY_MOVE_STATE_UP:
-				if (pos.y > 0) pos.y--;
+				if (pos.y > 0) {pos.y--; timerStart = SDL_GetTicks();}
 				break;
 			case TRY_MOVE_STATE_DOWN:
 				if (pos.y < NUM_TILES_Y-1) pos.y++;
@@ -160,6 +160,9 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
 	peupTextBox->renderCopy(10,10);
+	std::string timeString = std::to_string((SDL_GetTicks() - timerStart)/100);
+	timerTextBox->updateText(timeString.c_str());
+	timerTextBox->renderCopy(10,50);
 
 	// Set the renderer's viewport to the left hand screen
   SDL_RenderSetViewport(renderer,&screen_rect);
@@ -190,7 +193,7 @@ int App::loadMedia(){
 
 
 	//Load fonts
-	font  = TTF_OpenFont("kano.otf",14);
+	font  = TTF_OpenFont("Roboto-Regular.ttf",14);
 	if (font==nullptr){
 		log.TTF_Error("Error loading font");
 		return -1;
@@ -198,7 +201,9 @@ int App::loadMedia(){
 
 	//Initialize text Textboxes
 	peupTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
-	peupTextBox->updateText("peup!");
+	peupTextBox->updateText("peup.");
+	timerTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
+	timerTextBox->updateText("TIMER");
 
 
 	return 0;
