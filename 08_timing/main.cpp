@@ -159,7 +159,6 @@ void App::render(){
 
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
-	peupTextBox->updateText("peup!");
 	peupTextBox->renderCopy(10,10);
 
 	// Set the renderer's viewport to the left hand screen
@@ -199,6 +198,7 @@ int App::loadMedia(){
 
 	//Initialize text Textboxes
 	peupTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
+	peupTextBox->updateText("peup!");
 
 
 	return 0;
