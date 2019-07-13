@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
 #include "main.h"
@@ -42,6 +43,14 @@ int App::initialize() {
 		printError(error_msg.c_str(),false);
 		return -1;
 	}
+
+	if (TTF_Init()==-1) {
+		std::string error_msg = "Error initializing SDL_ttf; last error message from SDL_ttf: ";
+		error_msg += TTF_GetError();
+		printError(error_msg.c_str(),false);
+		return -1;
+	}
+
 
 	window = SDL_CreateWindow( "SDL Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, 0 );
 	if( window == nullptr ) {
@@ -133,6 +142,18 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
+	// Render text. Generating the text texture should probably be moved to its own method
+	SDL_Color text_color = {0,0,0,255};
+	SDL_Surface * text_surface = TTF_RenderText_Blended(font, "peup",text_color);
+	SDL_Texture * text_texture = SDL_CreateTextureFromSurface(renderer,text_surface);
+	SDL_FreeSurface(text_surface);
+	int w{}, h{};
+	TTF_SizeText(font,"peup",&w,&h);
+	SDL_Rect text_rect = {0,0,w,h};
+	SDL_RenderCopy(renderer, text_texture, nullptr, &text_rect);
+	SDL_DestroyTexture(text_texture);
+
+
   SDL_RenderSetViewport(renderer,&screen_rect);
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
@@ -154,9 +175,10 @@ void App::printError(const char * msg, bool include_sdl_error) {
 
 int App::loadMedia(){
 
+	// Load textures
 	thingySprites = loadImage("thingy.png");
 	if (thingySprites==nullptr){
-		printError("Error: Some media was not loaded.",0);
+		printError("Error: Some media was not loaded.",false);
 		return -1;
 	}
 	thingyStateToSpriteRect[THINGY_NEUTRAL]={0,0,5,5};
@@ -164,6 +186,17 @@ int App::loadMedia(){
 	thingyStateToSpriteRect[THINGY_DOWN]={10,0,5,5};
 	thingyStateToSpriteRect[THINGY_LEFT]={15,0,5,5};
 	thingyStateToSpriteRect[THINGY_RIGHT]={20,0,5,5};
+
+
+	//Load fonts
+	font  = TTF_OpenFont("kano.otf",12);
+	if (font==nullptr){
+		std::string error_msg = "Error loading font; last error message from SDL_ttf: ";
+		error_msg += TTF_GetError();
+		printError(error_msg.c_str(),false);
+		return -1;
+	}
+
 
 	return 0;
 }
@@ -196,6 +229,9 @@ void App::unloadMedia(){
 
 	SDL_DestroyTexture(thingySprites);
 	thingySprites = nullptr;
+
+	TTF_CloseFont(font);
+	font = nullptr;
 
 }
 

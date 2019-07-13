@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 
 
@@ -48,6 +49,7 @@ class App {
 
     // Assets
     SDL_Texture * thingySprites = nullptr;
+    TTF_Font * font = nullptr;
 
     // State
     bool quit = false;
