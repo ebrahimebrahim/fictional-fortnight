@@ -26,7 +26,7 @@ class TextBox{
 
     int renderCopy(int x, int y);
     /* Call SDL_RenderCopy on the renderer to draw the textbox at given location.
-    Return what SDL_RenderCopy returns (0 on success, negative on fail).
+    Return 0 on success and negative error code on failure.
     The given location is the top left corner of the textbox. */
 
 

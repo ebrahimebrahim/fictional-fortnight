@@ -41,5 +41,6 @@ int TextBox::updateText(const char * text){
 int TextBox::renderCopy(int x, int y){
   textRect.x=x;
   textRect.y=y;
+  if (mTexture==nullptr) {log->error("TextBox: renderCopy attempted with no text texture."); return -1;}
   return SDL_RenderCopy(renderer, mTexture, nullptr, &textRect);
 }
