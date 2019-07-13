@@ -32,7 +32,7 @@ App::App() {
 
 
 int App::initialize() {
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK ) < 0 ) {
 		printError("Error initializing SDL");
 		return -1;
 	}
@@ -65,6 +65,12 @@ int App::initialize() {
 	}
 
 
+	if ( SDL_NumJoysticks() > 0 ) {
+		joystick = SDL_JoystickOpen(0); // If this fails then joystick remains as nullptr
+		// we are okay with this failure case because it would be as though SDL_NumJoysticks() were 0
+	}
+
+
 	return 0;
 }
 
@@ -75,6 +81,7 @@ App::~App() {
 	SDL_DestroyWindow( window );
 	IMG_Quit();
 	TTF_Quit();
+	SDL_JoystickClose(joystick);
 	SDL_Quit();
 }
 
@@ -104,6 +111,8 @@ void App::handleEvents(){
 			case SDL_KEYDOWN:
 				handleKeypress(&(event.key));
 				break;
+			case SDL_JOYHATMOTION:
+				handleJoyhat(&(event.jhat));
 		}
 
 		if (event.type==SDL_QUIT) {
@@ -268,4 +277,24 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 		default:
 			break;
 	}
+}
+
+void App::handleJoyhat(SDL_JoyHatEvent * jhat){
+	SDL_KeyboardEvent fake_keyboard_event; // This is a terrible hack but I'm just testing joystick stuff lol
+	switch (jhat->value) {
+		case SDL_HAT_UP:
+			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_UP;
+			break;
+		case SDL_HAT_DOWN:
+			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_DOWN;
+			break;
+		case SDL_HAT_LEFT:
+			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_LEFT;
+			break;
+		case SDL_HAT_RIGHT:
+			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_RIGHT;
+			break;
+		default: return;
+	}
+	handleKeypress(&fake_keyboard_event);
 }
