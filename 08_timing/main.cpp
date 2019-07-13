@@ -156,22 +156,15 @@ void App::render(){
 
 	// Set the renderer's viewport to the right hand menu
 	SDL_RenderSetViewport(renderer,&right_menu_rect);
+
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
-
-	// Render text.
-	// This should all be its own class
-	// The class would initialize the TTF_Font and destroy it at the end,
-	// and it would have a method that can take text and and a renderer and some options and do the rendering
-	// fancy feature: allow multiple lines and do wrapping for long lines
-	// (The class could be called TextBox or MsgBox or something and it would be set to render to a specific place maybe)
-	// fancy feature: cache the texture (whcih it also destroys later) so that if it's called with the same msg it can reuse it.
-	// essential feature: properly handle error cases like when nullptr is returned by the various functions there
 	peupTextBox->updateText("peup!");
 	peupTextBox->renderCopy(10,10);
 
 	// Set the renderer's viewport to the left hand screen
   SDL_RenderSetViewport(renderer,&screen_rect);
+
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
@@ -244,7 +237,7 @@ void App::unloadMedia(){
 
 	TTF_CloseFont(font);
 	font = nullptr;
-	
+
 }
 
 void App::handleKeypress(SDL_KeyboardEvent * key){
