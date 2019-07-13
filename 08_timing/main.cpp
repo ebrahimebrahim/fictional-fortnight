@@ -240,9 +240,11 @@ void App::unloadMedia(){
 	SDL_DestroyTexture(thingySprites);
 	thingySprites = nullptr;
 
+	delete peupTextBox;
+
 	TTF_CloseFont(font);
 	font = nullptr;
-
+	
 }
 
 void App::handleKeypress(SDL_KeyboardEvent * key){
