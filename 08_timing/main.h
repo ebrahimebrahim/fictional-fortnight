@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "logger.h"
+#include "textbox.h"
 
 
 
@@ -19,7 +20,11 @@ const int SCREEN_HEIGHT = TILE_HEIGHT*NUM_TILES_Y;
 
 
 
-
+enum PaletteColor {
+  PALETTE_BLACK,
+  PALETTE_WHITE,
+  NUM_PALETTE_COLORS // Count-- must be last
+};
 
 enum ThingyState { // State of the thing controlled by keyboard
   THINGY_UP,
@@ -49,12 +54,13 @@ class App {
     SDL_Renderer * renderer = nullptr;
     SDL_Joystick * joystick = nullptr;
     Logger log;
+    SDL_Color palette [NUM_PALETTE_COLORS];
 
     // Assets
     SDL_Texture * thingySprites = nullptr;
     TTF_Font * font = nullptr;
 
-    // State
+    // Game state
     bool quit = false;
     ThingyState thingyState = THINGY_NEUTRAL;
     TryMoveState tryMoveState = TRY_MOVE_STATE_NOT_TRYING;

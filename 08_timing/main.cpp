@@ -67,6 +67,16 @@ int App::initialize() {
 	}
 
 
+	// Initialize all colors to a noticable ugly purple,
+	// so that we remember to manually initialize each palette color below.
+	for (int c = 0; c < NUM_PALETTE_COLORS; c++){
+		palette[c] = {255, 0, 255, 255} ;
+	}
+	palette[PALETTE_BLACK] = {0,0,0,255};
+	palette[PALETTE_WHITE] = {255,255,255,255};
+
+
+
 	return 0;
 }
 
@@ -157,8 +167,7 @@ void App::render(){
 	// (The class could be called TextBox or MsgBox or something and it would be set to render to a specific place maybe)
 	// fancy feature: cache the texture (whcih it also destroys later) so that if it's called with the same msg it can reuse it.
 	// essential feature: properly handle error cases like when nullptr is returned by the various functions there
-	SDL_Color text_color = {0,0,0,255};
-	SDL_Surface * text_surface = TTF_RenderText_Blended(font, "peup",text_color);
+	SDL_Surface * text_surface = TTF_RenderText_Blended(font, "peup", palette[PALETTE_BLACK]);
 	SDL_Texture * text_texture = SDL_CreateTextureFromSurface(renderer,text_surface);
 	SDL_FreeSurface(text_surface);
 	int w{}, h{};
@@ -195,7 +204,7 @@ int App::loadMedia(){
 
 
 	//Load fonts
-	font  = TTF_OpenFont("kano.otf",12);
+	font  = TTF_OpenFont("kano.otf",14);
 	if (font==nullptr){
 		log.TTF_Error("Error loading font");
 		return -1;

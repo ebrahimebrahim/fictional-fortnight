@@ -1,4 +1,4 @@
-OBJS = main.cpp logger.cpp
+OBJS = main.cpp logger.cpp textbox.cpp
 
 OBJ_NAME = peup.out
 
