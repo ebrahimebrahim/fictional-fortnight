@@ -133,7 +133,7 @@ void App::mainLoop(){
 	if (tryMoveState!=TRY_MOVE_STATE_NOT_TRYING){
 		switch (tryMoveState) {
 			case TRY_MOVE_STATE_UP:
-				if (pos.y > 0) {pos.y--; timerStart = SDL_GetTicks();}
+				if (pos.y > 0) pos.y--;
 				break;
 			case TRY_MOVE_STATE_DOWN:
 				if (pos.y < NUM_TILES_Y-1) pos.y++;
@@ -262,6 +262,9 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 		case SDL_SCANCODE_DOWN:
 			thingyState = THINGY_DOWN;
 			tryMoveState = TRY_MOVE_STATE_DOWN;
+			break;
+		case SDL_SCANCODE_SPACE:
+			timerStart = SDL_GetTicks();
 			break;
 		case SDL_SCANCODE_Q:
 			quit=true;
