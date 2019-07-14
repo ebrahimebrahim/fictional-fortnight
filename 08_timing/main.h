@@ -66,6 +66,9 @@ class App {
     TryMoveState tryMoveState = TRY_MOVE_STATE_NOT_TRYING;
     SDL_Point pos = {NUM_TILES_X/2,NUM_TILES_Y/2};
     Uint32 timerStart = 0;
+    Uint32 lastFrameTime = 0;
+    int fps = 0;
+    Uint32 frame = 0;
 
     // Rectangles for viewports and sprites
     SDL_Rect screen_rect = {0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
@@ -75,6 +78,7 @@ class App {
     // Textboxes
     TextBox * peupTextBox = nullptr;
     TextBox * timerTextBox = nullptr;
+    TextBox * fpsTextBox = nullptr;
 
 
 

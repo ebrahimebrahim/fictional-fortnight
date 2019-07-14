@@ -163,6 +163,10 @@ void App::render(){
 	std::string timeString = std::to_string((SDL_GetTicks() - timerStart)/100);
 	timerTextBox->updateText(timeString.c_str());
 	timerTextBox->renderCopy(10,50);
+	std::string fpsString = "FPS: ";
+	fpsString += std::to_string(fps);
+	if (frame % 10 ==0 ) fpsTextBox->updateText(fpsString.c_str());
+	fpsTextBox->renderCopy(10,90);
 
 	// Set the renderer's viewport to the left hand screen
   SDL_RenderSetViewport(renderer,&screen_rect);
@@ -174,6 +178,10 @@ void App::render(){
 	SDL_RenderCopy(renderer, thingySprites, &(thingyStateToSpriteRect[thingyState]), &thingy_rect);
 
 	SDL_RenderPresent( renderer );
+	int newFrameTime = SDL_GetTicks();
+	fps = 1000./float(newFrameTime - lastFrameTime);
+	lastFrameTime = newFrameTime;
+	frame++;
 }
 
 
@@ -203,7 +211,9 @@ int App::loadMedia(){
 	peupTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
 	peupTextBox->updateText("peup.");
 	timerTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
-	timerTextBox->updateText("TIMER");
+	timerTextBox->updateText("[TIMER]");
+	fpsTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
+	fpsTextBox->updateText("[FPS]");
 
 
 	return 0;
@@ -239,6 +249,8 @@ void App::unloadMedia(){
 	thingySprites = nullptr;
 
 	delete peupTextBox;
+	delete timerTextBox;
+	delete fpsTextBox;
 
 	TTF_CloseFont(font);
 	font = nullptr;
