@@ -95,10 +95,12 @@ App::~App() {
 int App::execute(){
 
 	while (!quit){
+		Uint32 t0 = SDL_GetTicks();
 		handleEvents();
 		mainLoop();
 		render();
-		SDL_Delay( 20 );
+		Uint32 dt = SDL_GetTicks()-t0;
+		SDL_Delay( dt<20 ? 20-dt : 0 );
 	}
 
 	return 0;
