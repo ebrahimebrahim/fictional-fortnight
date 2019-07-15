@@ -14,7 +14,7 @@ PlayerEntity::~PlayerEntity() {
 
 
 int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
-  sprites = loadImage("thingy.png",renderer,log);
+  sprites = loadImage("player.png",renderer,log);
 	if (sprites==nullptr){
 		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
