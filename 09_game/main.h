@@ -4,6 +4,7 @@
 #include "logger.h"
 #include "textbox.h"
 #include "playerentity.h"
+#include "projectile.h"
 #include "utilities.h"
 
 
@@ -45,6 +46,7 @@ class App {
 
     // Game state
     PlayerEntity playerEntity;
+    ProjectileList projectileList;
 
     // Rectangles for viewports
     SDL_Rect screen_rect = {0,0,gamescreen_width,gamescreen_height};

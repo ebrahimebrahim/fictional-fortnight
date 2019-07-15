@@ -26,7 +26,6 @@ int main( int argc, char* args[] ) {
 
 
 App::App() : log{}, playerEntity{} {
-
 }
 
 
@@ -121,6 +120,7 @@ void App::handleEvents(){
 		}
 
 		playerEntity.handleEvent(&event);
+		projectileList.handleEvent(&event);
 
 	}
 }
@@ -129,6 +129,7 @@ void App::handleEvents(){
 void App::mainLoop(){
 
 	playerEntity.update(this);
+	projectileList.update(this);
 
 }
 
@@ -156,6 +157,7 @@ void App::render(){
 	SDL_RenderFillRect(renderer,nullptr);
 
 	playerEntity.render(this,renderer);
+	projectileList.render(this,renderer);
 
 
 	SDL_RenderPresent( renderer );
@@ -170,6 +172,10 @@ int App::loadMedia(){
 
 	// Load whatever is needed by entities
 	if (playerEntity.loadMedia(renderer, &log)<0){
+		log.error("Error: Some media was not loaded.");
+		return -1;
+	}
+	if (projectileList.loadMedia(renderer, &log)<0){
 		log.error("Error: Some media was not loaded.");
 		return -1;
 	}
@@ -199,6 +205,7 @@ int App::loadMedia(){
 void App::unloadMedia(){
 
 	playerEntity.unloadMedia();
+	projectileList.unloadMedia();
 
 	delete peupTextBox;
 	delete timerTextBox;

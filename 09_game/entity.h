@@ -6,6 +6,8 @@
 class App; // Forward declaration
 
 
+//TODO: Come up with a better name than Entity. It more represents a type of entity rather than one entity.
+// e.g. an instance of this class could be many actual "entities"
 class Entity {
   public:
     Entity() {}

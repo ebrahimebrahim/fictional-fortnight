@@ -16,7 +16,7 @@ PlayerEntity::~PlayerEntity() {
 int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
   sprites = loadImage("thingy.png",renderer,log);
 	if (sprites==nullptr){
-		log->error("Error: Some media was not loaded.");
+		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
 	}
 	orientationToSpriteRect[PLAYERENTITY_DIRECTION_NEUTRAL]={0,0,5,5};
