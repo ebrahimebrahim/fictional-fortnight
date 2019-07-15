@@ -36,6 +36,7 @@ class PlayerEntity :  public Entity {
     // State
     PlayerEntityDirection orientation = PLAYERENTITY_DIRECTION_NEUTRAL;
     PlayerEntityDirection tryMove = PLAYERENTITY_DIRECTION_NEUTRAL;
+    bool tryShoot = false;
     int x = 0;
     int y = 0;
 

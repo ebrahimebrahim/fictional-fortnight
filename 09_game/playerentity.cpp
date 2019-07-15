@@ -42,6 +42,7 @@ void PlayerEntity::handleEvent(SDL_Event * event){
       case SDL_SCANCODE_RIGHT: tryRight(); break;
       case SDL_SCANCODE_UP: tryUp(); break;
       case SDL_SCANCODE_DOWN: tryDown(); break;
+      case SDL_SCANCODE_SPACE: tryShoot = true;
       default: break;
     }
   }
@@ -56,7 +57,7 @@ void PlayerEntity::handleEvent(SDL_Event * event){
   }
 }
 
-void PlayerEntity::update(App * app){
+void PlayerEntity::update(App * app) {
   if (tryMove!=PLAYERENTITY_DIRECTION_NEUTRAL){
 		switch (tryMove) {
 			case PLAYERENTITY_DIRECTION_UP:
@@ -75,6 +76,19 @@ void PlayerEntity::update(App * app){
 		}
 		tryMove=PLAYERENTITY_DIRECTION_NEUTRAL;
 	}
+
+  if (tryShoot) {
+      ProjectileDirection dir = PROJECTILE_DIRECTION_UP;
+      switch (orientation) {
+        case PLAYERENTITY_DIRECTION_UP: dir = PROJECTILE_DIRECTION_UP; break;
+        case PLAYERENTITY_DIRECTION_DOWN: dir = PROJECTILE_DIRECTION_DOWN; break;
+        case PLAYERENTITY_DIRECTION_LEFT: dir = PROJECTILE_DIRECTION_LEFT; break;
+        case PLAYERENTITY_DIRECTION_RIGHT: dir = PROJECTILE_DIRECTION_RIGHT; break;
+        default: break;
+      }
+      app->projectileList.createProjectile(x*app->tile_width,y*app->tile_height,2,dir);
+      tryShoot = false;
+  }
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){

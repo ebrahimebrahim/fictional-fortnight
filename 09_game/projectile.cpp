@@ -54,10 +54,10 @@ void ProjectileList::update(App * app){
   for (Projectile * projectile : projectiles) {
     if (app->frame % 10 == 0) projectile->frame = (projectile->frame + 1) % NUM_PROJECTILE_FRAMES;
     switch (projectile->dir) {
-      case PROJECTILE_DIRECTION_UP: projectile->y -= projectile->v;
-      case PROJECTILE_DIRECTION_DOWN: projectile->y += projectile->v;
-      case PROJECTILE_DIRECTION_LEFT: projectile->x -= projectile->v;
-      case PROJECTILE_DIRECTION_RIGHT: projectile->x += projectile->v;
+      case PROJECTILE_DIRECTION_UP: projectile->y -= projectile->v; break;
+      case PROJECTILE_DIRECTION_DOWN: projectile->y += projectile->v; break;
+      case PROJECTILE_DIRECTION_LEFT: projectile->x -= projectile->v; break;
+      case PROJECTILE_DIRECTION_RIGHT: projectile->x += projectile->v; break;
       default: break;
     }
   }
@@ -65,7 +65,7 @@ void ProjectileList::update(App * app){
 
 void ProjectileList::render(App * app, SDL_Renderer * renderer) {
   for (Projectile * projectile : projectiles) {
-    SDL_Rect target_rect = {projectile->x,projectile->y,app->tile_width,app->tile_height};
+    SDL_Rect target_rect = {projectile->x,projectile->y,17,39};
     SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[projectile->frame]), &target_rect, projectileDirectionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
   }
 }
