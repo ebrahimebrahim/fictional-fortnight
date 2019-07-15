@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "logger.h"
+#include "entity.h"
 
 
 class App; // Forward declaration
@@ -16,15 +16,14 @@ enum PlayerEntityDirection { // possible orientation and movement directions
 };
 
 
-class PlayerEntity {
+class PlayerEntity :  public Entity {
   public:
     PlayerEntity();
     ~PlayerEntity();
-    int loadMedia(SDL_Renderer *,Logger *);
-    void unloadMedia();
-
-    void handleEvent(SDL_Event *);
-    void update(App *); // Update step to go into main game loop
+    virtual int loadMedia(SDL_Renderer *,Logger *);
+    virtual void unloadMedia();
+    virtual void handleEvent(SDL_Event *);
+    virtual void update(App *); // Update step to go into main game loop
 
     void tryLeft();
     void tryUp();
