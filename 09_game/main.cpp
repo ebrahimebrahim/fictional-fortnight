@@ -7,8 +7,7 @@
 
 
 
-int main( int argc, char* args[] )
-{
+int main( int argc, char* args[] ) {
 
 	App app{};
 
@@ -26,7 +25,7 @@ int main( int argc, char* args[] )
 }
 
 
-App::App() : log{} {
+App::App() : log{}, playerEntity{} {
 
 }
 
@@ -132,24 +131,7 @@ void App::handleEvents(){
 
 void App::mainLoop(){
 
-	if (tryMoveState!=TRY_MOVE_STATE_NOT_TRYING){
-		switch (tryMoveState) {
-			case TRY_MOVE_STATE_UP:
-				if (pos.y > 0) pos.y--;
-				break;
-			case TRY_MOVE_STATE_DOWN:
-				if (pos.y < NUM_TILES_Y-1) pos.y++;
-				break;
-			case TRY_MOVE_STATE_LEFT:
-				if (pos.x > 0) pos.x--;
-				break;
-			case TRY_MOVE_STATE_RIGHT:
-				if (pos.x < NUM_TILES_X-1) pos.x++;
-				break;
-			default: break;
-		}
-		tryMoveState=TRY_MOVE_STATE_NOT_TRYING;
-	}
+	playerEntity.update(this);
 
 }
 
@@ -176,8 +158,8 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
-	SDL_Rect thingy_rect = {pos.x*TILE_WIDTH,pos.y*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT};
-	SDL_RenderCopy(renderer, thingySprites, &(thingyStateToSpriteRect[thingyState]), &thingy_rect);
+	SDL_Rect thingy_rect = {playerEntity.x*tile_width,playerEntity.y*tile_height,tile_width,tile_height};
+	SDL_RenderCopy(renderer, playerEntity.sprites, &(playerEntity.orientationToSpriteRect[playerEntity.orientation]), &thingy_rect);
 
 	SDL_RenderPresent( renderer );
 	int newFrameTime = SDL_GetTicks();
@@ -189,18 +171,11 @@ void App::render(){
 
 int App::loadMedia(){
 
-	// Load textures
-	thingySprites = loadImage("thingy.png");
-	if (thingySprites==nullptr){
+	// Load whatever is needed by entities
+	if (playerEntity.loadMedia(renderer, &log)<0){
 		log.error("Error: Some media was not loaded.");
 		return -1;
 	}
-	thingyStateToSpriteRect[THINGY_NEUTRAL]={0,0,5,5};
-	thingyStateToSpriteRect[THINGY_UP]={5,0,5,5};
-	thingyStateToSpriteRect[THINGY_DOWN]={10,0,5,5};
-	thingyStateToSpriteRect[THINGY_LEFT]={15,0,5,5};
-	thingyStateToSpriteRect[THINGY_RIGHT]={20,0,5,5};
-
 
 	//Load fonts
 	font  = TTF_OpenFont("Roboto-Regular.ttf",14);
@@ -222,33 +197,11 @@ int App::loadMedia(){
 }
 
 
-SDL_Texture	 * App::loadImage(const char * filename){
-	SDL_Surface * img = IMG_Load(filename);
-	if (img==nullptr){
-		std::string error_msg = "Error while loading ";
-		error_msg += filename;
-		log.SDL_Error(error_msg.c_str());
-		return nullptr;
-	}
-
-	SDL_SetColorKey(img,SDL_TRUE,SDL_MapRGB(img->format,255,255,255));
-
-	SDL_Texture * img_texture = SDL_CreateTextureFromSurface(renderer,img);
-	SDL_FreeSurface(img);
-	if (img_texture == nullptr){
-		std::string error_msg = "Error while creating texture from ";
-		error_msg += filename;
-		log.SDL_Error(error_msg.c_str());
-		return nullptr;
-	}
-	return img_texture;
-}
 
 
 void App::unloadMedia(){
 
-	SDL_DestroyTexture(thingySprites);
-	thingySprites = nullptr;
+	playerEntity.unloadMedia();
 
 	delete peupTextBox;
 	delete timerTextBox;
@@ -260,23 +213,9 @@ void App::unloadMedia(){
 }
 
 void App::handleKeypress(SDL_KeyboardEvent * key){
+
+	// Main app stuff
 	switch (key->keysym.scancode) {
-		case SDL_SCANCODE_LEFT:
-			thingyState = THINGY_LEFT;
-			tryMoveState = TRY_MOVE_STATE_LEFT;
-			break;
-		case SDL_SCANCODE_RIGHT:
-			thingyState = THINGY_RIGHT;
-			tryMoveState = TRY_MOVE_STATE_RIGHT;
-			break;
-		case SDL_SCANCODE_UP:
-			thingyState = THINGY_UP;
-			tryMoveState = TRY_MOVE_STATE_UP;
-			break;
-		case SDL_SCANCODE_DOWN:
-			thingyState = THINGY_DOWN;
-			tryMoveState = TRY_MOVE_STATE_DOWN;
-			break;
 		case SDL_SCANCODE_SPACE:
 			timerStart = SDL_GetTicks();
 			break;
@@ -286,6 +225,10 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 		default:
 			break;
 	}
+
+	// Entity stuff
+	playerEntity.handleKeypress(key);
+
 }
 
 void App::handleJoyhat(SDL_JoyHatEvent * jhat){
