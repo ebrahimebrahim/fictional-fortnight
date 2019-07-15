@@ -77,6 +77,10 @@ void PlayerEntity::update(App * app){
 	}
 }
 
+void PlayerEntity::render(App * app, SDL_Renderer * renderer){
+  SDL_Rect target_rect = {x*app->tile_width,y*app->tile_height,app->tile_width,app->tile_height};
+  SDL_RenderCopy(renderer, sprites, &(orientationToSpriteRect[orientation]), &target_rect);
+}
 
 void PlayerEntity::tryLeft() {
   orientation = PLAYERENTITY_DIRECTION_LEFT;

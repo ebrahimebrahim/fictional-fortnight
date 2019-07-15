@@ -3,8 +3,6 @@
 #include "entity.h"
 
 
-class App; // Forward declaration
-
 
 enum PlayerEntityDirection { // possible orientation and movement directions
   PLAYERENTITY_DIRECTION_UP,
@@ -24,6 +22,7 @@ class PlayerEntity :  public Entity {
     virtual void unloadMedia();
     virtual void handleEvent(SDL_Event *);
     virtual void update(App *); // Update step to go into main game loop
+    virtual void render(App *, SDL_Renderer *);
 
     void tryLeft();
     void tryUp();

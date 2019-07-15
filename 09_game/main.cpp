@@ -155,8 +155,8 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
-	SDL_Rect thingy_rect = {playerEntity.x*tile_width,playerEntity.y*tile_height,tile_width,tile_height};
-	SDL_RenderCopy(renderer, playerEntity.sprites, &(playerEntity.orientationToSpriteRect[playerEntity.orientation]), &thingy_rect);
+	playerEntity.render(this,renderer);
+
 
 	SDL_RenderPresent( renderer );
 	int newFrameTime = SDL_GetTicks();
