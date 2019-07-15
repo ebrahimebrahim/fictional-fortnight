@@ -35,26 +35,24 @@ void PlayerEntity::unloadMedia(){
 }
 
 
-void PlayerEntity::handleKeypress(SDL_KeyboardEvent * key){
-  switch (key->keysym.scancode) {
-    case SDL_SCANCODE_LEFT:
-      orientation = PLAYERENTITY_DIRECTION_LEFT;
-      tryMove = PLAYERENTITY_DIRECTION_LEFT;
-      break;
-    case SDL_SCANCODE_RIGHT:
-      orientation = PLAYERENTITY_DIRECTION_RIGHT;
-      tryMove = PLAYERENTITY_DIRECTION_RIGHT;
-      break;
-    case SDL_SCANCODE_UP:
-      orientation = PLAYERENTITY_DIRECTION_UP;
-      tryMove = PLAYERENTITY_DIRECTION_UP;
-      break;
-    case SDL_SCANCODE_DOWN:
-      orientation = PLAYERENTITY_DIRECTION_DOWN;
-      tryMove = PLAYERENTITY_DIRECTION_DOWN;
-      break;
-    default:
-      break;
+void PlayerEntity::handleEvent(SDL_Event * event){
+  if (event->type==SDL_KEYDOWN) {
+    switch (event->key.keysym.scancode) {
+      case SDL_SCANCODE_LEFT: tryLeft(); break;
+      case SDL_SCANCODE_RIGHT: tryRight(); break;
+      case SDL_SCANCODE_UP: tryUp(); break;
+      case SDL_SCANCODE_DOWN: tryDown(); break;
+      default: break;
+    }
+  }
+  else if (event->type==SDL_JOYHATMOTION) {
+    switch (event->jhat.value) {
+      case SDL_HAT_LEFT: tryLeft(); break;
+      case SDL_HAT_RIGHT: tryRight(); break;
+      case SDL_HAT_UP: tryUp(); break;
+      case SDL_HAT_DOWN: tryDown(); break;
+      default: break;
+    }
   }
 }
 
@@ -77,4 +75,25 @@ void PlayerEntity::update(App * app){
 		}
 		tryMove=PLAYERENTITY_DIRECTION_NEUTRAL;
 	}
+}
+
+
+void PlayerEntity::tryLeft() {
+  orientation = PLAYERENTITY_DIRECTION_LEFT;
+  tryMove = PLAYERENTITY_DIRECTION_LEFT;
+}
+
+void PlayerEntity::tryRight() {
+  orientation = PLAYERENTITY_DIRECTION_RIGHT;
+  tryMove = PLAYERENTITY_DIRECTION_RIGHT;
+}
+
+void PlayerEntity::tryUp() {
+  orientation = PLAYERENTITY_DIRECTION_UP;
+  tryMove = PLAYERENTITY_DIRECTION_UP;
+}
+
+void PlayerEntity::tryDown() {
+  orientation = PLAYERENTITY_DIRECTION_DOWN;
+  tryMove = PLAYERENTITY_DIRECTION_DOWN;
 }

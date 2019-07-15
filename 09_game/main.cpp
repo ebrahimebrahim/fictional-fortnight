@@ -118,13 +118,10 @@ void App::handleEvents(){
 			case SDL_KEYDOWN:
 				handleKeypress(&(event.key));
 				break;
-			case SDL_JOYHATMOTION:
-				handleJoyhat(&(event.jhat));
 		}
 
-		if (event.type==SDL_QUIT) {
-			quit=true;
-		}
+		playerEntity.handleEvent(&event);
+
 	}
 }
 
@@ -214,7 +211,6 @@ void App::unloadMedia(){
 
 void App::handleKeypress(SDL_KeyboardEvent * key){
 
-	// Main app stuff
 	switch (key->keysym.scancode) {
 		case SDL_SCANCODE_SPACE:
 			timerStart = SDL_GetTicks();
@@ -226,27 +222,4 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 			break;
 	}
 
-	// Entity stuff
-	playerEntity.handleKeypress(key);
-
-}
-
-void App::handleJoyhat(SDL_JoyHatEvent * jhat){
-	SDL_KeyboardEvent fake_keyboard_event; // This is a terrible hack but I'm just testing joystick stuff lol
-	switch (jhat->value) {
-		case SDL_HAT_UP:
-			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_UP;
-			break;
-		case SDL_HAT_DOWN:
-			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_DOWN;
-			break;
-		case SDL_HAT_LEFT:
-			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_LEFT;
-			break;
-		case SDL_HAT_RIGHT:
-			fake_keyboard_event.keysym.scancode = SDL_SCANCODE_RIGHT;
-			break;
-		default: return;
-	}
-	handleKeypress(&fake_keyboard_event);
 }

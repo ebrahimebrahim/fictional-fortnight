@@ -23,8 +23,13 @@ class PlayerEntity {
     int loadMedia(SDL_Renderer *,Logger *);
     void unloadMedia();
 
-    void handleKeypress(SDL_KeyboardEvent *);
+    void handleEvent(SDL_Event *);
     void update(App *); // Update step to go into main game loop
+
+    void tryLeft();
+    void tryUp();
+    void tryDown();
+    void tryRight();
 
     //Assets
     SDL_Texture * sprites = nullptr;

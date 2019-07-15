@@ -72,6 +72,5 @@ class App {
     void render();
 
     void handleKeypress(SDL_KeyboardEvent *);
-    void handleJoyhat(SDL_JoyHatEvent * jhat);
 
 };
