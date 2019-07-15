@@ -40,5 +40,10 @@ class PlayerEntity :  public Entity {
     int x = 0;
     int y = 0;
 
+    // Constants (for now)
+    int width = 20;
+    int height = 20;
+    int v = 6;
+
 
 };

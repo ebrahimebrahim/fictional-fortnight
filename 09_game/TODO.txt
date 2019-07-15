@@ -1,0 +1,11 @@
+set up circular buffer in utilities
+
+use circular buffer for controlling keyboard input:
+  on keypress push key onto the buffer
+  on update look from the currently pressed arrow keys which is the most recent
+  use that one to decide next try method to call.
+
+set up precise positioning for projectile spawn point
+have projectiles die at edge of screen (part of projectile list update, die flag is turned on. also in update the thing is erased from list when the time comes)
+
+rename Entity to EntityGroup b/c that seems to be what it really is.

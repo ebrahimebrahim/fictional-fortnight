@@ -1,6 +1,7 @@
 #include "playerentity.h"
 #include "utilities.h"
 #include "main.h"
+#include <algorithm>
 
 
 PlayerEntity::PlayerEntity() {
@@ -36,7 +37,7 @@ void PlayerEntity::unloadMedia(){
 
 
 void PlayerEntity::handleEvent(SDL_Event * event){
-  if (event->type==SDL_KEYDOWN) {
+  if (event->type==SDL_KEYDOWN && !(event->key.repeat)) {
     switch (event->key.keysym.scancode) {
       case SDL_SCANCODE_LEFT: tryLeft(); break;
       case SDL_SCANCODE_RIGHT: tryRight(); break;
@@ -58,23 +59,28 @@ void PlayerEntity::handleEvent(SDL_Event * event){
 }
 
 void PlayerEntity::update(App * app) {
+
+  const Uint8 * keyState = SDL_GetKeyboardState(nullptr);
+
+  if (!keyState[SDL_SCANCODE_LEFT] && !keyState[SDL_SCANCODE_RIGHT] && !keyState[SDL_SCANCODE_UP] && !keyState[SDL_SCANCODE_DOWN])
+    tryMove = PLAYERENTITY_DIRECTION_NEUTRAL;
+
   if (tryMove!=PLAYERENTITY_DIRECTION_NEUTRAL){
 		switch (tryMove) {
 			case PLAYERENTITY_DIRECTION_UP:
-				if (y > 0) y--;
+				y = std::max(0,y-v);
 				break;
 			case PLAYERENTITY_DIRECTION_DOWN:
-				if (y < app->gamescreen_tiles_y-1) y++;
+				y = std::min(app->gamescreen_height-height,y+v);
 				break;
 			case PLAYERENTITY_DIRECTION_LEFT:
-				if (x > 0) x--;
+				x = std::max(0,x-v);
 				break;
 			case PLAYERENTITY_DIRECTION_RIGHT:
-				if (x < app->gamescreen_tiles_x-1) x++;
+				x = std::min(app->gamescreen_width-width,x+v);
 				break;
 			default: break;
 		}
-		tryMove=PLAYERENTITY_DIRECTION_NEUTRAL;
 	}
 
   if (tryShoot) {
@@ -86,13 +92,13 @@ void PlayerEntity::update(App * app) {
         case PLAYERENTITY_DIRECTION_RIGHT: dir = PROJECTILE_DIRECTION_RIGHT; break;
         default: break;
       }
-      app->projectileList.createProjectile(x*app->tile_width,y*app->tile_height,2,dir);
+      app->projectileList.createProjectile(x,y,v+2,dir);
       tryShoot = false;
   }
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
-  SDL_Rect target_rect = {x*app->tile_width,y*app->tile_height,app->tile_width,app->tile_height};
+  SDL_Rect target_rect = {x,y,width,height};
   SDL_RenderCopy(renderer, sprites, &(orientationToSpriteRect[orientation]), &target_rect);
 }
 

@@ -16,15 +16,11 @@ const int WINDOW_HEIGHT = 600;
 class App {
   public:
 
+
     // Sizes of things
-    int gamescreen_tiles_x = 25; // tiles in screen area (not including right menu)
-    int gamescreen_tiles_y = 20;
-    int right_menu_tiles = 7; // number of additional tile-widths to allot to menu
-    int tile_width = WINDOW_WIDTH/(gamescreen_tiles_x+right_menu_tiles);
-    int tile_height = WINDOW_HEIGHT/gamescreen_tiles_y;
-    int right_menu_width = tile_width*right_menu_tiles;
-    int gamescreen_width = tile_width*gamescreen_tiles_x;
-    int gamescreen_height = tile_height*gamescreen_tiles_y;
+    int right_menu_width = WINDOW_WIDTH * 0.2;
+    int gamescreen_width = WINDOW_WIDTH - right_menu_width;
+    int gamescreen_height = WINDOW_HEIGHT;
 
 
     // Misc stuff
