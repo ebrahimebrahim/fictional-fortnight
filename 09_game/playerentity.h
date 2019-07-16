@@ -26,12 +26,12 @@ class PlayerEntity :  public Entity {
     DirectionUDLR directionalKeyToPlayerDirection(SDL_Scancode);
 
     // State
-    DirectionUDLR orientation = DIRECTION_NEUTRAL;
+    DirectionUDLR orientation = DIRECTION_RIGHT;
     DirectionUDLR tryMove = DIRECTION_NEUTRAL;
     CircleBuffer<SDL_Scancode> lastDirectionalKeys;
     bool tryShoot = false;
-    int x = 0; // x,y of top left corner of the player entity
-    int y = 0;
+    int x = 100; // x,y of top left corner of the player entity
+    int y = 100;
 
     // Constants (for now)
     int width = 20;

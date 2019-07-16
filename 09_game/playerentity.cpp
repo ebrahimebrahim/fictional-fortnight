@@ -21,11 +21,10 @@ int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
 		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
 	}
-	orientationToSpriteRect[DIRECTION_NEUTRAL]={0,0,5,5};
-	orientationToSpriteRect[DIRECTION_UP]={5,0,5,5};
-	orientationToSpriteRect[DIRECTION_DOWN]={10,0,5,5};
-	orientationToSpriteRect[DIRECTION_LEFT]={15,0,5,5};
-	orientationToSpriteRect[DIRECTION_RIGHT]={20,0,5,5};
+	orientationToSpriteRect[DIRECTION_UP]={0,0,5,5};
+	orientationToSpriteRect[DIRECTION_DOWN]={5,0,5,5};
+	orientationToSpriteRect[DIRECTION_LEFT]={10,0,5,5};
+	orientationToSpriteRect[DIRECTION_RIGHT]={15,0,5,5};
 
   return 0;
 }
@@ -81,7 +80,9 @@ void PlayerEntity::update(App * app) {
 
   if (tryShoot) {
 
-      vecI p = vecI(x,y) + vecI(width/2,height/2) + gTables.directionToUnitVector[orientation]*((width + app->projectileList.height)/2) - vecI(app->projectileList.width/2,app->projectileList.height/2);
+      vecI p = vecI(x,y) + vecI(width/2,height/2)
+               + gTables.directionToUnitVector[orientation]*((width + app->projectileList.height)/2)
+               - vecI(app->projectileList.width/2,app->projectileList.height/2);
       app->projectileList.createProjectile(p.x,p.y,v+2,orientation);
       tryShoot = false;
   }

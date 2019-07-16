@@ -1,6 +1,3 @@
-optimize vector calculations in various entity update steps
-
-remove playerentity's vestigial "neutral" orientation
 
 put sprites+explosion filename into projectilelist constructor or loadmedia etc. , so that you can make other ones for the monsters
 
@@ -12,3 +9,5 @@ then entities can in turn use that collision info
 hmmm...
 
 create one monster type, then abstract it to a base class with virtual functions
+
+optimize vector calculations in various entity update steps
