@@ -28,16 +28,19 @@ template <class T> class Vector2D {
     Vector2D(const Vector2D & old) {x=old.x;y=old.y;}
     ~Vector2D() {}
 
-    Vector2D & operator+=(const Vector2D & rhs) { x+=rhs.x; y+=rhs.y; return *this; }
-    Vector2D & operator+(const Vector2D & other) { return Vector2D(*this) += other; }
-    Vector2D & operator*=(const T & scalar) { x*=scalar; y*=scalar; return *this; }
-    Vector2D & operator*(const T & scalar) { return Vector2D(*this) *= scalar; }
+    friend Vector2D operator+(const Vector2D & v1, const Vector2D & v2) { return Vector2D(v1.x+v2.x,v1.y+v2.y); }
+    friend Vector2D operator-(const Vector2D & v1, const Vector2D & v2) { return Vector2D(v1.x-v2.x,v1.y-v2.y); }
+    friend Vector2D operator*(const Vector2D & v1, const T & s) { return Vector2D(v1.x*s,v1.y*s); }
+    friend Vector2D operator*(const T & s, const Vector2D & v1) { return v1*s; }
 
     void print() {printf("%d, %d\n",x,y);} // used for testing and should be deleted
 
     T x;
     T y;
 };
+
+typedef Vector2D<int>    vecI;
+typedef Vector2D<double> vecD;
 
 
 // --- A circular buffer container ---
