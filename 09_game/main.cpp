@@ -30,7 +30,7 @@ App::App() : log{}, playerEntity{} {
 
 
 int App::initialize() {
-	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK ) < 0 ) {
+	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
 		log.SDL_Error("Error initializing SDL");
 		return -1;
 	}
@@ -59,11 +59,6 @@ int App::initialize() {
 	}
 
 
-	if ( SDL_NumJoysticks() > 0 ) {
-		joystick = SDL_JoystickOpen(0); // If this fails then joystick remains as nullptr
-		// we are okay with this failure case because it would be as though SDL_NumJoysticks() were 0
-	}
-
 
 	// Initialize all colors to a noticable ugly purple,
 	// so that we remember to manually initialize each palette color below.
@@ -85,7 +80,6 @@ App::~App() {
 	SDL_DestroyWindow( window );
 	IMG_Quit();
 	TTF_Quit();
-	SDL_JoystickClose(joystick);
 	SDL_Quit();
 }
 

@@ -31,7 +31,6 @@ class PlayerEntity :  public Entity {
     // Useful tables
     SDL_Rect orientationToSpriteRect [PLAYERENTITY_DIRECTION_NUM_STATES];
     PlayerEntityDirection directionalKeyToPlayerDirection(SDL_Scancode);
-    PlayerEntityDirection joyhatDirectionToPlayerDirection(Uint8);
 
     // State
     PlayerEntityDirection orientation = PLAYERENTITY_DIRECTION_NEUTRAL;

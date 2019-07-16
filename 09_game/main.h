@@ -26,7 +26,6 @@ class App {
     // Misc stuff
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
-    SDL_Joystick * joystick = nullptr;
     Logger log;
     SDL_Color palette [NUM_PALETTE_COLORS];
 

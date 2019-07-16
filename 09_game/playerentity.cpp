@@ -41,15 +41,7 @@ void PlayerEntity::handleEvent(SDL_Event * event){
     if (isArrowKey(event->key.keysym.scancode)) lastDirectionalKeys.push(event->key.keysym.scancode);
     if (event->key.keysym.scancode == SDL_SCANCODE_SPACE) tryShoot = true;
   }
-  // if (event->type==SDL_JOYHATMOTION) {
-  //   switch (event->jhat.value) {
-  //     case SDL_HAT_LEFT: tryLeft(); break;
-  //     case SDL_HAT_RIGHT: tryRight(); break;
-  //     case SDL_HAT_UP: tryUp(); break;
-  //     case SDL_HAT_DOWN: tryDown(); break;
-  //     default: break;
-  //   }
-  // }
+
 }
 
 void PlayerEntity::update(App * app) {
@@ -111,16 +103,6 @@ PlayerEntityDirection PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode
     case SDL_SCANCODE_RIGHT: return PLAYERENTITY_DIRECTION_RIGHT;
     case SDL_SCANCODE_UP: return PLAYERENTITY_DIRECTION_UP;
     case SDL_SCANCODE_DOWN: return PLAYERENTITY_DIRECTION_DOWN;
-    default: return PLAYERENTITY_DIRECTION_NEUTRAL;
-  }
-}
-
-PlayerEntityDirection PlayerEntity::joyhatDirectionToPlayerDirection(Uint8 jh) {
-  switch(jh) {
-    case SDL_HAT_LEFT: return PLAYERENTITY_DIRECTION_LEFT;
-    case SDL_HAT_RIGHT: return PLAYERENTITY_DIRECTION_RIGHT;
-    case SDL_HAT_UP: return PLAYERENTITY_DIRECTION_UP;
-    case SDL_HAT_DOWN: return PLAYERENTITY_DIRECTION_DOWN;
     default: return PLAYERENTITY_DIRECTION_NEUTRAL;
   }
 }
