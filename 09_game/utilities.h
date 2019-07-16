@@ -3,7 +3,14 @@
 #include <SDL2/SDL_image.h>
 #include "logger.h"
 
-
+enum DirectionUDLR {
+  DIRECTION_UP,
+  DIRECTION_DOWN,
+  DIRECTION_LEFT,
+  DIRECTION_RIGHT,
+  DIRECTION_NEUTRAL,
+  DIRECTION_NUM_STATES // Count-- must be last
+};
 
 enum PaletteColor {
   PALETTE_BLACK,

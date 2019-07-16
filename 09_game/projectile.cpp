@@ -3,7 +3,7 @@
 #include "main.h"
 
 
-Projectile::Projectile(int x, int y, int v, ProjectileDirection dir) : x(x), y(y), v(v), dir(dir) {
+Projectile::Projectile(int x, int y, int v, DirectionUDLR dir) : x(x), y(y), v(v), dir(dir) {
 
 }
 
@@ -14,10 +14,11 @@ Projectile::~Projectile() {
 
 
 ProjectileList::ProjectileList() {
-  projectileDirectionToRotAngle[PROJECTILE_DIRECTION_UP] = 0;
-  projectileDirectionToRotAngle[PROJECTILE_DIRECTION_RIGHT] = 90;
-  projectileDirectionToRotAngle[PROJECTILE_DIRECTION_DOWN] = 180;
-  projectileDirectionToRotAngle[PROJECTILE_DIRECTION_LEFT] = 270;
+  projectileDirectionToRotAngle[DIRECTION_NEUTRAL] = 0;
+  projectileDirectionToRotAngle[DIRECTION_UP] = 0;
+  projectileDirectionToRotAngle[DIRECTION_RIGHT] = 90;
+  projectileDirectionToRotAngle[DIRECTION_DOWN] = 180;
+  projectileDirectionToRotAngle[DIRECTION_LEFT] = 270;
 }
 
 
@@ -52,14 +53,23 @@ void ProjectileList::handleEvent(SDL_Event * event){
 
 void ProjectileList::update(App * app){
   for (Projectile * projectile : projectiles) {
+
+    // increment animation frame
     if (app->frame % 10 == 0) projectile->frame = (projectile->frame + 1) % NUM_PROJECTILE_FRAMES;
+
+    // move projectile
     switch (projectile->dir) {
-      case PROJECTILE_DIRECTION_UP: projectile->y -= projectile->v; break;
-      case PROJECTILE_DIRECTION_DOWN: projectile->y += projectile->v; break;
-      case PROJECTILE_DIRECTION_LEFT: projectile->x -= projectile->v; break;
-      case PROJECTILE_DIRECTION_RIGHT: projectile->x += projectile->v; break;
+      case DIRECTION_UP: projectile->y -= projectile->v; break;
+      case DIRECTION_DOWN: projectile->y += projectile->v; break;
+      case DIRECTION_LEFT: projectile->x -= projectile->v; break;
+      case DIRECTION_RIGHT: projectile->x += projectile->v; break;
       default: break;
     }
+
+    // // check if it should start exploding
+    // if (projectile->x )
+
+
   }
 }
 
@@ -70,6 +80,6 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
   }
 }
 
-void ProjectileList::createProjectile(int x, int y, int v, ProjectileDirection dir) {
+void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir) {
   projectiles.push_front(new Projectile(x,y,v,dir));
 }

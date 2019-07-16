@@ -5,14 +5,7 @@
 
 
 
-enum PlayerEntityDirection { // possible orientation and movement directions
-  PLAYERENTITY_DIRECTION_UP,
-  PLAYERENTITY_DIRECTION_DOWN,
-  PLAYERENTITY_DIRECTION_LEFT,
-  PLAYERENTITY_DIRECTION_RIGHT,
-  PLAYERENTITY_DIRECTION_NEUTRAL,
-  PLAYERENTITY_DIRECTION_NUM_STATES // Count-- must be last
-};
+
 
 
 class PlayerEntity :  public Entity {
@@ -29,12 +22,12 @@ class PlayerEntity :  public Entity {
     SDL_Texture * sprites = nullptr;
 
     // Useful tables
-    SDL_Rect orientationToSpriteRect [PLAYERENTITY_DIRECTION_NUM_STATES];
-    PlayerEntityDirection directionalKeyToPlayerDirection(SDL_Scancode);
+    SDL_Rect orientationToSpriteRect [DIRECTION_NUM_STATES];
+    DirectionUDLR directionalKeyToPlayerDirection(SDL_Scancode);
 
     // State
-    PlayerEntityDirection orientation = PLAYERENTITY_DIRECTION_NEUTRAL;
-    PlayerEntityDirection tryMove = PLAYERENTITY_DIRECTION_NEUTRAL;
+    DirectionUDLR orientation = DIRECTION_NEUTRAL;
+    DirectionUDLR tryMove = DIRECTION_NEUTRAL;
     CircleBuffer<SDL_Scancode> lastDirectionalKeys;
     bool tryShoot = false;
     int x = 0; // x,y of top left corner of the player entity

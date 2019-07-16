@@ -20,11 +20,11 @@ int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
 		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
 	}
-	orientationToSpriteRect[PLAYERENTITY_DIRECTION_NEUTRAL]={0,0,5,5};
-	orientationToSpriteRect[PLAYERENTITY_DIRECTION_UP]={5,0,5,5};
-	orientationToSpriteRect[PLAYERENTITY_DIRECTION_DOWN]={10,0,5,5};
-	orientationToSpriteRect[PLAYERENTITY_DIRECTION_LEFT]={15,0,5,5};
-	orientationToSpriteRect[PLAYERENTITY_DIRECTION_RIGHT]={20,0,5,5};
+	orientationToSpriteRect[DIRECTION_NEUTRAL]={0,0,5,5};
+	orientationToSpriteRect[DIRECTION_UP]={5,0,5,5};
+	orientationToSpriteRect[DIRECTION_DOWN]={10,0,5,5};
+	orientationToSpriteRect[DIRECTION_LEFT]={15,0,5,5};
+	orientationToSpriteRect[DIRECTION_RIGHT]={20,0,5,5};
 
   return 0;
 }
@@ -49,7 +49,7 @@ void PlayerEntity::update(App * app) {
   const Uint8 * keyState = SDL_GetKeyboardState(nullptr);
 
   if (!keyState[SDL_SCANCODE_LEFT] && !keyState[SDL_SCANCODE_RIGHT] && !keyState[SDL_SCANCODE_UP] && !keyState[SDL_SCANCODE_DOWN])
-    tryMove = PLAYERENTITY_DIRECTION_NEUTRAL;
+    tryMove = DIRECTION_NEUTRAL;
   else {
     for (SDL_Scancode sc : lastDirectionalKeys) {
       if (keyState[sc]) {
@@ -60,18 +60,18 @@ void PlayerEntity::update(App * app) {
     }
   }
 
-  if (tryMove!=PLAYERENTITY_DIRECTION_NEUTRAL){
+  if (tryMove!=DIRECTION_NEUTRAL){
 		switch (tryMove) {
-			case PLAYERENTITY_DIRECTION_UP:
+			case DIRECTION_UP:
 				y = std::max(0,y-v);
 				break;
-			case PLAYERENTITY_DIRECTION_DOWN:
+			case DIRECTION_DOWN:
 				y = std::min(app->gamescreen_height-height,y+v);
 				break;
-			case PLAYERENTITY_DIRECTION_LEFT:
+			case DIRECTION_LEFT:
 				x = std::max(0,x-v);
 				break;
-			case PLAYERENTITY_DIRECTION_RIGHT:
+			case DIRECTION_RIGHT:
 				x = std::min(app->gamescreen_width-width,x+v);
 				break;
 			default: break;
@@ -79,26 +79,17 @@ void PlayerEntity::update(App * app) {
 	}
 
   if (tryShoot) {
-      ProjectileDirection dir = PROJECTILE_DIRECTION_UP;
-      switch (orientation) {
-        case PLAYERENTITY_DIRECTION_UP: dir = PROJECTILE_DIRECTION_UP; break;
-        case PLAYERENTITY_DIRECTION_DOWN: dir = PROJECTILE_DIRECTION_DOWN; break;
-        case PLAYERENTITY_DIRECTION_LEFT: dir = PROJECTILE_DIRECTION_LEFT; break;
-        case PLAYERENTITY_DIRECTION_RIGHT: dir = PROJECTILE_DIRECTION_RIGHT; break;
-        default: break;
-      }
-
 
       vecI D(0,0);
       switch (orientation) {
-        case PLAYERENTITY_DIRECTION_UP: D.x=0; D.y=-1; break;
-        case PLAYERENTITY_DIRECTION_DOWN: D.x=0; D.y=1; break;
-        case PLAYERENTITY_DIRECTION_LEFT: D.x=-1; D.y=0; break;
-        case PLAYERENTITY_DIRECTION_RIGHT: D.x=1; D.y=0; break;
+        case DIRECTION_UP: D.x=0; D.y=-1; break;
+        case DIRECTION_DOWN: D.x=0; D.y=1; break;
+        case DIRECTION_LEFT: D.x=-1; D.y=0; break;
+        case DIRECTION_RIGHT: D.x=1; D.y=0; break;
         default: break;
       }
       vecI p = vecI(x,y) + vecI(width/2,height/2) + D*((width + app->projectileList.height)/2) - vecI(app->projectileList.width/2,app->projectileList.height/2);
-      app->projectileList.createProjectile(p.x,p.y,v+2,dir);
+      app->projectileList.createProjectile(p.x,p.y,v+2,orientation);
       tryShoot = false;
   }
 }
@@ -108,12 +99,12 @@ void PlayerEntity::render(App * app, SDL_Renderer * renderer){
   SDL_RenderCopy(renderer, sprites, &(orientationToSpriteRect[orientation]), &target_rect);
 }
 
-PlayerEntityDirection PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {
+DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {
   switch(sc) {
-    case SDL_SCANCODE_LEFT: return PLAYERENTITY_DIRECTION_LEFT;
-    case SDL_SCANCODE_RIGHT: return PLAYERENTITY_DIRECTION_RIGHT;
-    case SDL_SCANCODE_UP: return PLAYERENTITY_DIRECTION_UP;
-    case SDL_SCANCODE_DOWN: return PLAYERENTITY_DIRECTION_DOWN;
-    default: return PLAYERENTITY_DIRECTION_NEUTRAL;
+    case SDL_SCANCODE_LEFT: return DIRECTION_LEFT;
+    case SDL_SCANCODE_RIGHT: return DIRECTION_RIGHT;
+    case SDL_SCANCODE_UP: return DIRECTION_UP;
+    case SDL_SCANCODE_DOWN: return DIRECTION_DOWN;
+    default: return DIRECTION_NEUTRAL;
   }
 }
