@@ -1,5 +1,7 @@
 #include "utilities.h"
 
+
+
 SDL_Texture	 *  loadImage(const char * filename, SDL_Renderer * renderer, Logger * log){
 	SDL_Surface * img = IMG_Load(filename);
 	if (img==nullptr){
@@ -32,12 +34,12 @@ return ( scancode == SDL_SCANCODE_LEFT  ||
 }
 
 
-vecI directionToUnitVector(DirectionUDLR dir) {
-	switch (dir) {
-		case DIRECTION_UP:    return vecI( 0,-1);
-		case DIRECTION_DOWN:  return vecI( 0, 1);
-		case DIRECTION_LEFT:  return vecI(-1, 0);
-		case DIRECTION_RIGHT: return vecI( 1, 0);
-		default: return vecI(0,0);
-	}
+
+Tables::Tables() {
+	directionToUnitVector[DIRECTION_UP]   =    vecI( 0,-1);
+	directionToUnitVector[DIRECTION_DOWN]   =  vecI( 0, 1);
+	directionToUnitVector[DIRECTION_LEFT]   =  vecI(-1, 0);
+	directionToUnitVector[DIRECTION_RIGHT]   = vecI( 1, 0);
+	directionToUnitVector[DIRECTION_NEUTRAL] = vecI( 0, 0);
 }
+Tables gTables;

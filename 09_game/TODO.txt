@@ -1,3 +1,14 @@
-have projectiles die at edge of screen (part of projectile list update, die flag is turned on. also in update the thing is erased from list when the time comes)
+optimize vector calculations in various entity update steps
+
+remove playerentity's vestigial "neutral" orientation
+
+put sprites+explosion filename into projectilelist constructor or loadmedia etc. , so that you can make other ones for the monsters
 
 rename Entity to EntityGroup b/c that seems to be what it really is.
+
+maybe think of a way to systematize collision detection at the app level.
+maybe each entity can report hitbox info to one collision detection module which, at each update, calculates collision info
+then entities can in turn use that collision info
+hmmm...
+
+create one monster type, then abstract it to a base class with virtual functions

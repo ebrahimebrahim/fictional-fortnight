@@ -50,7 +50,15 @@ template <class T> class Vector2D {
 typedef Vector2D<int>    vecI;
 typedef Vector2D<double> vecD;
 
-vecI directionToUnitVector(DirectionUDLR);
+
+
+// This will have one global object to hold useful tables
+class Tables {
+  public:
+    Tables();
+    vecI directionToUnitVector [DIRECTION_NUM_STATES];
+};
+
 
 
 
