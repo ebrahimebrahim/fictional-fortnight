@@ -8,7 +8,7 @@
 
 
 
-class PlayerEntity :  public Entity {
+class PlayerEntity :  public EntityManager {
   public:
     PlayerEntity();
     ~PlayerEntity();

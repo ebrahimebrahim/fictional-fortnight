@@ -6,7 +6,8 @@
 
 const int NUM_PROJECTILE_FRAMES = 2;
 const int NUM_EXPLOSION_FRAMES = 6;
-const int MAX_NUM_PROJECTILES = 200;
+
+
 
 
 class Projectile {
@@ -25,7 +26,7 @@ class Projectile {
 };
 
 
-class ProjectileList :  public Entity {
+class ProjectileList :  public EntityManager {
   public:
     ProjectileList();
     ~ProjectileList();

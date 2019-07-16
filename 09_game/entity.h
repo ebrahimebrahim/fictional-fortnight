@@ -6,12 +6,10 @@
 class App; // Forward declaration
 
 
-//TODO: Come up with a better name than Entity. It more represents a type of entity rather than one entity.
-// e.g. an instance of this class could be many actual "entities"
-class Entity {
+class EntityManager {
   public:
-    Entity() {}
-    ~Entity() {}
+    EntityManager() {}
+    ~EntityManager() {}
     virtual int loadMedia(SDL_Renderer *,Logger *) {return 0;}
     virtual void unloadMedia() {}
     virtual void handleEvent(SDL_Event *) {}
