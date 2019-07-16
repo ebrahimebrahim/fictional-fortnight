@@ -54,21 +54,28 @@ void ProjectileList::handleEvent(SDL_Event * event){
 void ProjectileList::update(App * app){
   for (Projectile * projectile : projectiles) {
 
-    // increment animation frame
-    if (app->frame % 10 == 0) projectile->frame = (projectile->frame + 1) % NUM_PROJECTILE_FRAMES;
+    if (!projectile->exploding) {
+      // increment animation frame
+      if (app->frame % 10 == 0) projectile->frame = (projectile->frame + 1) % NUM_PROJECTILE_FRAMES;
 
-    // move projectile
-    switch (projectile->dir) {
-      case DIRECTION_UP: projectile->y -= projectile->v; break;
-      case DIRECTION_DOWN: projectile->y += projectile->v; break;
-      case DIRECTION_LEFT: projectile->x -= projectile->v; break;
-      case DIRECTION_RIGHT: projectile->x += projectile->v; break;
-      default: break;
+      // move projectile
+      switch (projectile->dir) {
+        case DIRECTION_UP: projectile->y -= projectile->v; break;
+        case DIRECTION_DOWN: projectile->y += projectile->v; break;
+        case DIRECTION_LEFT: projectile->x -= projectile->v; break;
+        case DIRECTION_RIGHT: projectile->x += projectile->v; break;
+        default: break;
+      }
+
+      // check if it should start exploding
+      vecI front = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/2)*directionToUnitVector(projectile->dir);
+      int fx = front.x; int fy = front.y;
+      if (fx < 0 || fx > app->gamescreen_width || fy < 0 || fy > app->gamescreen_height)
+        projectile->exploding = true;
     }
+    else {
 
-    // // check if it should start exploding
-    // if (projectile->x )
-
+    }
 
   }
 }

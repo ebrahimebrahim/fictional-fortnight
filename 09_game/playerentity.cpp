@@ -80,15 +80,7 @@ void PlayerEntity::update(App * app) {
 
   if (tryShoot) {
 
-      vecI D(0,0);
-      switch (orientation) {
-        case DIRECTION_UP: D.x=0; D.y=-1; break;
-        case DIRECTION_DOWN: D.x=0; D.y=1; break;
-        case DIRECTION_LEFT: D.x=-1; D.y=0; break;
-        case DIRECTION_RIGHT: D.x=1; D.y=0; break;
-        default: break;
-      }
-      vecI p = vecI(x,y) + vecI(width/2,height/2) + D*((width + app->projectileList.height)/2) - vecI(app->projectileList.width/2,app->projectileList.height/2);
+      vecI p = vecI(x,y) + vecI(width/2,height/2) + directionToUnitVector(orientation)*((width + app->projectileList.height)/2) - vecI(app->projectileList.width/2,app->projectileList.height/2);
       app->projectileList.createProjectile(p.x,p.y,v+2,orientation);
       tryShoot = false;
   }

@@ -31,6 +31,7 @@ bool isArrowKey(SDL_Scancode);
 // 2D vector class supporting vector arithmetic
 template <class T> class Vector2D {
   public:
+    Vector2D() : x(0), y(0) {}
     Vector2D(T x, T y) : x(x), y(y) {}
     Vector2D(const Vector2D & old) {x=old.x;y=old.y;}
     ~Vector2D() {}
@@ -48,6 +49,11 @@ template <class T> class Vector2D {
 
 typedef Vector2D<int>    vecI;
 typedef Vector2D<double> vecD;
+
+vecI directionToUnitVector(DirectionUDLR);
+
+
+
 
 
 // --- A circular buffer container ---

@@ -30,3 +30,14 @@ return ( scancode == SDL_SCANCODE_LEFT  ||
 			   scancode == SDL_SCANCODE_UP    ||
 				 scancode == SDL_SCANCODE_DOWN      );
 }
+
+
+vecI directionToUnitVector(DirectionUDLR dir) {
+	switch (dir) {
+		case DIRECTION_UP:    return vecI( 0,-1);
+		case DIRECTION_DOWN:  return vecI( 0, 1);
+		case DIRECTION_LEFT:  return vecI(-1, 0);
+		case DIRECTION_RIGHT: return vecI( 1, 0);
+		default: return vecI(0,0);
+	}
+}
