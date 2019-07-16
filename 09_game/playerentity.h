@@ -37,7 +37,7 @@ class PlayerEntity :  public Entity {
     PlayerEntityDirection tryMove = PLAYERENTITY_DIRECTION_NEUTRAL;
     CircleBuffer<SDL_Scancode> lastDirectionalKeys;
     bool tryShoot = false;
-    int x = 0;
+    int x = 0; // x,y of top left corner of the player entity
     int y = 0;
 
     // Constants (for now)

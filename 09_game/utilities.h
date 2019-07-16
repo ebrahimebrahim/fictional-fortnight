@@ -21,6 +21,24 @@ bool isArrowKey(SDL_Scancode);
 
 
 
+// 2D vector class supporting vector arithmetic
+template <class T> class Vector2D {
+  public:
+    Vector2D(T x, T y) : x(x), y(y) {}
+    Vector2D(const Vector2D & old) {x=old.x;y=old.y;}
+    ~Vector2D() {}
+
+    Vector2D & operator+=(const Vector2D & rhs) { x+=rhs.x; y+=rhs.y; return *this; }
+    Vector2D & operator+(const Vector2D & other) { return Vector2D(*this) += other; }
+    Vector2D & operator*=(const T & scalar) { x*=scalar; y*=scalar; return *this; }
+    Vector2D & operator*(const T & scalar) { return Vector2D(*this) *= scalar; }
+
+    void print() {printf("%d, %d\n",x,y);} // used for testing and should be deleted
+
+    T x;
+    T y;
+};
+
 
 // --- A circular buffer container ---
 
