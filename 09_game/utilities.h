@@ -17,6 +17,10 @@ SDL_Texture	 *  loadImage(const char * filename, SDL_Renderer * renderer, Logger
  // if logger is passed (optional), then more specific SDL_Image errors will be logged.
 
 
+bool isArrowKey(SDL_Scancode);
+
+
+
 
 // --- A circular buffer container ---
 

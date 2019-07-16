@@ -22,3 +22,11 @@ SDL_Texture	 *  loadImage(const char * filename, SDL_Renderer * renderer, Logger
 	}
 	return img_texture;
 }
+
+
+bool isArrowKey(SDL_Scancode scancode) {
+return ( scancode == SDL_SCANCODE_LEFT  ||
+				 scancode == SDL_SCANCODE_RIGHT ||
+			   scancode == SDL_SCANCODE_UP    ||
+				 scancode == SDL_SCANCODE_DOWN      );
+}

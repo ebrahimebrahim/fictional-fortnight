@@ -4,7 +4,7 @@
 #include <algorithm>
 
 
-PlayerEntity::PlayerEntity() {
+PlayerEntity::PlayerEntity() : lastDirectionalKeys(128,SDL_SCANCODE_UNKNOWN) {
 
 }
 
@@ -38,24 +38,18 @@ void PlayerEntity::unloadMedia(){
 
 void PlayerEntity::handleEvent(SDL_Event * event){
   if (event->type==SDL_KEYDOWN && !(event->key.repeat)) {
-    switch (event->key.keysym.scancode) {
-      case SDL_SCANCODE_LEFT: tryLeft(); break;
-      case SDL_SCANCODE_RIGHT: tryRight(); break;
-      case SDL_SCANCODE_UP: tryUp(); break;
-      case SDL_SCANCODE_DOWN: tryDown(); break;
-      case SDL_SCANCODE_SPACE: tryShoot = true;
-      default: break;
-    }
+    if (isArrowKey(event->key.keysym.scancode)) lastDirectionalKeys.push(event->key.keysym.scancode);
+    if (event->key.keysym.scancode == SDL_SCANCODE_SPACE) tryShoot = true;
   }
-  else if (event->type==SDL_JOYHATMOTION) {
-    switch (event->jhat.value) {
-      case SDL_HAT_LEFT: tryLeft(); break;
-      case SDL_HAT_RIGHT: tryRight(); break;
-      case SDL_HAT_UP: tryUp(); break;
-      case SDL_HAT_DOWN: tryDown(); break;
-      default: break;
-    }
-  }
+  // if (event->type==SDL_JOYHATMOTION) {
+  //   switch (event->jhat.value) {
+  //     case SDL_HAT_LEFT: tryLeft(); break;
+  //     case SDL_HAT_RIGHT: tryRight(); break;
+  //     case SDL_HAT_UP: tryUp(); break;
+  //     case SDL_HAT_DOWN: tryDown(); break;
+  //     default: break;
+  //   }
+  // }
 }
 
 void PlayerEntity::update(App * app) {
@@ -64,6 +58,15 @@ void PlayerEntity::update(App * app) {
 
   if (!keyState[SDL_SCANCODE_LEFT] && !keyState[SDL_SCANCODE_RIGHT] && !keyState[SDL_SCANCODE_UP] && !keyState[SDL_SCANCODE_DOWN])
     tryMove = PLAYERENTITY_DIRECTION_NEUTRAL;
+  else {
+    for (SDL_Scancode sc : lastDirectionalKeys) {
+      if (keyState[sc]) {
+        orientation = directionalKeyToPlayerDirection(sc);
+        tryMove = directionalKeyToPlayerDirection(sc);
+        break;
+      }
+    }
+  }
 
   if (tryMove!=PLAYERENTITY_DIRECTION_NEUTRAL){
 		switch (tryMove) {
@@ -102,22 +105,22 @@ void PlayerEntity::render(App * app, SDL_Renderer * renderer){
   SDL_RenderCopy(renderer, sprites, &(orientationToSpriteRect[orientation]), &target_rect);
 }
 
-void PlayerEntity::tryLeft() {
-  orientation = PLAYERENTITY_DIRECTION_LEFT;
-  tryMove = PLAYERENTITY_DIRECTION_LEFT;
+PlayerEntityDirection PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {
+  switch(sc) {
+    case SDL_SCANCODE_LEFT: return PLAYERENTITY_DIRECTION_LEFT;
+    case SDL_SCANCODE_RIGHT: return PLAYERENTITY_DIRECTION_RIGHT;
+    case SDL_SCANCODE_UP: return PLAYERENTITY_DIRECTION_UP;
+    case SDL_SCANCODE_DOWN: return PLAYERENTITY_DIRECTION_DOWN;
+    default: return PLAYERENTITY_DIRECTION_NEUTRAL;
+  }
 }
 
-void PlayerEntity::tryRight() {
-  orientation = PLAYERENTITY_DIRECTION_RIGHT;
-  tryMove = PLAYERENTITY_DIRECTION_RIGHT;
-}
-
-void PlayerEntity::tryUp() {
-  orientation = PLAYERENTITY_DIRECTION_UP;
-  tryMove = PLAYERENTITY_DIRECTION_UP;
-}
-
-void PlayerEntity::tryDown() {
-  orientation = PLAYERENTITY_DIRECTION_DOWN;
-  tryMove = PLAYERENTITY_DIRECTION_DOWN;
+PlayerEntityDirection PlayerEntity::joyhatDirectionToPlayerDirection(Uint8 jh) {
+  switch(jh) {
+    case SDL_HAT_LEFT: return PLAYERENTITY_DIRECTION_LEFT;
+    case SDL_HAT_RIGHT: return PLAYERENTITY_DIRECTION_RIGHT;
+    case SDL_HAT_UP: return PLAYERENTITY_DIRECTION_UP;
+    case SDL_HAT_DOWN: return PLAYERENTITY_DIRECTION_DOWN;
+    default: return PLAYERENTITY_DIRECTION_NEUTRAL;
+  }
 }
