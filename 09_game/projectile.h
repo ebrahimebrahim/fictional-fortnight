@@ -49,5 +49,9 @@ class ProjectileList :  public Entity {
     // State
     std::forward_list<Projectile*> projectiles;
 
+    //Constants, for now
+    int width = 18;
+    int height = 40;
+
 
 };

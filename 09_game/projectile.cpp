@@ -65,7 +65,7 @@ void ProjectileList::update(App * app){
 
 void ProjectileList::render(App * app, SDL_Renderer * renderer) {
   for (Projectile * projectile : projectiles) {
-    SDL_Rect target_rect = {projectile->x,projectile->y,17,39};
+    SDL_Rect target_rect = {projectile->x,projectile->y,width,height};
     SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[projectile->frame]), &target_rect, projectileDirectionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
   }
 }
