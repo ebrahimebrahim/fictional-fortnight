@@ -33,8 +33,19 @@ int ProjectileList::loadMedia(SDL_Renderer * renderer, Logger * log){
 		log->error("Error: Projectile sprite was not loaded.");
 		return -1;
 	}
+
+  explosionFrames = loadImage("explode.png",renderer,log);
+	if (explosionFrames==nullptr){
+		log->error("Error: Explosion animation was not loaded.");
+		return -1;
+	}
+
 	frameToSpriteRect[0]={0,0,17,39};
 	frameToSpriteRect[1]={17,0,17,39};
+
+  for (int i = 0; i < NUM_EXPLOSION_FRAMES; i++) {
+    frameToExplosionRect[i] = {40*i,0,40,40};
+  }
 
   return 0;
 }
@@ -43,6 +54,8 @@ int ProjectileList::loadMedia(SDL_Renderer * renderer, Logger * log){
 void ProjectileList::unloadMedia(){
   SDL_DestroyTexture(sprites);
   sprites = nullptr;
+  SDL_DestroyTexture(explosionFrames);
+  explosionFrames = nullptr;
 }
 
 
@@ -74,16 +87,30 @@ void ProjectileList::update(App * app){
         projectile->exploding = true;
     }
     else {
-
+      if (app->frame % 5 == 0) ++(projectile->explode_frame);
+      if (projectile->explode_frame >= NUM_EXPLOSION_FRAMES) projectile->erase_this_projectile=true;
     }
 
   }
+
+  // Erase any dead projectiles:
+  for (std::list<Projectile*>::iterator iter = projectiles.begin(); iter != projectiles.end(); ++iter)
+    if ((*iter)->erase_this_projectile)
+      iter = projectiles.erase(iter);
 }
 
 void ProjectileList::render(App * app, SDL_Renderer * renderer) {
   for (Projectile * projectile : projectiles) {
-    SDL_Rect target_rect = {projectile->x,projectile->y,width,height};
-    SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[projectile->frame]), &target_rect, projectileDirectionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
+    if (!projectile->exploding) {
+      SDL_Rect target_rect = {projectile->x,projectile->y,width,height};
+      SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[projectile->frame]), &target_rect, projectileDirectionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
+    }
+    else {
+      vecI explodeCenter = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/4)*directionToUnitVector(projectile->dir);
+      vecI explodeTopLeft = explodeCenter - vecI(explosion_width/2,explosion_height/2);
+      SDL_Rect target_rect = {explodeTopLeft.x,explodeTopLeft.y,explosion_width,explosion_height};
+      SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&target_rect);
+    }
   }
 }
 
