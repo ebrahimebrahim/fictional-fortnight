@@ -45,10 +45,16 @@ bool pointInPolytope(vecI point, Polyhedron polyhedron) {
 
 
 Globals::Globals() {
-	directionToUnitVector[DIRECTION_UP]   =    vecI( 0,-1);
+	directionToUnitVector[DIRECTION_UP]   =    vecI( 0,-1); // This is like local Y axis
 	directionToUnitVector[DIRECTION_DOWN]   =  vecI( 0, 1);
 	directionToUnitVector[DIRECTION_LEFT]   =  vecI(-1, 0);
 	directionToUnitVector[DIRECTION_RIGHT]   = vecI( 1, 0);
 	directionToUnitVector[DIRECTION_NEUTRAL] = vecI( 0, 0);
+
+	directionToLocalX[DIRECTION_UP]   =    vecI( 1, 0);
+	directionToLocalX[DIRECTION_DOWN]   =  vecI(-1, 0);
+	directionToLocalX[DIRECTION_LEFT]   =  vecI( 0,-1);
+	directionToLocalX[DIRECTION_RIGHT]   = vecI( 0, 1);
+	directionToLocalX[DIRECTION_NEUTRAL] = vecI( 0, 0);
 }
 Globals globals;
