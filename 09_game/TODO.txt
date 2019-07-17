@@ -1,10 +1,14 @@
 
-put sprites+explosion filename into projectilelist constructor or loadmedia etc. , so that you can make other ones for the monsters
-
 maybe think of a way to systematize collision detection at the app level.
 maybe each entity can report hitbox info to one collision detection module which, at each update, calculates collision info
 then entities can in turn use that collision info
 hmmm...
+  player should be able to ask app questions about a pos: is it an obstruction to movement? is it deadly to player?
+  missiles should be able to ask similar questions: obstruction? trigger missile detonation?
+  better than asking app about pixels: should be able to ask app if a given rectangle contains a point that has a certain property
+  (properties include causing player death, causing missile detonation, causing player obstruction)
+  player and projectiles should be equipped with hitboxes, of which they ask the app about deadliness,
+  player should be equipped with a forward check box which prevents movement into obstructions.
 
 create one monster type, then abstract it to a base class with virtual functions
 

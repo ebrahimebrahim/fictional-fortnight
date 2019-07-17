@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "logger.h"
+#include <vector>
 
 enum DirectionUDLR {
   DIRECTION_UP,
@@ -40,6 +41,7 @@ template <class T> class Vector2D {
     friend Vector2D operator-(const Vector2D & v1, const Vector2D & v2) { return Vector2D(v1.x-v2.x,v1.y-v2.y); }
     friend Vector2D operator*(const Vector2D & v1, const T & s) { return Vector2D(v1.x*s,v1.y*s); }
     friend Vector2D operator*(const T & s, const Vector2D & v1) { return v1*s; }
+    friend T dot(const Vector2D & v1, const Vector2D & v2) {return (v1.x*v2.x)+(v1.y*v2.y);}
 
     void print() {printf("%d, %d\n",x,y);} // used for testing and should be deleted
 
@@ -52,10 +54,29 @@ typedef Vector2D<double> vecD;
 
 
 
-// This will have one global object to hold useful tables
-class Tables {
+class Hyperplane {
+public:
+  Hyperplane() : pt(), normal() {}
+  Hyperplane(vecI pt, vecI normal) : pt(pt), normal(normal) {}
+  ~Hyperplane() {}
+
+  bool pos_side(vecI point) {return dot(point-pt,normal)>=0;}
+
+  vecI pt;
+  vecI normal;
+};
+
+typedef std::vector<Hyperplane> Polytope;
+
+bool pointInPolytope(vecI,Polytope);
+
+
+
+
+// This will have one global object to hold useful tables and stuff
+class Globals {
   public:
-    Tables();
+    Globals();
     vecI directionToUnitVector [DIRECTION_NUM_STATES];
 };
 

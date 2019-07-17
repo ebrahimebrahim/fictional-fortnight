@@ -35,11 +35,20 @@ return ( scancode == SDL_SCANCODE_LEFT  ||
 
 
 
-Tables::Tables() {
+bool pointInPolytope(vecI point, Polytope polytope) {
+	for (Hyperplane hyperplane : polytope)
+		if (!hyperplane.pos_side(point))
+			return false;
+	return true;
+}
+
+
+
+Globals::Globals() {
 	directionToUnitVector[DIRECTION_UP]   =    vecI( 0,-1);
 	directionToUnitVector[DIRECTION_DOWN]   =  vecI( 0, 1);
 	directionToUnitVector[DIRECTION_LEFT]   =  vecI(-1, 0);
 	directionToUnitVector[DIRECTION_RIGHT]   = vecI( 1, 0);
 	directionToUnitVector[DIRECTION_NEUTRAL] = vecI( 0, 0);
 }
-Tables gTables;
+Globals globals;

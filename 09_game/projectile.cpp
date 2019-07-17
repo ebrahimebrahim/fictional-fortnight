@@ -3,7 +3,7 @@
 #include "main.h"
 
 
-extern Tables gTables;
+extern Globals globals;
 
 Projectile::Projectile(int x, int y, int v, DirectionUDLR dir) : x(x), y(y), v(v), dir(dir) {
 
@@ -88,7 +88,7 @@ void ProjectileList::update(App * app){
       }
 
       // check if it should start exploding
-      vecI front = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/2)*gTables.directionToUnitVector[projectile->dir];
+      vecI front = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/2)*globals.directionToUnitVector[projectile->dir];
       int fx = front.x; int fy = front.y;
       if (fx < 0 || fx > app->gamescreen_width || fy < 0 || fy > app->gamescreen_height)
         projectile->exploding = true;
@@ -113,7 +113,7 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
       SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[projectile->frame]), &target_rect, projectileDirectionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
     else {
-      vecI explodeCenter = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/4)*gTables.directionToUnitVector[projectile->dir];
+      vecI explodeCenter = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/4)*globals.directionToUnitVector[projectile->dir];
       vecI explodeTopLeft = explodeCenter - vecI(explosion_width/2,explosion_height/2);
       SDL_Rect target_rect = {explodeTopLeft.x,explodeTopLeft.y,explosion_width,explosion_height};
       SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&target_rect);
