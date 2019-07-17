@@ -35,8 +35,8 @@ return ( scancode == SDL_SCANCODE_LEFT  ||
 
 
 
-bool pointInPolytope(vecI point, Polytope polytope) {
-	for (Hyperplane hyperplane : polytope)
+bool pointInPolytope(vecI point, Polyhedron polyhedron) {
+	for (Hyperplane hyperplane : polyhedron)
 		if (!hyperplane.pos_side(point))
 			return false;
 	return true;

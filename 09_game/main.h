@@ -70,4 +70,8 @@ class App {
 
     void handleKeypress(SDL_KeyboardEvent *);
 
+
+    // Methods that will be used by the entity managers
+    bool containsObstacle(Polyhedron);
+
 };

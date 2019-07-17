@@ -239,3 +239,8 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 	}
 
 }
+
+
+bool App::containsObstacle(Polyhedron polyhedron){
+	return true; // Need to implement still.
+}

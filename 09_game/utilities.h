@@ -66,9 +66,9 @@ public:
   vecI normal;
 };
 
-typedef std::vector<Hyperplane> Polytope;
+typedef std::vector<Hyperplane> Polyhedron;
 
-bool pointInPolytope(vecI,Polytope);
+bool pointInPolytope(vecI,Polyhedron);
 
 
 
