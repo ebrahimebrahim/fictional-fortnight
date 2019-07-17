@@ -255,28 +255,19 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 
 
 
-bool App::isObstruction(vecI p){
-	if (p.x < 0 || p.x > gamescreen_width || p.y<0 || p.y>gamescreen_height)
+bool App::containsObstruction(const SDL_Rect & r) {
+	if (r.x < 0 ||
+		  r.y < 0 ||
+			r.x + r.w > gamescreen_width ||
+			r.y + r.h > gamescreen_height)
 		return true;
-
-	// was using this for testing
-	// if (p.x >= 200 && p.x <=202 && p.y > 20 && p.y < 200) return true;
-
 	return false;
 }
 
-bool App::isDeadly(vecI p){
+bool App::containsDeadly(const SDL_Rect & r){
 	for (Projectile * projectile : projectileList->projectiles)
-		if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames) {
-			SDL_Rect & exp_rect = projectile->explosionRect;
-			if ( p.x > exp_rect.x &&
-					 p.x < exp_rect.x + exp_rect.w &&
-					 p.y > exp_rect.y &&
-		 			 p.y < exp_rect.y + exp_rect.h ) {
-				return true;
-			}
-
-		}
+		if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames)
+			return SDL_HasIntersection(&r,&(projectile->explosionRect)) == SDL_TRUE;
 
 	return false;
 }

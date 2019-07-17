@@ -7,7 +7,7 @@
 extern Globals globals;
 
 PlayerEntity::PlayerEntity() : lastDirectionalKeys(128,SDL_SCANCODE_UNKNOWN) {
-
+  playerRect = {x,y,width,height};
 }
 
 
@@ -68,36 +68,27 @@ void PlayerEntity::update(App * app) {
   if (tryMove!=DIRECTION_NEUTRAL){
 
     for (int i = 0; i<v; ++i) {
-      vecI pos = vecI(x,y);
-      vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+1);
-      vecI f2=f1 + (width/2)*locX;
-      vecI f3=f1 - (width/2)*locX;
-      vecI f4=f1 + (width/4)*locX;
-      vecI f5=f1 - (width/4)*locX;
-      if (!app->isObstruction(f1) && !app->isObstruction(f2) && !app->isObstruction(f3) && !app->isObstruction(f4) && !app->isObstruction(f5)){
-        vecI newpos = pos+d;
-        x=newpos.x; y=newpos.y;
+      vecI pos(x,y);
+      vecI forwardPos(pos+d);
+      SDL_Rect forwardRect = {forwardPos.x,forwardPos.y,width,height};
+      // vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+1);
+      // vecI f2=f1 + (width/2)*locX;
+      // vecI f3=f1 - (width/2)*locX;
+      // vecI f4=f1 + (width/4)*locX;
+      // vecI f5=f1 - (width/4)*locX;
+      // if (!app->isObstruction(f1) && !app->isObstruction(f2) && !app->isObstruction(f3) && !app->isObstruction(f4) && !app->isObstruction(f5)){
+      //   vecI newpos = pos+d;
+      //   x=newpos.x; y=newpos.y;
+      // }
+      if (!app->containsObstruction(SDL_Rect(forwardRect))) {
+        x = forwardPos.x; y =forwardPos.y;
+        playerRect = forwardRect; // should optimize to a move I guess? IDK how to "move"
       }
       else break;
     }
 
-
-		// switch (tryMove) {
-		// 	case DIRECTION_UP:
-		// 		y = std::max(0,y-v);
-		// 		break;
-		// 	case DIRECTION_DOWN:
-		// 		y = std::min(app->gamescreen_height-height,y+v);
-		// 		break;
-		// 	case DIRECTION_LEFT:
-		// 		x = std::max(0,x-v);
-		// 		break;
-		// 	case DIRECTION_RIGHT:
-		// 		x = std::min(app->gamescreen_width-width,x+v);
-		// 		break;
-		// 	default: break;
-		// }
 	}
+
 
   if (tryShoot) {
 
@@ -111,13 +102,7 @@ void PlayerEntity::update(App * app) {
 
   // check if player should die now:
 
-  vecI pos = vecI(x,y);
-  vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+1);
-  vecI f2=f1 + (width/2)*locX;
-  vecI f3=f1 - (width/2)*locX;
-  vecI f4=f1 + (width/4)*locX;
-  vecI f5=f1 - (width/4)*locX;
-  if (app->isDeadly(f1) || app->isDeadly(f2) || app->isDeadly(f3) || app->isDeadly(f4) || app->isDeadly(f5))
+  if (app->containsDeadly(playerRect))
     app->peupTextBox->updateText("D:");
 
 }
