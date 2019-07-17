@@ -81,9 +81,9 @@ void PlayerEntity::update(App * app) {
   if (tryShoot) {
 
       vecI p = vecI(x,y) + vecI(width/2,height/2)
-               + gTables.directionToUnitVector[orientation]*((width + app->projectileList.height)/2)
-               - vecI(app->projectileList.width/2,app->projectileList.height/2);
-      app->projectileList.createProjectile(p.x,p.y,v+2,orientation);
+               + gTables.directionToUnitVector[orientation]*((width + app->projectileList->height)/2)
+               - vecI(app->projectileList->width/2,app->projectileList->height/2);
+      app->projectileList->createProjectile(p.x,p.y,v+2,orientation);
       tryShoot = false;
   }
 }

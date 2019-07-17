@@ -3,11 +3,17 @@
 #include <list>
 #include "entity.h"
 #include "utilities.h"
-
-const int NUM_PROJECTILE_FRAMES = 2;
-const int NUM_EXPLOSION_FRAMES = 6;
+#include <string>
 
 
+struct ProjectileTypeData {
+  int num_frames;
+  int num_explosion_frames;
+  std::string projectile_img_file;
+  vecI projectile_img_frame_size;
+  std::string explosion_img_file;
+  vecI explosion_img_frame_size;
+};
 
 
 class Projectile {
@@ -28,7 +34,7 @@ class Projectile {
 
 class ProjectileList :  public EntityManager {
   public:
-    ProjectileList();
+    ProjectileList(ProjectileTypeData);
     ~ProjectileList();
     virtual int loadMedia(SDL_Renderer *,Logger *);
     virtual void unloadMedia();
@@ -38,12 +44,13 @@ class ProjectileList :  public EntityManager {
 
     void createProjectile(int x, int y, int v, DirectionUDLR dir);
 
+    ProjectileTypeData projectileTypeData;
 
     //Assets
     SDL_Texture * sprites = nullptr;
     SDL_Texture * explosionFrames = nullptr;
-    SDL_Rect frameToSpriteRect [NUM_PROJECTILE_FRAMES];
-    SDL_Rect frameToExplosionRect [NUM_EXPLOSION_FRAMES];
+    SDL_Rect * frameToSpriteRect = nullptr;
+    SDL_Rect * frameToExplosionRect;
     double projectileDirectionToRotAngle [DIRECTION_NUM_STATES];
 
     // State
@@ -54,6 +61,7 @@ class ProjectileList :  public EntityManager {
     int height = 40;
     int explosion_width = 60;
     int explosion_height = 60;
+
 
 
 };

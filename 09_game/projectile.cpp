@@ -15,7 +15,7 @@ Projectile::~Projectile() {
 
 
 
-ProjectileList::ProjectileList() {
+ProjectileList::ProjectileList(ProjectileTypeData projectileTypeData) : projectileTypeData(projectileTypeData) {
   projectileDirectionToRotAngle[DIRECTION_NEUTRAL] = 0;
   projectileDirectionToRotAngle[DIRECTION_UP] = 0;
   projectileDirectionToRotAngle[DIRECTION_RIGHT] = 90;
@@ -30,23 +30,28 @@ ProjectileList::~ProjectileList() {
 
 
 int ProjectileList::loadMedia(SDL_Renderer * renderer, Logger * log){
-  sprites = loadImage("projectile.png",renderer,log);
+  sprites = loadImage(projectileTypeData.projectile_img_file.c_str(),renderer,log);
 	if (sprites==nullptr){
-		log->error("Error: Projectile sprite was not loaded.");
+		log->error("Error: A projectile sprite was not loaded.");
 		return -1;
 	}
 
-  explosionFrames = loadImage("explode.png",renderer,log);
+  explosionFrames = loadImage(projectileTypeData.explosion_img_file.c_str(),renderer,log);
 	if (explosionFrames==nullptr){
-		log->error("Error: Explosion animation was not loaded.");
+		log->error("Error: An explosion animation was not loaded.");
 		return -1;
 	}
 
-	frameToSpriteRect[0]={0,0,17,39};
-	frameToSpriteRect[1]={17,0,17,39};
+  frameToSpriteRect = new SDL_Rect[projectileTypeData.num_frames];
+  for (int i = 0; i < projectileTypeData.num_frames; i++) {
+    frameToSpriteRect[i] = {projectileTypeData.projectile_img_frame_size.x*i,0,
+                            projectileTypeData.projectile_img_frame_size.x  , projectileTypeData.projectile_img_frame_size.y};
+  }
 
-  for (int i = 0; i < NUM_EXPLOSION_FRAMES; i++) {
-    frameToExplosionRect[i] = {40*i,0,40,40};
+  frameToExplosionRect = new SDL_Rect[projectileTypeData.num_explosion_frames];
+  for (int i = 0; i < projectileTypeData.num_explosion_frames; i++) {
+    frameToExplosionRect[i] = {projectileTypeData.explosion_img_frame_size.x*i,0,
+                               projectileTypeData.explosion_img_frame_size.x  , projectileTypeData.explosion_img_frame_size.y};
   }
 
   return 0;
@@ -54,10 +59,10 @@ int ProjectileList::loadMedia(SDL_Renderer * renderer, Logger * log){
 
 
 void ProjectileList::unloadMedia(){
-  SDL_DestroyTexture(sprites);
-  sprites = nullptr;
-  SDL_DestroyTexture(explosionFrames);
-  explosionFrames = nullptr;
+  SDL_DestroyTexture(sprites); sprites = nullptr;
+  SDL_DestroyTexture(explosionFrames); explosionFrames = nullptr;
+  delete frameToSpriteRect; frameToSpriteRect = nullptr;
+  delete frameToExplosionRect; frameToExplosionRect = nullptr;
 }
 
 
@@ -71,7 +76,7 @@ void ProjectileList::update(App * app){
 
     if (!projectile->exploding) {
       // increment animation frame
-      if (app->frame % 10 == 0) projectile->frame = (projectile->frame + 1) % NUM_PROJECTILE_FRAMES;
+      if (app->frame % 10 == 0) projectile->frame = (projectile->frame + 1) % projectileTypeData.num_frames;
 
       // move projectile
       switch (projectile->dir) {
@@ -90,7 +95,7 @@ void ProjectileList::update(App * app){
     }
     else {
       if (app->frame % 5 == 0) ++(projectile->explode_frame);
-      if (projectile->explode_frame >= NUM_EXPLOSION_FRAMES) projectile->erase_this_projectile=true;
+      if (projectile->explode_frame >= projectileTypeData.num_explosion_frames) projectile->erase_this_projectile=true;
     }
 
   }

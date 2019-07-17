@@ -25,7 +25,8 @@ int main( int argc, char* args[] ) {
 }
 
 
-App::App() : log{}, playerEntity{} {
+App::App() : log{}
+{
 }
 
 
@@ -69,6 +70,18 @@ int App::initialize() {
 	palette[PALETTE_WHITE] = {255,255,255,255};
 
 
+	//Create EntityManager objects
+	playerEntity = new PlayerEntity();
+	ProjectileTypeData missile;
+	missile.num_frames = 2;
+	missile.num_explosion_frames = 6;
+	missile.projectile_img_file = "missile.png";
+	missile.explosion_img_file = "missile_explode.png";
+	missile.projectile_img_frame_size = {18,39};
+	missile.explosion_img_frame_size = {40,40};
+	projectileList = new ProjectileList(missile);
+
+
 
 	return 0;
 }
@@ -76,6 +89,8 @@ int App::initialize() {
 
 App::~App() {
 	unloadMedia();
+	delete playerEntity;
+	delete projectileList;
 	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
 	IMG_Quit();
@@ -113,8 +128,8 @@ void App::handleEvents(){
 				break;
 		}
 
-		playerEntity.handleEvent(&event);
-		projectileList.handleEvent(&event);
+		playerEntity->handleEvent(&event);
+		projectileList->handleEvent(&event);
 
 	}
 }
@@ -122,8 +137,8 @@ void App::handleEvents(){
 
 void App::mainLoop(){
 
-	playerEntity.update(this);
-	projectileList.update(this);
+	playerEntity->update(this);
+	projectileList->update(this);
 
 }
 
@@ -150,9 +165,8 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
-	playerEntity.render(this,renderer);
-	projectileList.render(this,renderer);
-
+	playerEntity->render(this,renderer);
+	projectileList->render(this,renderer);
 
 	SDL_RenderPresent( renderer );
 	int newFrameTime = SDL_GetTicks();
@@ -165,11 +179,11 @@ void App::render(){
 int App::loadMedia(){
 
 	// Load whatever is needed by entities
-	if (playerEntity.loadMedia(renderer, &log)<0){
+	if (playerEntity->loadMedia(renderer, &log)<0){
 		log.error("Error: Some media was not loaded.");
 		return -1;
 	}
-	if (projectileList.loadMedia(renderer, &log)<0){
+	if (projectileList->loadMedia(renderer, &log)<0){
 		log.error("Error: Some media was not loaded.");
 		return -1;
 	}
@@ -198,8 +212,9 @@ int App::loadMedia(){
 
 void App::unloadMedia(){
 
-	playerEntity.unloadMedia();
-	projectileList.unloadMedia();
+	playerEntity->unloadMedia();
+	projectileList->unloadMedia();
+
 
 	delete peupTextBox;
 	delete timerTextBox;

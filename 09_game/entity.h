@@ -9,7 +9,7 @@ class App; // Forward declaration
 class EntityManager {
   public:
     EntityManager() {}
-    ~EntityManager() {}
+    virtual ~EntityManager() {}
     virtual int loadMedia(SDL_Renderer *,Logger *) {return 0;}
     virtual void unloadMedia() {}
     virtual void handleEvent(SDL_Event *) {}

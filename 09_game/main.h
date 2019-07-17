@@ -40,8 +40,8 @@ class App {
     Uint32 frame = 0;
 
     // Game state
-    PlayerEntity playerEntity;
-    ProjectileList projectileList;
+    PlayerEntity * playerEntity = nullptr;
+    ProjectileList * projectileList = nullptr;
 
     // Rectangles for viewports
     SDL_Rect screen_rect = {0,0,gamescreen_width,gamescreen_height};
