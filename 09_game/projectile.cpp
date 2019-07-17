@@ -16,11 +16,7 @@ Projectile::~Projectile() {
 
 
 ProjectileList::ProjectileList(ProjectileTypeData projectileTypeData) : projectileTypeData(projectileTypeData) {
-  projectileDirectionToRotAngle[DIRECTION_NEUTRAL] = 0;
-  projectileDirectionToRotAngle[DIRECTION_UP] = 0;
-  projectileDirectionToRotAngle[DIRECTION_RIGHT] = 90;
-  projectileDirectionToRotAngle[DIRECTION_DOWN] = 180;
-  projectileDirectionToRotAngle[DIRECTION_LEFT] = 270;
+
 }
 
 
@@ -110,7 +106,7 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
   for (Projectile * projectile : projectiles) {
     if (!projectile->exploding) {
       SDL_Rect target_rect = {projectile->x,projectile->y,width,height};
-      SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[projectile->frame]), &target_rect, projectileDirectionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
+      SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[projectile->frame]), &target_rect, globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
     else {
       vecI explodeCenter = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/4)*globals.directionToUnitVector[projectile->dir];

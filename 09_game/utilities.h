@@ -79,6 +79,7 @@ class Globals {
     Globals();
     vecI directionToUnitVector [DIRECTION_NUM_STATES];
     vecI directionToLocalX [DIRECTION_NUM_STATES];
+    double directionToRotAngle [DIRECTION_NUM_STATES];
 };
 
 

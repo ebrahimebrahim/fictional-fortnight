@@ -56,5 +56,11 @@ Globals::Globals() {
 	directionToLocalX[DIRECTION_LEFT]   =  vecI( 0,-1);
 	directionToLocalX[DIRECTION_RIGHT]   = vecI( 0, 1);
 	directionToLocalX[DIRECTION_NEUTRAL] = vecI( 0, 0);
+
+	directionToRotAngle[DIRECTION_NEUTRAL] = 0;
+	directionToRotAngle[DIRECTION_UP] = 0;
+	directionToRotAngle[DIRECTION_RIGHT] = 90;
+	directionToRotAngle[DIRECTION_DOWN] = 180;
+	directionToRotAngle[DIRECTION_LEFT] = 270;
 }
 Globals globals;

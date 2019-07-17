@@ -21,8 +21,9 @@ class PlayerEntity :  public EntityManager {
     // Assets
     SDL_Texture * sprites = nullptr;
 
-    // Useful tables
-    SDL_Rect orientationToSpriteRect [DIRECTION_NUM_STATES];
+    // Useful tables and rects
+    SDL_Rect dim_sprite_rect;
+    SDL_Rect bright_sprite_rect;
     DirectionUDLR directionalKeyToPlayerDirection(SDL_Scancode);
 
     // State

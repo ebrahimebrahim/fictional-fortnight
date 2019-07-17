@@ -22,10 +22,8 @@ int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
 		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
 	}
-	orientationToSpriteRect[DIRECTION_UP]={0,0,5,5};
-	orientationToSpriteRect[DIRECTION_DOWN]={5,0,5,5};
-	orientationToSpriteRect[DIRECTION_LEFT]={10,0,5,5};
-	orientationToSpriteRect[DIRECTION_RIGHT]={15,0,5,5};
+	dim_sprite_rect={0,0,5,5};
+	bright_sprite_rect={5,0,5,5};
 
   return 0;
 }
@@ -108,21 +106,7 @@ void PlayerEntity::update(App * app) {
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
-  SDL_Rect target_rect = {x,y,width,height};
-  SDL_RenderCopy(renderer, sprites, &(orientationToSpriteRect[orientation]), &target_rect);
-
-  // -- was using this for testing -- can delete it
-  // vecI d = globals.directionToUnitVector[orientation];
-  // vecI locX = globals.directionToLocalX[orientation];
-  // vecI pos = vecI(x,y);
-  // vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+v);
-  // vecI f2=f1 + (width/2)*locX;
-  // vecI f3=f1 - (width/2)*locX;
-  // SDL_SetRenderDrawColor(renderer,255,0,0,255);
-  // SDL_RenderDrawPoint(renderer,f3.x,f3.y);
-
-
-
+  SDL_RenderCopyEx(renderer, sprites, &(bright_sprite_rect), &playerRect, globals.directionToRotAngle[orientation],nullptr,SDL_FLIP_NONE);
 }
 
 DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {

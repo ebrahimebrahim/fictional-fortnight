@@ -53,7 +53,6 @@ class ProjectileList :  public EntityManager {
     SDL_Texture * explosionFrames = nullptr;
     SDL_Rect * frameToSpriteRect = nullptr;
     SDL_Rect * frameToExplosionRect;
-    double projectileDirectionToRotAngle [DIRECTION_NUM_STATES];
 
     // State
     std::list<Projectile*> projectiles;
