@@ -61,10 +61,12 @@ void PlayerEntity::update(App * app) {
     }
   }
 
+
+  vecI d = globals.directionToUnitVector[orientation];
+  vecI locX = globals.directionToLocalX[orientation];
+
   if (tryMove!=DIRECTION_NEUTRAL){
 
-    vecI d = globals.directionToUnitVector[orientation];
-    vecI locX = globals.directionToLocalX[orientation];
     for (int i = 0; i<v; ++i) {
       vecI pos = vecI(x,y);
       vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+1);
@@ -105,6 +107,19 @@ void PlayerEntity::update(App * app) {
       app->projectileList->createProjectile(p.x,p.y,v+2,orientation);
       tryShoot = false;
   }
+
+
+  // check if player should die now:
+
+  vecI pos = vecI(x,y);
+  vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+1);
+  vecI f2=f1 + (width/2)*locX;
+  vecI f3=f1 - (width/2)*locX;
+  vecI f4=f1 + (width/4)*locX;
+  vecI f5=f1 - (width/4)*locX;
+  if (app->isDeadly(f1) || app->isDeadly(f2) || app->isDeadly(f3) || app->isDeadly(f4) || app->isDeadly(f5))
+    app->peupTextBox->updateText("D:");
+
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){

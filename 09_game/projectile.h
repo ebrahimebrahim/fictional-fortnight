@@ -9,6 +9,7 @@
 struct ProjectileTypeData {
   int num_frames;
   int num_explosion_frames;
+  int num_deadly_explosion_frames;
   std::string projectile_img_file;
   vecI projectile_img_frame_size;
   std::string explosion_img_file;
@@ -29,6 +30,7 @@ class Projectile {
     bool exploding = false;
     int explode_frame = 0;
     bool erase_this_projectile = false;
+    SDL_Rect explosionRect;
 };
 
 

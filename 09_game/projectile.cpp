@@ -115,8 +115,8 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
     else {
       vecI explodeCenter = vecI(projectile->x,projectile->y) + vecI(width/2,height/2) + (height/4)*globals.directionToUnitVector[projectile->dir];
       vecI explodeTopLeft = explodeCenter - vecI(explosion_width/2,explosion_height/2);
-      SDL_Rect target_rect = {explodeTopLeft.x,explodeTopLeft.y,explosion_width,explosion_height};
-      SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&target_rect);
+      projectile->explosionRect = {explodeTopLeft.x,explodeTopLeft.y,explosion_width,explosion_height};
+      SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(projectile->explosionRect));
     }
   }
 }

@@ -75,6 +75,7 @@ int App::initialize() {
 	ProjectileTypeData missile;
 	missile.num_frames = 2;
 	missile.num_explosion_frames = 6;
+	missile.num_deadly_explosion_frames = 4;
 	missile.projectile_img_file = "missile.png";
 	missile.explosion_img_file = "missile_explode.png";
 	missile.projectile_img_frame_size = {18,39};
@@ -165,13 +166,20 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
-	// SDL_SetRenderDrawColor(renderer,255,0,0,255);
-	// SDL_Rect peup = {200,20,3,200-20};
-	// SDL_RenderDrawRect(renderer,&peup);
 
 
 	playerEntity->render(this,renderer);
 	projectileList->render(this,renderer);
+
+
+	// SDL_SetRenderDrawColor(renderer,255,0,0,255);
+	// // SDL_Rect peup = {200,20,3,200-20};
+	// // SDL_RenderDrawRect(renderer,&peup);
+	// for (Projectile * projectile : projectileList->projectiles)
+	// if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames) {
+	// 	SDL_RenderDrawRect(renderer,&(projectile->explosionRect));
+	// }
+
 
 	SDL_RenderPresent( renderer );
 	int newFrameTime = SDL_GetTicks();
@@ -253,6 +261,22 @@ bool App::isObstruction(vecI p){
 
 	// was using this for testing
 	// if (p.x >= 200 && p.x <=202 && p.y > 20 && p.y < 200) return true;
+
+	return false;
+}
+
+bool App::isDeadly(vecI p){
+	for (Projectile * projectile : projectileList->projectiles)
+		if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames) {
+			SDL_Rect & exp_rect = projectile->explosionRect;
+			if ( p.x > exp_rect.x &&
+					 p.x < exp_rect.x + exp_rect.w &&
+					 p.y > exp_rect.y &&
+		 			 p.y < exp_rect.y + exp_rect.h ) {
+				return true;
+			}
+
+		}
 
 	return false;
 }
