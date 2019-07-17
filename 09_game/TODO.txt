@@ -1,3 +1,6 @@
+adjust things so that those special points are computed and stored in a list at each player update,
+so that they can be used throughout the update for various things
+
 
 maybe think of a way to systematize collision detection at the app level.
 maybe each entity can report hitbox info to one collision detection module which, at each update, calculates collision info

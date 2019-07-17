@@ -2,6 +2,7 @@
 #include "utilities.h"
 #include "main.h"
 #include <algorithm>
+#include <vector>
 
 extern Globals globals;
 
@@ -61,21 +62,39 @@ void PlayerEntity::update(App * app) {
   }
 
   if (tryMove!=DIRECTION_NEUTRAL){
-		switch (tryMove) {
-			case DIRECTION_UP:
-				y = std::max(0,y-v);
-				break;
-			case DIRECTION_DOWN:
-				y = std::min(app->gamescreen_height-height,y+v);
-				break;
-			case DIRECTION_LEFT:
-				x = std::max(0,x-v);
-				break;
-			case DIRECTION_RIGHT:
-				x = std::min(app->gamescreen_width-width,x+v);
-				break;
-			default: break;
-		}
+
+    vecI d = globals.directionToUnitVector[orientation];
+    vecI locX = globals.directionToLocalX[orientation];
+    for (int i = 0; i<v; ++i) {
+      vecI pos = vecI(x,y);
+      vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+1);
+      vecI f2=f1 + (width/2)*locX;
+      vecI f3=f1 - (width/2)*locX;
+      vecI f4=f1 + (width/4)*locX;
+      vecI f5=f1 - (width/4)*locX;
+      if (!app->isObstruction(f1) && !app->isObstruction(f2) && !app->isObstruction(f3) && !app->isObstruction(f4) && !app->isObstruction(f5)){
+        vecI newpos = pos+d;
+        x=newpos.x; y=newpos.y;
+      }
+      else break;
+    }
+
+
+		// switch (tryMove) {
+		// 	case DIRECTION_UP:
+		// 		y = std::max(0,y-v);
+		// 		break;
+		// 	case DIRECTION_DOWN:
+		// 		y = std::min(app->gamescreen_height-height,y+v);
+		// 		break;
+		// 	case DIRECTION_LEFT:
+		// 		x = std::max(0,x-v);
+		// 		break;
+		// 	case DIRECTION_RIGHT:
+		// 		x = std::min(app->gamescreen_width-width,x+v);
+		// 		break;
+		// 	default: break;
+		// }
 	}
 
   if (tryShoot) {
@@ -91,6 +110,19 @@ void PlayerEntity::update(App * app) {
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
   SDL_Rect target_rect = {x,y,width,height};
   SDL_RenderCopy(renderer, sprites, &(orientationToSpriteRect[orientation]), &target_rect);
+
+  // -- was using this for testing -- can delete it
+  // vecI d = globals.directionToUnitVector[orientation];
+  // vecI locX = globals.directionToLocalX[orientation];
+  // vecI pos = vecI(x,y);
+  // vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+v);
+  // vecI f2=f1 + (width/2)*locX;
+  // vecI f3=f1 - (width/2)*locX;
+  // SDL_SetRenderDrawColor(renderer,255,0,0,255);
+  // SDL_RenderDrawPoint(renderer,f3.x,f3.y);
+
+
+
 }
 
 DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {

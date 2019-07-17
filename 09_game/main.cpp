@@ -165,6 +165,11 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
 	SDL_RenderFillRect(renderer,nullptr);
 
+	// SDL_SetRenderDrawColor(renderer,255,0,0,255);
+	// SDL_Rect peup = {200,20,3,200-20};
+	// SDL_RenderDrawRect(renderer,&peup);
+
+
 	playerEntity->render(this,renderer);
 	projectileList->render(this,renderer);
 
@@ -241,6 +246,13 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 }
 
 
-bool App::containsObstacle(Polyhedron polyhedron){
-	return true; // Need to implement still.
+
+bool App::isObstruction(vecI p){
+	if (p.x < 0 || p.x > gamescreen_width || p.y<0 || p.y>gamescreen_height)
+		return true;
+
+	// was using this for testing
+	// if (p.x >= 200 && p.x <=202 && p.y > 20 && p.y < 200) return true;
+
+	return false;
 }

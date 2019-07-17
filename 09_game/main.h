@@ -72,6 +72,6 @@ class App {
 
 
     // Methods that will be used by the entity managers
-    bool containsObstacle(Polyhedron);
+    bool isObstruction(vecI point);
 
 };
