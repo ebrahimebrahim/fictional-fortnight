@@ -72,7 +72,6 @@ class App {
 
 
     // Methods that will be used by the entity managers
-    bool containsObstruction(const SDL_Rect &);
-    bool containsDeadly(const SDL_Rect &);
+    ContainsBitmask rectContents(const SDL_Rect & r, const void * ignore = nullptr);
 
 };

@@ -30,7 +30,7 @@ class Projectile {
     bool exploding = false;
     int explode_frame = 0;
     bool erase_this_projectile = false;
-    SDL_Rect explosionRect;
+    SDL_Rect rect; // rect of explosion or of projectile, depending on whether exploding is turned on
 };
 
 

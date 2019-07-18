@@ -6,7 +6,6 @@
 extern Globals globals;
 
 Projectile::Projectile(int x, int y, int v, DirectionUDLR dir) : x(x), y(y), v(v), dir(dir) {
-
 }
 
 Projectile::~Projectile() {
@@ -83,22 +82,25 @@ void ProjectileList::update(App * app){
         default: break;
       }
 
-      // check if it should start exploding
+      // update project rect, which needs to be correct for other stuff to work
+      projectile->rect = {projectile->x,projectile->y,width,height};
       vecI topLeft(projectile->x,projectile->y);
-      SDL_Rect projectile_rect = {projectile->x,projectile->y,width,height};
       if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
         topLeft = topLeft + vecI(width/2,height/2) - vecI(height/2,width/2);
-        projectile_rect.x = topLeft.x;
-        projectile_rect.y = topLeft.y;
-        projectile_rect.w = height;
-        projectile_rect.h = width;
+        projectile->rect.x = topLeft.x;
+        projectile->rect.y = topLeft.y;
+        projectile->rect.w = height;
+        projectile->rect.h = width;
       }
-      if (app->containsObstruction(projectile_rect)) {
+
+      // check if it should start exploding
+      if (app->rectContents(projectile->rect, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION)) {
         vecI topLeft(projectile->x,projectile->y);
         vecI explosionTopLeft = topLeft + vecI(width/2,height/2) // projectile center
                                 - vecI(explosion_width/2,explosion_height/2); // explosion top left
         projectile->x = explosionTopLeft.x;
         projectile->y = explosionTopLeft.y;
+        projectile->rect = {projectile->x,projectile->y,explosion_width,explosion_height};
         projectile->exploding = true;
       }
     }
@@ -123,12 +125,15 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
                        globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
     else {
-      projectile->explosionRect = {projectile->x,projectile->y,explosion_width,explosion_height};
-      SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(projectile->explosionRect));
+      SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(projectile->rect));
     }
+    SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
+    SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
   }
 }
 
 void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir) {
-  projectiles.push_front(new Projectile(x,y,v,dir));
+  Projectile * new_projectile = new Projectile(x,y,v,dir);
+  new_projectile->rect = {x,y,width,height};
+  projectiles.push_front(new_projectile);
 }

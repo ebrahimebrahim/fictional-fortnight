@@ -70,7 +70,7 @@ void PlayerEntity::update(App * app) {
       vecI pos(x,y);
       vecI forwardPos(pos+d);
       SDL_Rect forwardRect = {forwardPos.x,forwardPos.y,width,height};
-      if (!app->containsObstruction(SDL_Rect(forwardRect))) {
+      if (!(app->rectContents(SDL_Rect(forwardRect),this) & CONTAINS_OBSTRUCTION)) {
         x = forwardPos.x; y =forwardPos.y;
         playerRect = forwardRect; // should optimize to a move I guess? IDK how to "move"
       }
@@ -92,13 +92,15 @@ void PlayerEntity::update(App * app) {
 
   // check if player should die now:
 
-  if (app->containsDeadly(playerRect))
+  if (app->rectContents(playerRect) & CONTAINS_DEADLY_EXPLOSION)
     app->peupTextBox->updateText("D:");
 
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
   SDL_RenderCopyEx(renderer, sprites, &(bright_sprite_rect), &playerRect, globals.directionToRotAngle[orientation],nullptr,SDL_FLIP_NONE);
+  SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
+  SDL_RenderDrawRect(renderer, &(playerRect)); // TEST
 }
 
 DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {

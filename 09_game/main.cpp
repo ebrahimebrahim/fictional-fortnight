@@ -255,19 +255,30 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 
 
 
-bool App::containsObstruction(const SDL_Rect & r) {
+
+
+
+ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
+	ContainsBitmask contents = CONTAINS_NOTHING;
+
 	if (r.x < 0 ||
-		  r.y < 0 ||
+			r.y < 0 ||
 			r.x + r.w > gamescreen_width ||
 			r.y + r.h > gamescreen_height)
-		return true;
-	return false;
-}
+		contents |= CONTAINS_OUTSIDE | CONTAINS_OBSTRUCTION;
 
-bool App::containsDeadly(const SDL_Rect & r){
 	for (Projectile * projectile : projectileList->projectiles)
-		if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames)
-			return SDL_HasIntersection(&r,&(projectile->explosionRect)) == SDL_TRUE;
+		if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames) {
+			if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE)
+				contents |= CONTAINS_DEADLY_EXPLOSION;
+		}
+		else if (!projectile->exploding)
+			if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE && projectile!=ignore)
+				contents |= CONTAINS_OBSTRUCTION | CONTAINS_PROJECTILE;
 
-	return false;
+	if (SDL_HasIntersection(&r,&(playerEntity->playerRect))==SDL_TRUE && playerEntity!=ignore)
+		contents |= CONTAINS_OBSTRUCTION | CONTAINS_PLAYER;
+
+	return contents;
+
 }

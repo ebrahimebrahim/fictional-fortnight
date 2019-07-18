@@ -20,6 +20,18 @@ enum PaletteColor {
 };
 
 
+typedef unsigned int ContainsBitmask;
+const ContainsBitmask CONTAINS_NOTHING               = 1 << 0;
+const ContainsBitmask CONTAINS_PLAYER                = 1 << 1;
+const ContainsBitmask CONTAINS_DEADLY_EXPLOSION      = 1 << 2;
+const ContainsBitmask CONTAINS_OBSTRUCTION           = 1 << 3;
+const ContainsBitmask CONTAINS_PROJECTILE            = 1 << 4;
+const ContainsBitmask CONTAINS_OUTSIDE               = 1 << 5;
+
+
+
+
+
 SDL_Texture	 *  loadImage(const char * filename, SDL_Renderer * renderer, Logger * log = nullptr);
  // load a single image, returning nullptr on fail
  // if logger is passed (optional), then more specific SDL_Image errors will be logged.
