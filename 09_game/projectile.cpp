@@ -101,10 +101,15 @@ void ProjectileList::update(App * app){
           projectile->rect.h = projectileTypeData.explosion_width;
         } // This code was copy pasted from above. there's a better way :/
         projectile->exploding = true;
+        projectile->animation_frame_countdown = projectileTypeData.explosion_time_per_frame;
       }
     }
     else {
-      if (app->frame % projectileTypeData.explosion_time_per_frame == 0) ++(projectile->explode_frame);
+      if (projectile->animation_frame_countdown == 0) {
+        ++(projectile->explode_frame);
+        projectile->animation_frame_countdown = projectileTypeData.explosion_time_per_frame;
+      }
+      else --projectile->animation_frame_countdown;
       if (projectile->explode_frame >= projectileTypeData.num_explosion_frames) projectile->erase_this_projectile=true;
     }
 
@@ -130,8 +135,8 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
       SDL_RenderCopyEx(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(target_rect),
                        globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
-    SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
-    SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
+    // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
+    // SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
   }
 }
 

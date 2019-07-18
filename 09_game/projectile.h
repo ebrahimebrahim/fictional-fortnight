@@ -34,6 +34,7 @@ class Projectile {
     DirectionUDLR dir;
     bool exploding = false;
     int explode_frame = 0;
+    int animation_frame_countdown = 0; // countdown to next frame of explosion animation
     bool erase_this_projectile = false;
     SDL_Rect rect; // rect of explosion or of projectile, depending on whether exploding is turned on
 };

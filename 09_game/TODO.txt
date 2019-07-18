@@ -1,5 +1,3 @@
-bug: 2 different speed missiles can destroy each other when moving right but not left.
-
 encode firing pattern into something that can easily be passed into monster as type data
 
 player acceleration
