@@ -86,6 +86,7 @@ int App::initialize() {
 	missile.height = 40;
 	missile.explosion_width = 100;
 	missile.explosion_height = 100;
+	missile.explosion_time_per_frame = 5;
 	projectileList = new ProjectileList(missile);
 	entityManagers_projectile.push_back(projectileList);
 
@@ -101,6 +102,7 @@ int App::initialize() {
 	monster1bullets.height = 30;
 	monster1bullets.explosion_width = 10;
 	monster1bullets.explosion_height = 30;
+	monster1bullets.explosion_time_per_frame = 10;
 	monster1bulletList = new ProjectileList(monster1bullets);
 	entityManagers_projectile.push_back(monster1bulletList);
 

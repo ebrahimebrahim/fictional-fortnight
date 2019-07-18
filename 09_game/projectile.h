@@ -18,6 +18,7 @@ struct ProjectileTypeData {
   int height;
   int explosion_width;
   int explosion_height;
+  int explosion_time_per_frame; // global frames per explosion frame
 };
 
 

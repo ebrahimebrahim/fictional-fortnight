@@ -104,7 +104,7 @@ void ProjectileList::update(App * app){
       }
     }
     else {
-      if (app->frame % 5 == 0) ++(projectile->explode_frame);
+      if (app->frame % projectileTypeData.explosion_time_per_frame == 0) ++(projectile->explode_frame);
       if (projectile->explode_frame >= projectileTypeData.num_explosion_frames) projectile->erase_this_projectile=true;
     }
 
