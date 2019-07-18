@@ -42,7 +42,8 @@ class App {
     Uint32 frame = 0;
 
     // Game state
-    std::vector<EntityManager *> entityManagers;
+    std::vector<EntityManager *> entityManagers_nonprojectile;
+    std::vector<ProjectileList *> entityManagers_projectile;
     PlayerEntity * playerEntity = nullptr;
     ProjectileList * projectileList = nullptr;
     MonsterList * monster1List = nullptr;

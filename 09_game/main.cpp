@@ -72,7 +72,7 @@ int App::initialize() {
 
 	// --- Create EntityManager objects ---
 	playerEntity = new PlayerEntity(); // will be freed when all of entityManagers items are freed in ~App()
-	entityManagers.push_back(playerEntity);
+	entityManagers_nonprojectile.push_back(playerEntity);
 
 	ProjectileTypeData missile;
 	missile.num_frames = 2;
@@ -87,7 +87,7 @@ int App::initialize() {
 	missile.explosion_width = 100;
 	missile.explosion_height = 100;
 	projectileList = new ProjectileList(missile);
-	entityManagers.push_back(projectileList);
+	entityManagers_projectile.push_back(projectileList);
 
 	ProjectileTypeData monster1bullets;
 	monster1bullets.num_frames = 2;
@@ -102,7 +102,7 @@ int App::initialize() {
 	monster1bullets.explosion_width = 10;
 	monster1bullets.explosion_height = 30;
 	monster1bulletList = new ProjectileList(monster1bullets);
-	entityManagers.push_back(monster1bulletList);
+	entityManagers_projectile.push_back(monster1bulletList);
 
 	MonsterTypeData monster1;
 	monster1.name = "Gem";
@@ -115,7 +115,7 @@ int App::initialize() {
 	monster1.hitbox = {4,4,12,12};
 	monster1.bulletManager = monster1bulletList;
 	monster1List = new MonsterList(monster1);
-	entityManagers.push_back(monster1List);
+	entityManagers_nonprojectile.push_back(monster1List);
 
 
 
@@ -131,7 +131,9 @@ int App::initialize() {
 
 App::~App() {
 	unloadMedia();
-	for (EntityManager * entityManager : entityManagers)
+	for (EntityManager * entityManager : entityManagers_projectile)
+		delete entityManager;
+	for (EntityManager * entityManager : entityManagers_nonprojectile)
 		delete entityManager;
 	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
@@ -170,7 +172,9 @@ void App::handleEvents(){
 				break;
 		}
 
-		for (EntityManager * entityManager : entityManagers)
+		for (EntityManager * entityManager : entityManagers_projectile)
+			entityManager->handleEvent(&event);
+		for (EntityManager * entityManager : entityManagers_nonprojectile)
 			entityManager->handleEvent(&event);
 
 	}
@@ -179,7 +183,9 @@ void App::handleEvents(){
 
 void App::mainLoop(){
 
-	for (EntityManager * entityManager : entityManagers)
+	for (EntityManager * entityManager : entityManagers_projectile)
+		entityManager->update(this);
+	for (EntityManager * entityManager : entityManagers_nonprojectile)
 		entityManager->update(this);
 
 }
@@ -208,11 +214,13 @@ void App::render(){
 	SDL_RenderFillRect(renderer,nullptr);
 
 
-	// We do not mass render usint entityManager because we want to explicitly set order of render here.
-	playerEntity->render(this,renderer);
-	monster1List->render(this,renderer);
-	monster1bulletList->render(this,renderer);
-	projectileList->render(this,renderer);
+
+	for (EntityManager * entityManager : entityManagers_nonprojectile) {
+		entityManager->render(this,renderer);
+	}
+	for (EntityManager * entityManager : entityManagers_projectile) {
+		entityManager->render(this,renderer);
+	}
 
 
 	// SDL_SetRenderDrawColor(renderer,255,0,0,255);
@@ -235,7 +243,13 @@ void App::render(){
 int App::loadMedia(){
 
 	// Load whatever is needed by entities
-	for (EntityManager * entityManager : entityManagers) {
+	for (EntityManager * entityManager : entityManagers_projectile) {
+		if (entityManager->loadMedia(renderer, &log)<0){
+			log.error("Error: Some media was not loaded.");
+			return -1;
+		}
+	}
+	for (EntityManager * entityManager : entityManagers_nonprojectile) {
 		if (entityManager->loadMedia(renderer, &log)<0){
 			log.error("Error: Some media was not loaded.");
 			return -1;
@@ -266,7 +280,10 @@ int App::loadMedia(){
 
 void App::unloadMedia(){
 
-	for (EntityManager * entityManager : entityManagers) {
+	for (EntityManager * entityManager : entityManagers_projectile) {
+		entityManager->unloadMedia();
+	}
+	for (EntityManager * entityManager : entityManagers_nonprojectile) {
 		entityManager->unloadMedia();
 	}
 
