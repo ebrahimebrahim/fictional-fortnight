@@ -56,11 +56,21 @@ void MonsterList::update(App * app) {
       // increment animation frame
       if (app->frame % 10 == 0) monster->frame = (monster->frame + 1) % monsterTypeData.num_frames;
 
-      // TODO let the monster do its thang
+      if (app->frame % 50 == 0) {
+        DirectionUDLR dir = DIRECTION_DOWN; // placeholder
+        vecI center = vecI(monster->x,monster->y) + vecI(monsterTypeData.width/2,monsterTypeData.height/2);
+        vecI d = globals.directionToUnitVector[dir];
+        vecI locX = globals.directionToLocalX[dir];
+        vecI bulletBackCenter = center + (dot(d,vecI(monsterTypeData.width/2,monsterTypeData.height/2))+5)*d;
+        // (there 5 was the size of the gap between monster and spawned bullet)
+        vecI bulletCenter = bulletBackCenter + (monsterTypeData.bulletManager->projectileTypeData.height/2)*d;
+        vecI bulletTopLeft = bulletCenter - vecI(monsterTypeData.bulletManager->projectileTypeData.width/2,monsterTypeData.bulletManager->projectileTypeData.height/2);
+        // that was the top left of the bullet BEFORE it gets rotated by the bullet manager. ugh, this is bad design.
+        monsterTypeData.bulletManager->createProjectile(bulletTopLeft.x,bulletTopLeft.y,3,dir);
+      }
 
       // check if it should start dying
       if (app->rectContents(monster->hitbox) & CONTAINS_DEADLY_EXPLOSION) {
-        // TODO update monster's rect to be correct for death
         monster->dying = true;
         monster->frame = 0; // we will now start using frame for death animation
       }

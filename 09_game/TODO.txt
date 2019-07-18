@@ -1,3 +1,5 @@
+encode firing pattern into something that can easily be passed into monster as type data
+
 player acceleration
 
 player speedboost button? could be fun

@@ -85,8 +85,8 @@ void PlayerEntity::update(App * app) {
   if (tryShoot && missile_cooldown_countdown==0) {
 
       vecI p = vecI(x,y) + vecI(width/2,height/2)
-               + globals.directionToUnitVector[orientation]*((width + app->projectileList->height)/2)
-               - vecI(app->projectileList->width/2,app->projectileList->height/2);
+               + globals.directionToUnitVector[orientation]*((width + app->projectileList->projectileTypeData.height)/2)
+               - vecI(app->projectileList->projectileTypeData.width/2,app->projectileList->projectileTypeData.height/2);
       app->projectileList->createProjectile(p.x,p.y,v+3,orientation);
       missile_cooldown_countdown=missile_cooldown;
   }

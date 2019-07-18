@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "utilities.h"
 #include <string>
+#include "projectile.h"
 
 
 struct MonsterTypeData {
@@ -15,6 +16,7 @@ struct MonsterTypeData {
   int width;// pixel width and height of monster rendered on screen
   int height;
   SDL_Rect hitbox; // hitbox in LOCAL coords (origin is top left of monster)
+  ProjectileList * bulletManager; // needs to be valid while associated monsters exist. NOT freed by monster.
 };
 
 

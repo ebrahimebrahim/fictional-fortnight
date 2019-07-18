@@ -82,9 +82,27 @@ int App::initialize() {
 	missile.explosion_img_file = "missile_explode.png";
 	missile.projectile_img_frame_size = {18,39};
 	missile.explosion_img_frame_size = {40,40};
+	missile.width = 18;
+	missile.height = 40;
+	missile.explosion_width = 100;
+	missile.explosion_height = 100;
 	projectileList = new ProjectileList(missile);
 	entityManagers.push_back(projectileList);
 
+	ProjectileTypeData monster1bullets;
+	monster1bullets.num_frames = 2;
+	monster1bullets.num_explosion_frames = 2;
+	monster1bullets.num_deadly_explosion_frames = 2;
+	monster1bullets.projectile_img_file = "monster1bullet.png";
+	monster1bullets.explosion_img_file = "monster1bullet_explode.png";
+	monster1bullets.projectile_img_frame_size = {7,28};
+	monster1bullets.explosion_img_frame_size = {7,28};
+	monster1bullets.width = 10;
+	monster1bullets.height = 30;
+	monster1bullets.explosion_width = 10;
+	monster1bullets.explosion_height = 30;
+	monster1bulletList = new ProjectileList(monster1bullets);
+	entityManagers.push_back(monster1bulletList);
 
 	MonsterTypeData monster1;
 	monster1.name = "Gem";
@@ -95,19 +113,11 @@ int App::initialize() {
 	monster1.width  = 20;
 	monster1.height = 20;
 	monster1.hitbox = {4,4,12,12};
+	monster1.bulletManager = monster1bulletList;
 	monster1List = new MonsterList(monster1);
 	entityManagers.push_back(monster1List);
 
-	ProjectileTypeData monster1bullets;
-	monster1bullets.num_frames = 2;
-	monster1bullets.num_explosion_frames = 2;
-	monster1bullets.num_deadly_explosion_frames = 2;
-	monster1bullets.projectile_img_file = "monster1bullet.png";
-	monster1bullets.explosion_img_file = "monster1bullet_explode.png";
-	monster1bullets.projectile_img_frame_size = {7,28};
-	monster1bullets.explosion_img_frame_size = {7,28};
-	monster1bulletList = new ProjectileList(monster1bullets);
-	entityManagers.push_back(monster1bulletList);
+
 
 	// ---
 

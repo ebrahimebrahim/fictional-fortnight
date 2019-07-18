@@ -14,6 +14,10 @@ struct ProjectileTypeData {
   vecI projectile_img_frame_size;
   std::string explosion_img_file;
   vecI explosion_img_frame_size;
+  int width;
+  int height;
+  int explosion_width;
+  int explosion_height;
 };
 
 
@@ -56,12 +60,6 @@ class ProjectileList :  public EntityManager {
 
     // State
     std::list<Projectile*> projectiles;
-
-    //Constants, for now
-    int width = 18;
-    int height = 40;
-    int explosion_width = 100;
-    int explosion_height = 100;
 
 
 
