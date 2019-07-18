@@ -106,8 +106,8 @@ void PlayerEntity::render(App * app, SDL_Renderer * renderer){
   int sprite_rect_index = (missile_cooldown - missile_cooldown_countdown) * 3 / missile_cooldown ;
   SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[sprite_rect_index]), &playerRect,
                    globals.directionToRotAngle[orientation],nullptr,SDL_FLIP_NONE);
-  SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
-  SDL_RenderDrawRect(renderer, &(playerRect)); // TEST
+  // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
+  // SDL_RenderDrawRect(renderer, &(playerRect)); // TEST
 }
 
 DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {

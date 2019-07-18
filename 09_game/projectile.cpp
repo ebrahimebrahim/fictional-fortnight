@@ -113,8 +113,10 @@ void ProjectileList::update(App * app){
 
   // Erase any dead projectiles:
   for (std::list<Projectile*>::iterator iter = projectiles.begin(); iter != projectiles.end(); ++iter)
-    if ((*iter)->erase_this_projectile)
+    if ((*iter)->erase_this_projectile) {
+      delete (*iter);
       iter = projectiles.erase(iter);
+    }
 }
 
 void ProjectileList::render(App * app, SDL_Renderer * renderer) {
@@ -127,8 +129,8 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
     else {
       SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(projectile->rect));
     }
-    SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
-    SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
+    // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
+    // SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
   }
 }
 

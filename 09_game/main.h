@@ -5,6 +5,7 @@
 #include "textbox.h"
 #include "playerentity.h"
 #include "projectile.h"
+#include "monster.h"
 #include "utilities.h"
 
 
@@ -42,6 +43,7 @@ class App {
     // Game state
     PlayerEntity * playerEntity = nullptr;
     ProjectileList * projectileList = nullptr;
+    MonsterList * monster1List = nullptr;
 
     // Rectangles for viewports
     SDL_Rect screen_rect = {0,0,gamescreen_width,gamescreen_height};

@@ -27,6 +27,8 @@ const ContainsBitmask CONTAINS_DEADLY_EXPLOSION      = 1 << 2;
 const ContainsBitmask CONTAINS_OBSTRUCTION           = 1 << 3;
 const ContainsBitmask CONTAINS_PROJECTILE            = 1 << 4;
 const ContainsBitmask CONTAINS_OUTSIDE               = 1 << 5;
+const ContainsBitmask CONTAINS_MONSTER               = 1 << 6;
+const ContainsBitmask CONTAINS_MONSTER1              = 1 << 6;
 
 
 

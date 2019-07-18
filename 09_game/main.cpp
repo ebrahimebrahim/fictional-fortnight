@@ -70,8 +70,9 @@ int App::initialize() {
 	palette[PALETTE_WHITE] = {255,255,255,255};
 
 
-	//Create EntityManager objects
+	// --- Create EntityManager objects ---
 	playerEntity = new PlayerEntity();
+
 	ProjectileTypeData missile;
 	missile.num_frames = 2;
 	missile.num_explosion_frames = 6;
@@ -83,6 +84,22 @@ int App::initialize() {
 	projectileList = new ProjectileList(missile);
 
 
+	MonsterTypeData monster1;
+	monster1.name = "meunst";
+	monster1.monster_img_file = "monster1.png";
+	monster1.num_frames = 5;
+	monster1.monster_img_frame_size = vecI(5,5);
+	monster1.num_death_frames = 8;
+	monster1.width  = 20;
+	monster1.height = 20;
+	monster1.hitbox = {4,4,12,12};
+	monster1List = new MonsterList(monster1);
+
+	// ---
+
+	monster1List->createMonster(200,200);
+
+
 
 	return 0;
 }
@@ -92,6 +109,7 @@ App::~App() {
 	unloadMedia();
 	delete playerEntity;
 	delete projectileList;
+	delete monster1List;
 	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
 	IMG_Quit();
@@ -131,6 +149,7 @@ void App::handleEvents(){
 
 		playerEntity->handleEvent(&event);
 		projectileList->handleEvent(&event);
+		monster1List->handleEvent(&event);
 
 	}
 }
@@ -140,6 +159,7 @@ void App::mainLoop(){
 
 	playerEntity->update(this);
 	projectileList->update(this);
+	monster1List->update(this);
 
 }
 
@@ -169,6 +189,7 @@ void App::render(){
 
 
 	playerEntity->render(this,renderer);
+	monster1List->render(this,renderer);
 	projectileList->render(this,renderer);
 
 
@@ -200,6 +221,10 @@ int App::loadMedia(){
 		log.error("Error: Some media was not loaded.");
 		return -1;
 	}
+	if (monster1List->loadMedia(renderer, &log)<0){
+		log.error("Error: Some media was not loaded.");
+		return -1;
+	}
 
 	//Load fonts
 	font  = TTF_OpenFont("Roboto-Regular.ttf",14);
@@ -227,6 +252,7 @@ void App::unloadMedia(){
 
 	playerEntity->unloadMedia();
 	projectileList->unloadMedia();
+	monster1List->unloadMedia();
 
 
 	delete peupTextBox;
@@ -275,6 +301,11 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 		else if (!projectile->exploding)
 			if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE && projectile!=ignore)
 				contents |= CONTAINS_OBSTRUCTION | CONTAINS_PROJECTILE;
+
+	for (Monster * monster : monster1List->monsters)
+		if (SDL_HasIntersection(&r,&(monster->hitbox)) == SDL_TRUE)
+			contents |= CONTAINS_OBSTRUCTION | CONTAINS_MONSTER | CONTAINS_MONSTER1;
+
 
 	if (SDL_HasIntersection(&r,&(playerEntity->playerRect))==SDL_TRUE && playerEntity!=ignore)
 		contents |= CONTAINS_OBSTRUCTION | CONTAINS_PLAYER;
