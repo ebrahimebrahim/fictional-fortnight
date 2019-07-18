@@ -47,8 +47,10 @@ void PlayerEntity::update(App * app) {
 
   const Uint8 * keyState = SDL_GetKeyboardState(nullptr);
 
-  if (!keyState[SDL_SCANCODE_LEFT] && !keyState[SDL_SCANCODE_RIGHT] && !keyState[SDL_SCANCODE_UP] && !keyState[SDL_SCANCODE_DOWN])
+  if (!keyState[SDL_SCANCODE_LEFT] && !keyState[SDL_SCANCODE_RIGHT] && !keyState[SDL_SCANCODE_UP] && !keyState[SDL_SCANCODE_DOWN]) {
     tryMove = DIRECTION_NEUTRAL;
+    v=0;
+  }
   else {
     for (SDL_Scancode sc : lastDirectionalKeys) {
       if (keyState[sc]) {
@@ -63,21 +65,11 @@ void PlayerEntity::update(App * app) {
   vecI d = globals.directionToUnitVector[orientation];
   vecI locX = globals.directionToLocalX[orientation];
 
-  if (tryMove!=DIRECTION_NEUTRAL){
-
-    for (int i = 0; i<v; ++i) {
+  if (tryMove!=DIRECTION_NEUTRAL) {
+    for (v = 0; v<move_speed; ++v) {
       vecI pos(x,y);
       vecI forwardPos(pos+d);
       SDL_Rect forwardRect = {forwardPos.x,forwardPos.y,width,height};
-      // vecI f1 = pos + vecI(width/2,height/2) + d*(width/2+1);
-      // vecI f2=f1 + (width/2)*locX;
-      // vecI f3=f1 - (width/2)*locX;
-      // vecI f4=f1 + (width/4)*locX;
-      // vecI f5=f1 - (width/4)*locX;
-      // if (!app->isObstruction(f1) && !app->isObstruction(f2) && !app->isObstruction(f3) && !app->isObstruction(f4) && !app->isObstruction(f5)){
-      //   vecI newpos = pos+d;
-      //   x=newpos.x; y=newpos.y;
-      // }
       if (!app->containsObstruction(SDL_Rect(forwardRect))) {
         x = forwardPos.x; y =forwardPos.y;
         playerRect = forwardRect; // should optimize to a move I guess? IDK how to "move"
@@ -93,7 +85,7 @@ void PlayerEntity::update(App * app) {
       vecI p = vecI(x,y) + vecI(width/2,height/2)
                + globals.directionToUnitVector[orientation]*((width + app->projectileList->height)/2)
                - vecI(app->projectileList->width/2,app->projectileList->height/2);
-      app->projectileList->createProjectile(p.x,p.y,v+2,orientation);
+      app->projectileList->createProjectile(p.x,p.y,v+3,orientation);
       tryShoot = false;
   }
 

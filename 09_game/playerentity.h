@@ -33,12 +33,13 @@ class PlayerEntity :  public EntityManager {
     bool tryShoot = false;
     int x = 100; // x,y of top left corner of the player entity
     int y = 100;
+    int v = 0; // current speed
     SDL_Rect playerRect;
 
     // Constants (for now)
     int width = 20;
     int height = 20;
-    int v = 6;
+    int move_speed = 5;
 
 
 };
