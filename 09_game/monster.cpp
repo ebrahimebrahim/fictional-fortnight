@@ -57,7 +57,7 @@ void MonsterList::update(App * app) {
       if (app->frame % 10 == 0) monster->frame = (monster->frame + 1) % monsterTypeData.num_frames;
 
       if (app->frame % 50 == 0) {
-        DirectionUDLR dir = DIRECTION_DOWN; // placeholder
+        DirectionUDLR dir = DIRECTION_RIGHT; // placeholder
         vecI center = vecI(monster->x,monster->y) + vecI(monsterTypeData.width/2,monsterTypeData.height/2);
         vecI d = globals.directionToUnitVector[dir];
         vecI locX = globals.directionToLocalX[dir];

@@ -71,7 +71,8 @@ void PlayerEntity::update(App * app) {
       vecI pos(x,y);
       vecI forwardPos(pos+d);
       SDL_Rect forwardRect = {forwardPos.x,forwardPos.y,width,height};
-      if (!(app->rectContents(SDL_Rect(forwardRect),this) & CONTAINS_OBSTRUCTION)) {
+      ContainsBitmask forwardContents = app->rectContents(SDL_Rect(forwardRect),this);
+      if (!(forwardContents & CONTAINS_OBSTRUCTION)) {
         x = forwardPos.x; y =forwardPos.y;
         playerRect = forwardRect; // should optimize to a move I guess? IDK how to "move"
       }

@@ -325,14 +325,17 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 			r.y + r.h > gamescreen_height)
 		contents |= CONTAINS_OUTSIDE | CONTAINS_OBSTRUCTION;
 
-	for (Projectile * projectile : projectileList->projectiles)
-		if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames) {
-			if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE)
-				contents |= CONTAINS_DEADLY_EXPLOSION;
-		}
-		else if (!projectile->exploding)
-			if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE && projectile!=ignore)
-				contents |= CONTAINS_OBSTRUCTION | CONTAINS_PROJECTILE;
+	for (ProjectileList * projectileManager : entityManagers_projectile) {
+		for (Projectile * projectile : projectileManager->projectiles)
+			if (projectile->exploding && projectile->explode_frame < projectileManager->projectileTypeData.num_deadly_explosion_frames) {
+				if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE)
+					contents |= CONTAINS_DEADLY_EXPLOSION;
+			}
+			else if (!projectile->exploding)
+				if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE && projectile!=ignore)
+					contents |= CONTAINS_PROJECTILE;
+	}
+
 
 	for (Monster * monster : monster1List->monsters)
 		if (SDL_HasIntersection(&r,&(monster->hitbox)) == SDL_TRUE)

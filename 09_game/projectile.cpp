@@ -94,7 +94,7 @@ void ProjectileList::update(App * app){
       }
 
       // check if it should start exploding
-      if (app->rectContents(projectile->rect, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION)) {
+      if (app->rectContents(projectile->rect, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION | CONTAINS_PROJECTILE)) {
         vecI topLeft(projectile->x,projectile->y);
         vecI explosionTopLeft = topLeft + vecI(projectileTypeData.width/2,projectileTypeData.height/2) // projectile center
                                 - vecI(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2); // explosion top left
