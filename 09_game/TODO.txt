@@ -1,5 +1,4 @@
-create monsters entity manager based on projectiles idea-- a struct going in will contain what's needed to give
-details on that particular type of monster.
+player acceleration
 
 player speedboost button? could be fun
 

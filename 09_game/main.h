@@ -7,6 +7,7 @@
 #include "projectile.h"
 #include "monster.h"
 #include "utilities.h"
+#include <vector>
 
 
 const int WINDOW_WIDTH = 800;
@@ -41,9 +42,11 @@ class App {
     Uint32 frame = 0;
 
     // Game state
+    std::vector<EntityManager *> entityManagers;
     PlayerEntity * playerEntity = nullptr;
     ProjectileList * projectileList = nullptr;
     MonsterList * monster1List = nullptr;
+    ProjectileList * monster1bulletList = nullptr;
 
     // Rectangles for viewports
     SDL_Rect screen_rect = {0,0,gamescreen_width,gamescreen_height};
