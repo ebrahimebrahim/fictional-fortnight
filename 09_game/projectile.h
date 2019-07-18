@@ -48,6 +48,7 @@ class ProjectileList :  public EntityManager {
     virtual void update(App *); // Update step to go into main game loop
     virtual void render(App *, SDL_Renderer *);
 
+    void updateProjectileRect(Projectile *);
     void createProjectile(int x, int y, int v, DirectionUDLR dir);
 
     ProjectileTypeData projectileTypeData;

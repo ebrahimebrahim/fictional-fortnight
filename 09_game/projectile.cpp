@@ -83,15 +83,7 @@ void ProjectileList::update(App * app){
       }
 
       // update projectile rect, which needs to be correct for other stuff to work
-      projectile->rect = {projectile->x,projectile->y,projectileTypeData.width,projectileTypeData.height};
-      vecI topLeft(projectile->x,projectile->y);
-      if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
-        topLeft = topLeft + vecI(projectileTypeData.width/2,projectileTypeData.height/2) - vecI(projectileTypeData.height/2,projectileTypeData.width/2);
-        projectile->rect.x = topLeft.x;
-        projectile->rect.y = topLeft.y;
-        projectile->rect.w = projectileTypeData.height;
-        projectile->rect.h = projectileTypeData.width;
-      }
+      updateProjectileRect(projectile);
 
       // check if it should start exploding and set projectile->rect to be correct.
       if (app->rectContents(projectile->rect, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION | CONTAINS_PROJECTILE)) {
@@ -102,9 +94,9 @@ void ProjectileList::update(App * app){
         projectile->y = explosionTopLeft.y;
         projectile->rect = {projectile->x,projectile->y,projectileTypeData.explosion_width,projectileTypeData.explosion_height};
         if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
-          topLeft = topLeft + vecI(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2) - vecI(projectileTypeData.explosion_height/2,projectileTypeData.explosion_width/2);
-          projectile->rect.x = topLeft.x;
-          projectile->rect.y = topLeft.y;
+          explosionTopLeft = explosionTopLeft + vecI(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2) - vecI(projectileTypeData.explosion_height/2,projectileTypeData.explosion_width/2);
+          projectile->rect.x = explosionTopLeft.x;
+          projectile->rect.y = explosionTopLeft.y;
           projectile->rect.w = projectileTypeData.explosion_height;
           projectile->rect.h = projectileTypeData.explosion_width;
         } // This code was copy pasted from above. there's a better way :/
@@ -138,13 +130,25 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
       SDL_RenderCopyEx(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(target_rect),
                        globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
-    // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
-    // SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
+    SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
+    SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
+  }
+}
+
+void ProjectileList::updateProjectileRect(Projectile * projectile) {
+  projectile->rect = {projectile->x,projectile->y,projectileTypeData.width,projectileTypeData.height};
+  vecI topLeft(projectile->x,projectile->y);
+  if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
+    topLeft = topLeft + vecI(projectileTypeData.width/2,projectileTypeData.height/2) - vecI(projectileTypeData.height/2,projectileTypeData.width/2);
+    projectile->rect.x = topLeft.x;
+    projectile->rect.y = topLeft.y;
+    projectile->rect.w = projectileTypeData.height;
+    projectile->rect.h = projectileTypeData.width;
   }
 }
 
 void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir) {
   Projectile * new_projectile = new Projectile(x,y,v,dir);
-  new_projectile->rect = {x,y,projectileTypeData.width,projectileTypeData.height};
+  updateProjectileRect(new_projectile);
   projectiles.push_front(new_projectile);
 }

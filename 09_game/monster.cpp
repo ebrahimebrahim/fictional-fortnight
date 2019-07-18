@@ -1,6 +1,7 @@
 #include "monster.h"
 #include "utilities.h"
 #include "main.h"
+#include <cstdlib>
 
 extern Globals globals;
 
@@ -57,16 +58,10 @@ void MonsterList::update(App * app) {
       if (app->frame % 10 == 0) monster->frame = (monster->frame + 1) % monsterTypeData.num_frames;
 
       if (app->frame % 50 == 0) {
-        DirectionUDLR dir = DIRECTION_RIGHT; // placeholder
-        vecI center = vecI(monster->x,monster->y) + vecI(monsterTypeData.width/2,monsterTypeData.height/2);
-        vecI d = globals.directionToUnitVector[dir];
-        vecI locX = globals.directionToLocalX[dir];
-        vecI bulletBackCenter = center + (dot(d,vecI(monsterTypeData.width/2,monsterTypeData.height/2))+5)*d;
-        // (there 5 was the size of the gap between monster and spawned bullet)
-        vecI bulletCenter = bulletBackCenter + (monsterTypeData.bulletManager->projectileTypeData.height/2)*d;
-        vecI bulletTopLeft = bulletCenter - vecI(monsterTypeData.bulletManager->projectileTypeData.width/2,monsterTypeData.bulletManager->projectileTypeData.height/2);
-        // that was the top left of the bullet BEFORE it gets rotated by the bullet manager. ugh, this is bad design.
-        monsterTypeData.bulletManager->createProjectile(bulletTopLeft.x,bulletTopLeft.y,monsterTypeData.bullet_speed,dir);
+        fireBullet(monster,DIRECTION_RIGHT,5);
+        fireBullet(monster,DIRECTION_DOWN,6);
+        fireBullet(monster,DIRECTION_UP,7);
+        fireBullet(monster,DIRECTION_LEFT,2);
       }
 
       // check if it should start dying
@@ -108,4 +103,15 @@ void MonsterList::createMonster(int x, int y) {
   new_monster->hitbox.x += x;
   new_monster->hitbox.y += y;
   monsters.push_front(new_monster);
+}
+
+void MonsterList::fireBullet(Monster * monster, DirectionUDLR dir, int speed) {
+  vecI center = vecI(monster->x,monster->y) + vecI(monsterTypeData.width/2,monsterTypeData.height/2);
+  vecI d = globals.directionToUnitVector[dir];
+  vecI bulletBackCenter = center + (abs(dot(d,vecI(monsterTypeData.width/2,monsterTypeData.height/2)))+5)*d;
+  // (there 5 is the size of the gap between monster and spawned bullet)
+  vecI bulletCenter = bulletBackCenter + (monsterTypeData.bulletManager->projectileTypeData.height/2)*d;
+  vecI bulletTopLeft = bulletCenter - vecI(monsterTypeData.bulletManager->projectileTypeData.width/2,monsterTypeData.bulletManager->projectileTypeData.height/2);
+  // that was the top left of the bullet BEFORE it gets rotated by the bullet manager. ugh, this is bad design.
+  monsterTypeData.bulletManager->createProjectile(bulletTopLeft.x,bulletTopLeft.y,speed,dir);
 }

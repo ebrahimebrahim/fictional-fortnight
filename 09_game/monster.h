@@ -47,6 +47,7 @@ class MonsterList :  public EntityManager {
     virtual void render(App *, SDL_Renderer *);
 
     void createMonster(int x, int y);
+    void fireBullet(Monster * monster, DirectionUDLR dir, int speed);
 
     MonsterTypeData monsterTypeData;
 
