@@ -114,6 +114,7 @@ int App::initialize() {
 	monster1.height = 20;
 	monster1.hitbox = {4,4,12,12};
 	monster1.bulletManager = monster1bulletList;
+	monster1.bullet_speed = 5;
 	monster1List = new MonsterList(monster1);
 	entityManagers_nonprojectile.push_back(monster1List);
 

@@ -17,6 +17,7 @@ struct MonsterTypeData {
   int height;
   SDL_Rect hitbox; // hitbox in LOCAL coords (origin is top left of monster)
   ProjectileList * bulletManager; // needs to be valid while associated monsters exist. NOT freed by monster.
+  int bullet_speed; // pixels per frame
 };
 
 

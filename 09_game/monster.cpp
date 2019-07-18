@@ -66,7 +66,7 @@ void MonsterList::update(App * app) {
         vecI bulletCenter = bulletBackCenter + (monsterTypeData.bulletManager->projectileTypeData.height/2)*d;
         vecI bulletTopLeft = bulletCenter - vecI(monsterTypeData.bulletManager->projectileTypeData.width/2,monsterTypeData.bulletManager->projectileTypeData.height/2);
         // that was the top left of the bullet BEFORE it gets rotated by the bullet manager. ugh, this is bad design.
-        monsterTypeData.bulletManager->createProjectile(bulletTopLeft.x,bulletTopLeft.y,3,dir);
+        monsterTypeData.bulletManager->createProjectile(bulletTopLeft.x,bulletTopLeft.y,monsterTypeData.bullet_speed,dir);
       }
 
       // check if it should start dying

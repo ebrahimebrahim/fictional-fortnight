@@ -82,7 +82,7 @@ void ProjectileList::update(App * app){
         default: break;
       }
 
-      // update project rect, which needs to be correct for other stuff to work
+      // update projectile rect, which needs to be correct for other stuff to work
       projectile->rect = {projectile->x,projectile->y,projectileTypeData.width,projectileTypeData.height};
       vecI topLeft(projectile->x,projectile->y);
       if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
@@ -93,7 +93,7 @@ void ProjectileList::update(App * app){
         projectile->rect.h = projectileTypeData.width;
       }
 
-      // check if it should start exploding
+      // check if it should start exploding and set projectile->rect to be correct.
       if (app->rectContents(projectile->rect, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION | CONTAINS_PROJECTILE)) {
         vecI topLeft(projectile->x,projectile->y);
         vecI explosionTopLeft = topLeft + vecI(projectileTypeData.width/2,projectileTypeData.height/2) // projectile center
@@ -101,6 +101,13 @@ void ProjectileList::update(App * app){
         projectile->x = explosionTopLeft.x;
         projectile->y = explosionTopLeft.y;
         projectile->rect = {projectile->x,projectile->y,projectileTypeData.explosion_width,projectileTypeData.explosion_height};
+        if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
+          topLeft = topLeft + vecI(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2) - vecI(projectileTypeData.explosion_height/2,projectileTypeData.explosion_width/2);
+          projectile->rect.x = topLeft.x;
+          projectile->rect.y = topLeft.y;
+          projectile->rect.w = projectileTypeData.explosion_height;
+          projectile->rect.h = projectileTypeData.explosion_width;
+        } // This code was copy pasted from above. there's a better way :/
         projectile->exploding = true;
       }
     }
@@ -127,7 +134,9 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
                        globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
     else {
-      SDL_RenderCopy(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(projectile->rect));
+      SDL_Rect target_rect = {projectile->x,projectile->y,projectileTypeData.explosion_width,projectileTypeData.explosion_height};
+      SDL_RenderCopyEx(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(target_rect),
+                       globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
     // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
     // SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST

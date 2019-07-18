@@ -1,3 +1,5 @@
+properly rotate projectile animations
+
 encode firing pattern into something that can easily be passed into monster as type data
 
 player acceleration
