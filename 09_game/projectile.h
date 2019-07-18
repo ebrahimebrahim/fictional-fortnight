@@ -60,8 +60,8 @@ class ProjectileList :  public EntityManager {
     //Constants, for now
     int width = 18;
     int height = 40;
-    int explosion_width = 60;
-    int explosion_height = 60;
+    int explosion_width = 100;
+    int explosion_height = 100;
 
 
 
