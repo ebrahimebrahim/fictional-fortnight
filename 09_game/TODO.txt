@@ -1,7 +1,3 @@
-player and missiles should count as obstructions, with some exception for themselves somehow
-
-missile cooldown and display of that on player ship/bot/thing
-
 create monsters entity manager based on projectiles idea-- a struct going in will contain what's needed to give
 details on that particular type of monster.
 

@@ -4,7 +4,7 @@
 #include "utilities.h"
 
 
-
+const int num_player_sprite_rects = 5;
 
 
 
@@ -22,8 +22,7 @@ class PlayerEntity :  public EntityManager {
     SDL_Texture * sprites = nullptr;
 
     // Useful tables and rects
-    SDL_Rect dim_sprite_rect;
-    SDL_Rect bright_sprite_rect;
+    SDL_Rect sprite_rects [num_player_sprite_rects];
     DirectionUDLR directionalKeyToPlayerDirection(SDL_Scancode);
 
     // State
@@ -35,11 +34,13 @@ class PlayerEntity :  public EntityManager {
     int y = 100;
     int v = 0; // current speed
     SDL_Rect playerRect;
+    int missile_cooldown_countdown = 0;
 
     // Constants (for now)
     int width = 20;
     int height = 20;
     int move_speed = 5;
+    int missile_cooldown = 60;
 
 
 };

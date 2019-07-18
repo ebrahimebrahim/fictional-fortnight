@@ -22,8 +22,9 @@ int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
 		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
 	}
-	dim_sprite_rect={0,0,5,5};
-	bright_sprite_rect={5,0,5,5};
+  for (int i = 0 ; i < num_player_sprite_rects ; ++i) {
+    sprite_rects[i]={7*i,0,7,7};
+  }
 
   return 0;
 }
@@ -80,14 +81,18 @@ void PlayerEntity::update(App * app) {
 	}
 
 
-  if (tryShoot) {
+  // resolve shoot attempt
+  if (tryShoot && missile_cooldown_countdown==0) {
 
       vecI p = vecI(x,y) + vecI(width/2,height/2)
                + globals.directionToUnitVector[orientation]*((width + app->projectileList->height)/2)
                - vecI(app->projectileList->width/2,app->projectileList->height/2);
       app->projectileList->createProjectile(p.x,p.y,v+3,orientation);
-      tryShoot = false;
+      missile_cooldown_countdown=missile_cooldown;
   }
+  tryShoot = false;
+
+  if (missile_cooldown_countdown > 0) --missile_cooldown_countdown;
 
 
   // check if player should die now:
@@ -98,7 +103,9 @@ void PlayerEntity::update(App * app) {
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
-  SDL_RenderCopyEx(renderer, sprites, &(bright_sprite_rect), &playerRect, globals.directionToRotAngle[orientation],nullptr,SDL_FLIP_NONE);
+  int sprite_rect_index = (missile_cooldown - missile_cooldown_countdown) * 3 / missile_cooldown ;
+  SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[sprite_rect_index]), &playerRect,
+                   globals.directionToRotAngle[orientation],nullptr,SDL_FLIP_NONE);
   SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
   SDL_RenderDrawRect(renderer, &(playerRect)); // TEST
 }
