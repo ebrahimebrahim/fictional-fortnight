@@ -84,33 +84,33 @@ int App::initialize() {
 	missile.explosion_img_frame_size = {40,40};
 	missile.width = 18;
 	missile.height = 40;
-	missile.explosion_width = 100;
-	missile.explosion_height = 100;
+	missile.explosion_width = 400;
+	missile.explosion_height = 400;
 	missile.projectile_hitbox = {0,0,18,40};
 	missile.explosion_hitbox  = {10,10,80,80};
 	missile.projectile_detonation_point = {9,5};
-	missile.explosion_detonation_point = {40,45};
+	missile.explosion_detonation_point = {16,18};
 	missile.explosion_time_per_frame = 5;
 	projectileList = new ProjectileList(missile);
 	entityManagers_projectile.push_back(projectileList);
 
 	ProjectileTypeData monster1bullets;
 	monster1bullets.num_frames = 2;
-	monster1bullets.num_explosion_frames = 2;
+	monster1bullets.num_explosion_frames = 5;
 	monster1bullets.num_deadly_explosion_frames = 1;
 	monster1bullets.projectile_img_file = "monster1bullet.png";
 	monster1bullets.explosion_img_file = "monster1bullet_explode.png";
 	monster1bullets.projectile_img_frame_size = {7,28};
-	monster1bullets.explosion_img_frame_size = {7,28};
-	monster1bullets.width = 10;
-	monster1bullets.height = 30;
-	monster1bullets.explosion_width = 10;
-	monster1bullets.explosion_height = 30;
-	monster1bullets.projectile_hitbox = {0,0,10,30};
-	monster1bullets.explosion_hitbox  = {0,0,10,30};
+	monster1bullets.explosion_img_frame_size = {47,51};
+	monster1bullets.width = 7;
+	monster1bullets.height = 28;
+	monster1bullets.explosion_width = 47;
+	monster1bullets.explosion_height = 51;
+	monster1bullets.projectile_hitbox = {0,0,7,28};
+	monster1bullets.explosion_hitbox  = {19,10,7,26};
 	monster1bullets.projectile_detonation_point = {0,0};
-	monster1bullets.explosion_detonation_point = {0,0};
-	monster1bullets.explosion_time_per_frame = 10;
+	monster1bullets.explosion_detonation_point = {19,10};
+	monster1bullets.explosion_time_per_frame = 5;
 	monster1bulletList = new ProjectileList(monster1bullets);
 	entityManagers_projectile.push_back(monster1bulletList);
 
@@ -125,7 +125,7 @@ int App::initialize() {
 	monster1.hitbox = {4,4,12,12};
 	monster1.bulletManager = monster1bulletList;
 	monster1.bullet_speed = 5;
-	monster1.firePatternStr = "U:10,D:10;20 L:5,R:5;20";
+	monster1.firePatternStr = "U:10,D:10,L:10,R:10;40";
 	monster1List = new MonsterList(monster1);
 	entityManagers_nonprojectile.push_back(monster1List);
 

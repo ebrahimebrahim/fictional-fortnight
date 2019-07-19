@@ -21,7 +21,10 @@ struct ProjectileTypeData {
   int explosion_width;
   int explosion_height;
   vecI explosion_detonation_point;  // point on rendered explosion image (LOCAL coords) from which detonation starts
+  // From main you should pass this in IMAGE PIXELS, so that you can just measure in graphics editor.
+  // It will be later converted to screen pixels
   vecI projectile_detonation_point; // point on rendered projectile image (LOCAL coords) from which detonation starts
+  // Also pass this one in IMAGE pixels
   // (the above two points are going to match at the moment of detonation)
   int explosion_time_per_frame; // global frames per explosion frame
 };
