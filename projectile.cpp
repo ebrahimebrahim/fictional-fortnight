@@ -17,10 +17,22 @@ Projectile::~Projectile() {
 ProjectileList::ProjectileList(ProjectileTypeData projectileTypeData) : projectileTypeData(projectileTypeData) {
 
   // Convert detonation points from image file pixel units to screen pixel units
-  this->projectileTypeData.projectile_detonation_point.x = (projectileTypeData.width * projectileTypeData.projectile_detonation_point.x) / projectileTypeData.projectile_img_frame_size.x;
-  this->projectileTypeData.projectile_detonation_point.y = (projectileTypeData.height * projectileTypeData.projectile_detonation_point.y) / projectileTypeData.projectile_img_frame_size.y;
-  this->projectileTypeData.explosion_detonation_point.x = (projectileTypeData.explosion_width * projectileTypeData.explosion_detonation_point.x) / projectileTypeData.explosion_img_frame_size.x;
-  this->projectileTypeData.explosion_detonation_point.y = (projectileTypeData.explosion_height * projectileTypeData.explosion_detonation_point.y) / projectileTypeData.explosion_img_frame_size.y;
+  double screenpx_per_imgpx_proj_x = double(projectileTypeData.width) / double(projectileTypeData.projectile_img_frame_size.x);
+  double screenpx_per_imgpx_proj_y = double(projectileTypeData.height) / double(projectileTypeData.projectile_img_frame_size.y);
+  double screenpx_per_imgpx_expl_x = double(projectileTypeData.explosion_width) / double(projectileTypeData.explosion_img_frame_size.x);
+  double screenpx_per_imgpx_expl_y = double(projectileTypeData.explosion_height) / double(projectileTypeData.explosion_img_frame_size.y);
+  this->projectileTypeData.projectile_detonation_point.x *= screenpx_per_imgpx_proj_x;
+  this->projectileTypeData.projectile_detonation_point.y *= screenpx_per_imgpx_proj_y;
+  this->projectileTypeData.explosion_detonation_point.x  *= screenpx_per_imgpx_expl_x;
+  this->projectileTypeData.explosion_detonation_point.y  *= screenpx_per_imgpx_expl_y;
+  this->projectileTypeData.projectile_hitbox.x *= screenpx_per_imgpx_proj_x;
+  this->projectileTypeData.projectile_hitbox.w *= screenpx_per_imgpx_proj_x;
+  this->projectileTypeData.projectile_hitbox.y *= screenpx_per_imgpx_proj_y;
+  this->projectileTypeData.projectile_hitbox.h *= screenpx_per_imgpx_proj_y;
+  this->projectileTypeData.explosion_hitbox.x  *= screenpx_per_imgpx_expl_x;
+  this->projectileTypeData.explosion_hitbox.w  *= screenpx_per_imgpx_expl_x;
+  this->projectileTypeData.explosion_hitbox.y  *= screenpx_per_imgpx_expl_y;
+  this->projectileTypeData.explosion_hitbox.h  *= screenpx_per_imgpx_expl_y;
 }
 
 

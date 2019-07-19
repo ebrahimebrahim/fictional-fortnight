@@ -16,9 +16,9 @@ struct MonsterTypeData {
   vecI monster_img_frame_size; // pixel size of one frame in monster usual animation
   int width;// pixel width and height of monster rendered on screen
   int height;
-  SDL_Rect hitbox; // hitbox in LOCAL coords (origin is top left of monster)
+  SDL_Rect hitbox; // hitbox in LOCAL coords (origin is top left of monster), using IMAGE FILE PXLS
+  // (they will be automatically converted to screen pxl units later on)
   ProjectileList * bulletManager; // needs to be valid while associated monsters exist. NOT freed by monster.
-  int bullet_speed; // pixels per frame
   std::string firePatternStr;
 };
 

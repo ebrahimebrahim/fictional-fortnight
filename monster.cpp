@@ -13,6 +13,14 @@ Monster::~Monster() {
 
 MonsterList::MonsterList(MonsterTypeData mtd) : monsterTypeData(mtd) {
   firePattern = parseFirePattern(mtd.firePatternStr);
+
+  // Convert hitbox description from image file pixel units to screen pixel units
+  double screenpx_per_imgpx_x = double(monsterTypeData.width) / double(monsterTypeData.monster_img_frame_size.x);
+  double screenpx_per_imgpx_y = double(monsterTypeData.height) / double(monsterTypeData.monster_img_frame_size.y);
+  this->monsterTypeData.hitbox.x *= screenpx_per_imgpx_x;
+  this->monsterTypeData.hitbox.w *= screenpx_per_imgpx_x;
+  this->monsterTypeData.hitbox.y *= screenpx_per_imgpx_y;
+  this->monsterTypeData.hitbox.h *= screenpx_per_imgpx_y;
 }
 
 MonsterList::~MonsterList() {
@@ -105,6 +113,8 @@ void MonsterList::render(App * app, SDL_Renderer * renderer) {
     else {
       SDL_RenderCopy(renderer, sprites, &(frameToDeathSpriteRect[monster->frame]), &(monster->rect));
     }
+    // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
+    // SDL_RenderDrawRect(renderer, &(monster->hitbox)); // TEST
   }
 }
 

@@ -3,6 +3,8 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #include "main.h"
 
 
@@ -70,6 +72,11 @@ int App::initialize() {
 	palette[PALETTE_WHITE] = {255,255,255,255};
 
 
+	// Initialize random number generator
+	srand(time(nullptr));
+
+
+
 	// --- Create EntityManager objects ---
 	playerEntity = new PlayerEntity(); // will be freed when all of entityManagers items are freed in ~App()
 	entityManagers_nonprojectile.push_back(playerEntity);
@@ -83,11 +90,11 @@ int App::initialize() {
 	missile.projectile_img_frame_size = {18,39};
 	missile.explosion_img_frame_size = {40,40};
 	missile.width = 18;
-	missile.height = 40;
-	missile.explosion_width = 400;
-	missile.explosion_height = 400;
-	missile.projectile_hitbox = {0,0,18,40};
-	missile.explosion_hitbox  = {10,10,80,80};
+	missile.height = 39;
+	missile.explosion_width = 100;
+	missile.explosion_height = 100;
+	missile.projectile_hitbox = {0,0,18,39};
+	missile.explosion_hitbox  = {6,9,24,22};
 	missile.projectile_detonation_point = {9,5};
 	missile.explosion_detonation_point = {16,18};
 	missile.explosion_time_per_frame = 5;
@@ -122,9 +129,8 @@ int App::initialize() {
 	monster1.num_death_frames = 8;
 	monster1.width  = 20;
 	monster1.height = 20;
-	monster1.hitbox = {4,4,12,12};
+	monster1.hitbox = {1,1,3,3};
 	monster1.bulletManager = monster1bulletList;
-	monster1.bullet_speed = 5;
 	monster1.firePatternStr = "U:10,D:10,L:10,R:10;40";
 	monster1List = new MonsterList(monster1);
 	entityManagers_nonprojectile.push_back(monster1List);
@@ -133,9 +139,7 @@ int App::initialize() {
 
 	// ---
 
-	monster1List->createMonster(200,200); // currently here for testing
-	monster1List->createMonster(250,300); // currently here for testing
-	monster1List->createMonster(300,450); // currently here for testing
+	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
 
 
 
