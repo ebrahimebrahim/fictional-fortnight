@@ -140,6 +140,10 @@ int App::initialize() {
 	// ---
 
 	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
+	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
+	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
+	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
+	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
 
 
 

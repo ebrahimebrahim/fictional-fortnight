@@ -124,6 +124,7 @@ void MonsterList::createMonster(int x, int y) {
   new_monster->hitbox = monsterTypeData.hitbox;
   new_monster->hitbox.x += x;
   new_monster->hitbox.y += y;
+  new_monster->firePatternStepCountdown = rand() % 100 ; // to avoid overly synced shots between different monsters 
   monsters.push_front(new_monster);
 }
 
