@@ -1,7 +1,6 @@
 #include <string>
 #include <cstring>
 #include <vector>
-#include "../utilities.h"
 
 struct FirePatternStep {
   int u=-1; // velocity of upward shot, if -1 then there's no up shot;

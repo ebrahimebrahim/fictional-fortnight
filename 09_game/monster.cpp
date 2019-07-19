@@ -12,6 +12,7 @@ Monster::~Monster() {
 }
 
 MonsterList::MonsterList(MonsterTypeData mtd) : monsterTypeData(mtd) {
+  firePattern = parseFirePattern(mtd.firePatternStr);
 }
 
 MonsterList::~MonsterList() {
@@ -57,12 +58,23 @@ void MonsterList::update(App * app) {
       // increment animation frame
       if (app->frame % 10 == 0) monster->frame = (monster->frame + 1) % monsterTypeData.num_frames;
 
-      if (app->frame % 50 == 0) {
-        fireBullet(monster,DIRECTION_RIGHT,5);
-        fireBullet(monster,DIRECTION_DOWN,6);
-        fireBullet(monster,DIRECTION_UP,7);
-        fireBullet(monster,DIRECTION_LEFT,2);
+
+      if (monster->firePatternStepCountdown==0) {
+        FirePatternStep & fireStep = firePattern[monster->firePatternStepIndex];
+        if (fireStep.u>0) fireBullet(monster,DIRECTION_UP,fireStep.u);
+        if (fireStep.l>0) fireBullet(monster,DIRECTION_LEFT,fireStep.l);
+        if (fireStep.d>0) fireBullet(monster,DIRECTION_DOWN,fireStep.d);
+        if (fireStep.r>0) fireBullet(monster,DIRECTION_RIGHT,fireStep.r);
+
+        // increment step index
+        ++monster->firePatternStepIndex;
+        if (monster->firePatternStepIndex>=firePattern.size()) monster->firePatternStepIndex = 0;
+
+        //reset countdown
+        monster->firePatternStepCountdown = fireStep.wait;
       }
+      else --monster->firePatternStepCountdown;
+
 
       // check if it should start dying
       if (app->rectContents(monster->hitbox) & CONTAINS_DEADLY_EXPLOSION) {

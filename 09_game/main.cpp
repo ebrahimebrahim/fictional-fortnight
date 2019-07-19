@@ -93,7 +93,7 @@ int App::initialize() {
 	ProjectileTypeData monster1bullets;
 	monster1bullets.num_frames = 2;
 	monster1bullets.num_explosion_frames = 2;
-	monster1bullets.num_deadly_explosion_frames = 2;
+	monster1bullets.num_deadly_explosion_frames = 1;
 	monster1bullets.projectile_img_file = "monster1bullet.png";
 	monster1bullets.explosion_img_file = "monster1bullet_explode.png";
 	monster1bullets.projectile_img_frame_size = {7,28};
@@ -117,6 +117,7 @@ int App::initialize() {
 	monster1.hitbox = {4,4,12,12};
 	monster1.bulletManager = monster1bulletList;
 	monster1.bullet_speed = 5;
+	monster1.firePatternStr = "U:10,D:10;20 L:5,R:5;20";
 	monster1List = new MonsterList(monster1);
 	entityManagers_nonprojectile.push_back(monster1List);
 
@@ -125,6 +126,8 @@ int App::initialize() {
 	// ---
 
 	monster1List->createMonster(200,200); // currently here for testing
+	monster1List->createMonster(250,300); // currently here for testing
+	monster1List->createMonster(300,450); // currently here for testing
 
 
 

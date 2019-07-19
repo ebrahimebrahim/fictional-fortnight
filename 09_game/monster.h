@@ -5,6 +5,7 @@
 #include "utilities.h"
 #include <string>
 #include "projectile.h"
+#include "firePatternParser.h"
 
 
 struct MonsterTypeData {
@@ -18,6 +19,7 @@ struct MonsterTypeData {
   SDL_Rect hitbox; // hitbox in LOCAL coords (origin is top left of monster)
   ProjectileList * bulletManager; // needs to be valid while associated monsters exist. NOT freed by monster.
   int bullet_speed; // pixels per frame
+  std::string firePatternStr;
 };
 
 
@@ -33,6 +35,8 @@ class Monster {
     bool erase_this_monster = false;
     SDL_Rect rect; //rect in which monster is drawn (global coords)
     SDL_Rect hitbox; // monster's hitbox (global coords)
+    unsigned int firePatternStepIndex = 0; //index of current step in firing pattern loop
+    int firePatternStepCountdown = 0; // countdown for when to move to next step of firing pattern loop
 };
 
 
@@ -50,6 +54,7 @@ class MonsterList :  public EntityManager {
     void fireBullet(Monster * monster, DirectionUDLR dir, int speed);
 
     MonsterTypeData monsterTypeData;
+    FirePattern firePattern;
 
     //Assets
     SDL_Texture * sprites = nullptr;
