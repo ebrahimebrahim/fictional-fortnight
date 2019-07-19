@@ -42,6 +42,7 @@ class App {
     Uint32 frame = 0;
 
     // Game state
+    int score = 0;
     std::vector<EntityManager *> entityManagers_nonprojectile;
     std::vector<ProjectileList *> entityManagers_projectile;
     PlayerEntity * playerEntity = nullptr;
@@ -54,7 +55,7 @@ class App {
     SDL_Rect right_menu_rect = {gamescreen_width,0,right_menu_width,WINDOW_HEIGHT};
 
     // Textboxes
-    TextBox * peupTextBox = nullptr;
+    TextBox * scoreTextBox = nullptr;
     TextBox * timerTextBox = nullptr;
     TextBox * fpsTextBox = nullptr;
 
@@ -79,5 +80,6 @@ class App {
 
     // Methods that will be used by the entity managers
     ContainsBitmask rectContents(const SDL_Rect & r, const void * ignore = nullptr);
+    void addScore(int);
 
 };

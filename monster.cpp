@@ -88,6 +88,7 @@ void MonsterList::update(App * app) {
       if (app->rectContents(monster->hitbox) & CONTAINS_DEADLY_EXPLOSION) {
         monster->dying = true;
         monster->frame = 0; // we will now start using frame for death animation
+        app->addScore(5);
       }
     }
     else {
@@ -124,7 +125,7 @@ void MonsterList::createMonster(int x, int y) {
   new_monster->hitbox = monsterTypeData.hitbox;
   new_monster->hitbox.x += x;
   new_monster->hitbox.y += y;
-  new_monster->firePatternStepCountdown = rand() % 100 ; // to avoid overly synced shots between different monsters 
+  new_monster->firePatternStepCountdown = rand() % 100 ; // to avoid overly synced shots between different monsters
   monsters.push_front(new_monster);
 }
 

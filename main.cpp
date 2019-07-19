@@ -94,7 +94,7 @@ int App::initialize() {
 	missile.explosion_width = 100;
 	missile.explosion_height = 100;
 	missile.projectile_hitbox = {0,0,18,39};
-	missile.explosion_hitbox  = {6,9,24,22};
+	missile.explosion_hitbox  = {3,3,34,34};
 	missile.projectile_detonation_point = {9,5};
 	missile.explosion_detonation_point = {16,18};
 	missile.explosion_time_per_frame = 5;
@@ -139,11 +139,7 @@ int App::initialize() {
 
 	// ---
 
-	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
-	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
-	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
-	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
-	monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height); // currently here for testing
+
 
 
 
@@ -210,6 +206,9 @@ void App::mainLoop(){
 	for (EntityManager * entityManager : entityManagers_nonprojectile)
 		entityManager->update(this);
 
+	if (rand() % 200 == 0)
+		monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height);
+
 }
 
 
@@ -220,7 +219,7 @@ void App::render(){
 
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
-	peupTextBox->renderCopy(10,10);
+	scoreTextBox->renderCopy(10,10);
 	std::string timeString = std::to_string((SDL_GetTicks() - timerStart)/100);
 	timerTextBox->updateText(timeString.c_str());
 	timerTextBox->renderCopy(10,50);
@@ -286,8 +285,8 @@ int App::loadMedia(){
 	}
 
 	//Initialize text Textboxes
-	peupTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
-	peupTextBox->updateText("peup.");
+	scoreTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
+	scoreTextBox->updateText(std::to_string(score).c_str());
 	timerTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
 	timerTextBox->updateText("[TIMER]");
 	fpsTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
@@ -309,7 +308,7 @@ void App::unloadMedia(){
 		entityManager->unloadMedia();
 	}
 
-	delete peupTextBox;
+	delete scoreTextBox;
 	delete timerTextBox;
 	delete fpsTextBox;
 
@@ -369,4 +368,10 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 
 	return contents;
 
+}
+
+
+void App::addScore(int s) {
+	score += s;
+	scoreTextBox->updateText(std::to_string(score).c_str());
 }

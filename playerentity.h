@@ -35,6 +35,7 @@ class PlayerEntity :  public EntityManager {
     int v = 0; // current speed
     SDL_Rect playerRect;
     int missile_cooldown_countdown = 0;
+    int hit_cooldown = 0;
 
     // Constants (for now)
     int width = 20;

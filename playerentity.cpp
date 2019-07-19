@@ -99,7 +99,17 @@ void PlayerEntity::update(App * app) {
   // check if player should die now:
 
   if (app->rectContents(playerRect) & CONTAINS_DEADLY_EXPLOSION)
-    app->peupTextBox->updateText("D:");
+    if (hit_cooldown == 0) {
+      app->addScore(-10);
+      hit_cooldown = 60;
+      SDL_SetTextureAlphaMod(sprites,60);
+    }
+
+  if (hit_cooldown>0) {
+    --hit_cooldown;
+    if (hit_cooldown==1) SDL_SetTextureAlphaMod(sprites,255);
+  }
+
 
 }
 

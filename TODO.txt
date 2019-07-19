@@ -1,8 +1,4 @@
-random spawning of monsters
-
-player acceleration
-  on second thought it doesn't make sense to have this while also only moving player/projectiles U/D/L/R
-  because changes in direction would be abrupt and we'd have a bit of inconsistency there
+make some more monsters and make random monsters spawn at random times
 
 player speed boost button? could be fun
 
