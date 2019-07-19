@@ -82,26 +82,23 @@ void ProjectileList::update(App * app){
         default: break;
       }
 
-      // update projectile rect, which needs to be correct for other stuff to work
-      updateProjectileRect(projectile);
+      // update projectile hitbox, which needs to be correct for other stuff to work
+      updateProjectileHitbox(projectile);
 
-      // check if it should start exploding and set projectile->rect to be correct.
-      if (app->rectContents(projectile->rect, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION | CONTAINS_PROJECTILE)) {
-        vecI topLeft(projectile->x,projectile->y);
-        vecI explosionTopLeft = topLeft + vecI(projectileTypeData.width/2,projectileTypeData.height/2) // projectile center
-                                - vecI(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2); // explosion top left
-        projectile->x = explosionTopLeft.x;
-        projectile->y = explosionTopLeft.y;
-        projectile->rect = {projectile->x,projectile->y,projectileTypeData.explosion_width,projectileTypeData.explosion_height};
-        if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
-          explosionTopLeft = explosionTopLeft + vecI(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2) - vecI(projectileTypeData.explosion_height/2,projectileTypeData.explosion_width/2);
-          projectile->rect.x = explosionTopLeft.x;
-          projectile->rect.y = explosionTopLeft.y;
-          projectile->rect.w = projectileTypeData.explosion_height;
-          projectile->rect.h = projectileTypeData.explosion_width;
-        } // This code was copy pasted from above. there's a better way :/
+      // check if it should start exploding and align explosion and set projectile->hitbox to be correct.
+      if (app->rectContents(projectile->hitbox, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION | CONTAINS_PROJECTILE)) {
         projectile->exploding = true;
         projectile->animation_frame_countdown = projectileTypeData.explosion_time_per_frame;
+
+        vecI r1(projectileTypeData.width/2,projectileTypeData.height/2);
+        vecI r2(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2);
+        vecI newCoords = rotatePoint( projectileTypeData.projectile_detonation_point - projectileTypeData.explosion_detonation_point + r2 - r1,
+                                      vecI(0,0),projectile->dir)
+                         + (r1-r2) + vecI(projectile->x,projectile->y);
+        projectile->x = newCoords.x;
+        projectile->y = newCoords.y;
+
+        updateProjectileHitbox(projectile);
       }
     }
     else {
@@ -136,24 +133,29 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
                        globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
     }
     // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
-    // SDL_RenderDrawRect(renderer, &(projectile->rect)); // TEST
+    // SDL_RenderDrawRect(renderer, &(projectile->hitbox)); // TEST
+    // SDL_SetRenderDrawColor(renderer, 0,255,255,255);  //TEST
+    // SDL_RenderDrawPoint(renderer,projectile->x,projectile->y); // TEST
   }
 }
 
-void ProjectileList::updateProjectileRect(Projectile * projectile) {
-  projectile->rect = {projectile->x,projectile->y,projectileTypeData.width,projectileTypeData.height};
-  vecI topLeft(projectile->x,projectile->y);
-  if (projectile->dir == DIRECTION_LEFT || projectile->dir == DIRECTION_RIGHT) {
-    topLeft = topLeft + vecI(projectileTypeData.width/2,projectileTypeData.height/2) - vecI(projectileTypeData.height/2,projectileTypeData.width/2);
-    projectile->rect.x = topLeft.x;
-    projectile->rect.y = topLeft.y;
-    projectile->rect.w = projectileTypeData.height;
-    projectile->rect.h = projectileTypeData.width;
-  }
+void ProjectileList::updateProjectileHitbox(Projectile * projectile) {
+  const SDL_Rect & local_hitbox = projectile->exploding ?
+                                  projectileTypeData.explosion_hitbox :
+                                  projectileTypeData.projectile_hitbox;
+  projectile->hitbox = local_hitbox;
+  projectile->hitbox.x += projectile->x;
+  projectile->hitbox.y += projectile->y;
+
+  vecI center = vecI(projectile->x,projectile->y) + // top left of projectile/explosion
+                ( projectile->exploding
+                  ? vecI(projectileTypeData.explosion_width/2,projectileTypeData.explosion_height/2)
+                  : vecI(projectileTypeData.width/2,projectileTypeData.height/2) ); // center of rotation
+  projectile->hitbox = rotateRect(projectile->hitbox,center,projectile->dir);
 }
 
 void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir) {
   Projectile * new_projectile = new Projectile(x,y,v,dir);
-  updateProjectileRect(new_projectile);
+  updateProjectileHitbox(new_projectile);
   projectiles.push_front(new_projectile);
 }

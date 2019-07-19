@@ -1,7 +1,11 @@
-encode firing pattern into something that can easily be passed into monster as type data
-
 player acceleration
+  on second thought it doesn't make sense to have this while also only moving player/projectiles U/D/L/R
+  because changes in direction would be abrupt and we'd have a bit of inconsistency there
 
-player speedboost button? could be fun
+player speed boost button? could be fun
+
+missiles should have a settable local explosion hitbox just like monsters do
 
 optimize vector calculations in various entity update steps
+
+player pickup -- alternative missile

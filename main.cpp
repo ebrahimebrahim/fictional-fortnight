@@ -86,6 +86,10 @@ int App::initialize() {
 	missile.height = 40;
 	missile.explosion_width = 100;
 	missile.explosion_height = 100;
+	missile.projectile_hitbox = {0,0,18,40};
+	missile.explosion_hitbox  = {10,10,80,80};
+	missile.projectile_detonation_point = {9,5};
+	missile.explosion_detonation_point = {40,45};
 	missile.explosion_time_per_frame = 5;
 	projectileList = new ProjectileList(missile);
 	entityManagers_projectile.push_back(projectileList);
@@ -102,6 +106,10 @@ int App::initialize() {
 	monster1bullets.height = 30;
 	monster1bullets.explosion_width = 10;
 	monster1bullets.explosion_height = 30;
+	monster1bullets.projectile_hitbox = {0,0,10,30};
+	monster1bullets.explosion_hitbox  = {0,0,10,30};
+	monster1bullets.projectile_detonation_point = {0,0};
+	monster1bullets.explosion_detonation_point = {0,0};
 	monster1bullets.explosion_time_per_frame = 10;
 	monster1bulletList = new ProjectileList(monster1bullets);
 	entityManagers_projectile.push_back(monster1bulletList);
@@ -334,11 +342,11 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 	for (ProjectileList * projectileManager : entityManagers_projectile) {
 		for (Projectile * projectile : projectileManager->projectiles)
 			if (projectile->exploding && projectile->explode_frame < projectileManager->projectileTypeData.num_deadly_explosion_frames) {
-				if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE)
+				if (SDL_HasIntersection(&r,&(projectile->hitbox)) == SDL_TRUE)
 					contents |= CONTAINS_DEADLY_EXPLOSION;
 			}
 			else if (!projectile->exploding)
-				if (SDL_HasIntersection(&r,&(projectile->rect)) == SDL_TRUE && projectile!=ignore)
+				if (SDL_HasIntersection(&r,&(projectile->hitbox)) == SDL_TRUE && projectile!=ignore)
 					contents |= CONTAINS_PROJECTILE;
 	}
 

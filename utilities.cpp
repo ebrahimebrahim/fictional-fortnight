@@ -35,11 +35,29 @@ return ( scancode == SDL_SCANCODE_LEFT  ||
 
 
 
-bool pointInPolytope(vecI point, Polyhedron polyhedron) {
-	for (Hyperplane hyperplane : polyhedron)
-		if (!hyperplane.pos_side(point))
-			return false;
-	return true;
+vecI rotatePoint(const vecI & p,const vecI & c,DirectionUDLR dir) {
+	switch(dir) {
+		case DIRECTION_UP:    return p;
+		case DIRECTION_DOWN:  return 2*c-p;
+		case DIRECTION_LEFT:  return vecI(p.y-c.y+c.x,c.x+c.y-p.x);
+		case DIRECTION_RIGHT: return vecI(c.x+c.y-p.y,p.x-c.x+c.y);
+		default:              return p;
+	}
+}
+
+
+SDL_Rect rotateRect(const SDL_Rect & r,const vecI & c,DirectionUDLR dir) {
+	vecI newTopLeft;
+	switch(dir) {
+		case DIRECTION_UP:    return r;
+		case DIRECTION_DOWN:  newTopLeft = rotatePoint(vecI(r.x+r.w,r.y+r.h),c,dir);
+													return {newTopLeft.x,newTopLeft.y,r.w,r.h};
+		case DIRECTION_LEFT:  newTopLeft = rotatePoint(vecI(r.x+r.w,r.y),c,dir);
+													return {newTopLeft.x,newTopLeft.y,r.h,r.w};
+		case DIRECTION_RIGHT: newTopLeft = rotatePoint(vecI(r.x,r.y+r.h),c,dir);
+													return {newTopLeft.x,newTopLeft.y,r.h,r.w};
+		default:              return r;
+	}
 }
 
 

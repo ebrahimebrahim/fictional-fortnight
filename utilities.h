@@ -67,23 +67,11 @@ typedef Vector2D<int>    vecI;
 typedef Vector2D<double> vecD;
 
 
-
-class Hyperplane {
-public:
-  Hyperplane() : pt(), normal() {}
-  Hyperplane(vecI pt, vecI normal) : pt(pt), normal(normal) {}
-  ~Hyperplane() {}
-
-  bool pos_side(vecI point) {return dot(point-pt,normal)>=0;}
-
-  vecI pt;
-  vecI normal;
-};
-
-typedef std::vector<Hyperplane> Polyhedron;
-
-bool pointInPolytope(vecI,Polyhedron);
-
+vecI rotatePoint(const vecI & point,const vecI & center,DirectionUDLR dir);
+SDL_Rect rotateRect(const SDL_Rect & rect,const vecI & center,DirectionUDLR dir);
+// Rotate the given rectangle. The given direction is the desired new "up"
+// So e.g. if the given direction is DIRECTION_RIGHT, then we get a clockwise 90 deg rotation
+//about the given center
 
 
 

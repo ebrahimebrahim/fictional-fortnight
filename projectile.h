@@ -10,6 +10,8 @@ struct ProjectileTypeData {
   int num_frames;
   int num_explosion_frames;
   int num_deadly_explosion_frames;
+  SDL_Rect projectile_hitbox; // projectile hitbox in LOCAL coords (origin is top left of upward-facing projectile)
+  SDL_Rect explosion_hitbox;  // explosion hitbox in LOCAL coords (origin is top left of upward-facing projectile)
   std::string projectile_img_file;
   vecI projectile_img_frame_size;
   std::string explosion_img_file;
@@ -18,6 +20,9 @@ struct ProjectileTypeData {
   int height;
   int explosion_width;
   int explosion_height;
+  vecI explosion_detonation_point;  // point on rendered explosion image (LOCAL coords) from which detonation starts
+  vecI projectile_detonation_point; // point on rendered projectile image (LOCAL coords) from which detonation starts
+  // (the above two points are going to match at the moment of detonation)
   int explosion_time_per_frame; // global frames per explosion frame
 };
 
@@ -36,7 +41,7 @@ class Projectile {
     int explode_frame = 0;
     int animation_frame_countdown = 0; // countdown to next frame of explosion animation
     bool erase_this_projectile = false;
-    SDL_Rect rect; // rect of explosion or of projectile, depending on whether exploding is turned on
+    SDL_Rect hitbox; // hitbox of explosion or of projectile, depending on whether exploding is turned on
 };
 
 
@@ -50,7 +55,7 @@ class ProjectileList :  public EntityManager {
     virtual void update(App *); // Update step to go into main game loop
     virtual void render(App *, SDL_Renderer *);
 
-    void updateProjectileRect(Projectile *);
+    void updateProjectileHitbox(Projectile *);
     void createProjectile(int x, int y, int v, DirectionUDLR dir);
 
     ProjectileTypeData projectileTypeData;
