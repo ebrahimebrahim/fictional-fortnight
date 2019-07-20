@@ -86,6 +86,7 @@ int App::initialize() {
 	missile.num_frames = 2;
 	missile.num_explosion_frames = 6;
 	missile.num_deadly_explosion_frames = 4;
+	missile.num_fadeout_frames = 4;
 	missile.projectile_img_file = "missile.png";
 	missile.explosion_img_file = "missile_explode.png";
 	missile.projectile_img_frame_size = {18,39};
@@ -106,6 +107,7 @@ int App::initialize() {
 	monster1bullets.num_frames = 2;
 	monster1bullets.num_explosion_frames = 5;
 	monster1bullets.num_deadly_explosion_frames = 1;
+	monster1bullets.num_fadeout_frames = 4;
 	monster1bullets.projectile_img_file = "monster1bullet.png";
 	monster1bullets.explosion_img_file = "monster1bullet_explode.png";
 	monster1bullets.projectile_img_frame_size = {7,28};

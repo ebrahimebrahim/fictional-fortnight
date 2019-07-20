@@ -9,7 +9,8 @@
 struct ProjectileTypeData {
   int num_frames;
   int num_explosion_frames;
-  int num_deadly_explosion_frames;
+  int num_deadly_explosion_frames; // number of frames (from head end of explosion frames) during which explosion hitbox is active
+  int num_fadeout_frames; // number of frames (from tail end of explosion frames) during which a fadeout is happening
   SDL_Rect projectile_hitbox; // projectile hitbox in LOCAL coords IMAGE FILE PXLS (origin is top left of upward-facing projectile)
   SDL_Rect explosion_hitbox;  // explosion hitbox in LOCAL coords IMAGE FILE PXLS (origin is top left of upward-facing projectile)
   // These will automatically get converted from the originally given pixel units.

@@ -117,7 +117,7 @@ void MonsterList::render(App * app, SDL_Renderer * renderer) {
       SDL_RenderCopy(renderer, sprites, &(frameToSpriteRect[monster->frame]), &(monster->rect));
     }
     else if (monster->dying) {
-      int alphaMod = std::min((monsterTypeData.num_death_frames-1-monster->frame)*255 / (monsterTypeData.num_fadeout_frames-1),255);
+      int alphaMod = std::min((monsterTypeData.num_death_frames-monster->frame)*255 / monsterTypeData.num_fadeout_frames,255);
       SDL_SetTextureAlphaMod(sprites,alphaMod);
       SDL_RenderCopy(renderer, sprites, &(frameToDeathSpriteRect[monster->frame]), &(monster->rect));
       SDL_SetTextureAlphaMod(sprites,255);

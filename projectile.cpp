@@ -146,8 +146,11 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
     }
     else {
       SDL_Rect target_rect = {projectile->x,projectile->y,projectileTypeData.explosion_width,projectileTypeData.explosion_height};
+      int alphaMod = std::min((projectileTypeData.num_explosion_frames-projectile->explode_frame)*255 / projectileTypeData.num_fadeout_frames,255);
+      SDL_SetTextureAlphaMod(explosionFrames,alphaMod);
       SDL_RenderCopyEx(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(target_rect),
                        globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
+      SDL_SetTextureAlphaMod(sprites,255);
     }
     // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
     // SDL_RenderDrawRect(renderer, &(projectile->hitbox)); // TEST
