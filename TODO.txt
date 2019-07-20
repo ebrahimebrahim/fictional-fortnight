@@ -1,3 +1,5 @@
+horrifying bug: a monster can spawn inside the player, and then the player is stuck
+
 maybe things SHOULD be able to move more than just UDLR?
 then some monsters could try to aim for player
 maybe player could use mouse to aim

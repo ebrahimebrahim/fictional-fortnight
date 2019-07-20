@@ -128,6 +128,7 @@ int App::initialize() {
 	monster1.num_frames = 5;
 	monster1.alive_time_per_frame = 10;
 	monster1.num_death_frames = 8;
+	monster1.num_fadeout_frames = 4;
 	monster1.death_time_per_frame = 10;
 	monster1.monster_img_frame_size = vecI(5,5);
 	monster1.width  = 20;

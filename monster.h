@@ -15,6 +15,7 @@ struct MonsterTypeData {
   std::string monster_img_file;
   int num_frames; // number of frames in monster's usual animation
   int num_death_frames;
+  int num_fadeout_frames; // number of frames (from tail end of death frames) during which a fadeout is happening
   vecI monster_img_frame_size; // pixel size of one frame in monster usual animation
   int width;// pixel width and height of monster rendered on screen
   int height;

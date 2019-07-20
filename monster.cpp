@@ -2,6 +2,7 @@
 #include "utilities.h"
 #include "main.h"
 #include <cstdlib>
+#include <algorithm>
 
 extern Globals globals;
 
@@ -116,7 +117,10 @@ void MonsterList::render(App * app, SDL_Renderer * renderer) {
       SDL_RenderCopy(renderer, sprites, &(frameToSpriteRect[monster->frame]), &(monster->rect));
     }
     else if (monster->dying) {
+      int alphaMod = std::min((monsterTypeData.num_death_frames-1-monster->frame)*255 / (monsterTypeData.num_fadeout_frames-1),255);
+      SDL_SetTextureAlphaMod(sprites,alphaMod);
       SDL_RenderCopy(renderer, sprites, &(frameToDeathSpriteRect[monster->frame]), &(monster->rect));
+      SDL_SetTextureAlphaMod(sprites,255);
     }
     else if (monster->spawnFrames < NUM_SPAWN_FRAMES) {
       double spawn_progress = double(monster->spawnFrames)/double(NUM_SPAWN_FRAMES);
