@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 #include "main.h"
 
 
@@ -131,14 +132,17 @@ int App::initialize() {
 	monster1.height = 20;
 	monster1.hitbox = {1,1,3,3};
 	monster1.bulletManager = monster1bulletList;
-	monster1.firePatternStr = "U:10,D:10,L:10,R:10;40";
+	monster1.firePatternStr = "U:10;20 L:10;20 D:10;20 R:10;20";
 	monster1List = new MonsterList(monster1);
 	entityManagers_nonprojectile.push_back(monster1List);
+	entityManagers_monster.push_back(monster1List);
 
 
 
 	// ---
 
+
+	num_levels = entityManagers_monster.size();
 
 
 
@@ -201,13 +205,21 @@ void App::handleEvents(){
 
 void App::mainLoop(){
 
+	// Let all entity managers do their updates
 	for (EntityManager * entityManager : entityManagers_projectile)
 		entityManager->update(this);
 	for (EntityManager * entityManager : entityManagers_nonprojectile)
 		entityManager->update(this);
 
-	if (rand() % 200 == 0)
-		monster1List->createMonster(rand()%gamescreen_width,rand()%gamescreen_height);
+	// Maybe spawn a monster
+	if (rand() % 200 == 0) spawnMonster();
+
+	// Check if level increases or win state changes
+	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
+	if (level > num_levels) won=true;
+	if (score < SCORE_TO_LOSE) lost=true;
+
+
 
 }
 
@@ -374,4 +386,11 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 void App::addScore(int s) {
 	score += s;
 	scoreTextBox->updateText(std::to_string(score).c_str());
+}
+
+void App::spawnMonster() {
+	int monsterIndex = rand() % std::max(int(entityManagers_monster.size()),level-1);
+
+	entityManagers_monster[monsterIndex]->createMonster(rand()% (gamescreen_width  - entityManagers_monster[monsterIndex]->monsterTypeData.width ) ,
+																											rand()% (gamescreen_height - entityManagers_monster[monsterIndex]->monsterTypeData.height ) );
 }

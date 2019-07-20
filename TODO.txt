@@ -1,7 +1,17 @@
 make some more monsters and make random monsters spawn at random times
 
+victory condition? reach a certain score? defeat condition similarly?
+score bar
+
 player speed boost button? could be fun
+
+move score window to bottom and put useful info like
+  ave fps rather than fps
+  missile and boost ready status
+  a bar showing how close score is to game win state
 
 optimize vector calculations in various entity update steps
 
 player pickup -- alternative missile
+
+a main menu, a how to play, a win screen, a lose screen

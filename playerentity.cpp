@@ -100,7 +100,7 @@ void PlayerEntity::update(App * app) {
 
   if (app->rectContents(playerRect) & CONTAINS_DEADLY_EXPLOSION)
     if (hit_cooldown == 0) {
-      app->addScore(-10);
+      app->addScore(SCORE_CHANGE_WHEN_PLAYER_HIT);
       hit_cooldown = 60;
       SDL_SetTextureAlphaMod(sprites,60);
     }

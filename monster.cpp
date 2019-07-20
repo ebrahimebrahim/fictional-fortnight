@@ -88,7 +88,7 @@ void MonsterList::update(App * app) {
       if (app->rectContents(monster->hitbox) & CONTAINS_DEADLY_EXPLOSION) {
         monster->dying = true;
         monster->frame = 0; // we will now start using frame for death animation
-        app->addScore(5);
+        app->addScore(SCORE_FOR_KILLING_MONSTER);
       }
     }
     else {
