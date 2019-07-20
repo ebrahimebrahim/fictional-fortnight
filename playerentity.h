@@ -30,18 +30,24 @@ class PlayerEntity :  public EntityManager {
     DirectionUDLR tryMove = DIRECTION_NEUTRAL;
     CircleBuffer<SDL_Scancode> lastDirectionalKeys;
     bool tryShoot = false;
+    bool trySpeed = false;
     int x = 100; // x,y of top left corner of the player entity
     int y = 100;
-    int v = 0; // current speed
+    int v = 0; // current actual speed
+    int move_speed = 5; // current move speed if tried to move and not obstructed (can be boosted)
     SDL_Rect playerRect;
     int missile_cooldown_countdown = 0;
+    int speedboost_cooldown_countdown = 0; // time left before speedbost can be used again
+    int speedboost_time_left = 0; // time (updates) left to remain in boosted state
     int hit_cooldown = 0;
 
     // Constants (for now)
     int width = 20;
     int height = 20;
-    int move_speed = 5;
     int missile_cooldown = 60;
+    int speedboost_cooldown = 300;
+    int speedboost_duration = 100; // time to remain in boosted state
+    int speedboost = 5; // amount to boost speed when speed boost is used
 
 
 };
