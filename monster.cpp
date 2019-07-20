@@ -62,9 +62,9 @@ void MonsterList::handleEvent(SDL_Event * event){
 void MonsterList::update(App * app) {
   for (Monster * monster : monsters) {
 
-    if (!monster->dying) {
+    if (!monster->dying && monster->spawnFrames >= NUM_SPAWN_FRAMES) {
       // increment animation frame
-      if (app->frame % 10 == 0) monster->frame = (monster->frame + 1) % monsterTypeData.num_frames;
+      if (app->frame % monsterTypeData.alive_time_per_frame == 0) monster->frame = (monster->frame + 1) % monsterTypeData.num_frames;
 
 
       if (monster->firePatternStepCountdown==0) {
@@ -91,9 +91,13 @@ void MonsterList::update(App * app) {
         app->addScore(SCORE_FOR_KILLING_MONSTER);
       }
     }
-    else {
-      if (app->frame % 10 == 0) ++(monster->frame);
+    else if (monster->dying) {
+      if (app->frame % monsterTypeData.death_time_per_frame == 0) ++(monster->frame);
       if (monster->frame >= monsterTypeData.num_death_frames) monster->erase_this_monster=true;
+    }
+    else if (monster->spawnFrames < NUM_SPAWN_FRAMES) {
+      ++monster->spawnFrames;
+      if (app->frame % monsterTypeData.alive_time_per_frame == 0) monster->frame = (monster->frame + 1) % monsterTypeData.num_frames;
     }
 
   }
@@ -108,11 +112,21 @@ void MonsterList::update(App * app) {
 
 void MonsterList::render(App * app, SDL_Renderer * renderer) {
   for (Monster * monster : monsters) {
-    if (!monster->dying) {
+    if (!monster->dying && monster->spawnFrames >= NUM_SPAWN_FRAMES) {
       SDL_RenderCopy(renderer, sprites, &(frameToSpriteRect[monster->frame]), &(monster->rect));
     }
-    else {
+    else if (monster->dying) {
       SDL_RenderCopy(renderer, sprites, &(frameToDeathSpriteRect[monster->frame]), &(monster->rect));
+    }
+    else if (monster->spawnFrames < NUM_SPAWN_FRAMES) {
+      double spawn_progress = double(monster->spawnFrames)/double(NUM_SPAWN_FRAMES);
+      SDL_Rect target_rect(monster->rect);
+      target_rect.x += monster->rect.w/2 * (1-spawn_progress);
+      target_rect.y += monster->rect.h/2 * (1-spawn_progress);
+      target_rect.w *= spawn_progress;
+      target_rect.h *= spawn_progress;
+      SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[monster->frame]), &(target_rect),
+                       spawn_progress*360,nullptr,SDL_FLIP_NONE);
     }
     // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
     // SDL_RenderDrawRect(renderer, &(monster->hitbox)); // TEST
@@ -125,7 +139,7 @@ void MonsterList::createMonster(int x, int y) {
   new_monster->hitbox = monsterTypeData.hitbox;
   new_monster->hitbox.x += x;
   new_monster->hitbox.y += y;
-  new_monster->firePatternStepCountdown = rand() % 100 ; // to avoid overly synced shots between different monsters
+  new_monster->firePatternStepCountdown = rand() % 150 ; // to avoid overly synced shots between different monsters
   monsters.push_front(new_monster);
 }
 

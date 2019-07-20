@@ -7,7 +7,6 @@ signaling: monsters should have an animated entrance (resize from 0 and spin ani
            they should possibly fade out in their death animation, with a settable fade-out start frame
            same for projectiles; fading out can be useful for the missile explosion smoke for example.
 
-
 player speed boost button? could be fun
   still need to show feedback etc. maybe only remain active while shift is held?
 

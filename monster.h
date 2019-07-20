@@ -8,6 +8,8 @@
 #include "firePatternParser.h"
 
 
+const int NUM_SPAWN_FRAMES = 50;
+
 struct MonsterTypeData {
   std::string name;
   std::string monster_img_file;
@@ -20,6 +22,8 @@ struct MonsterTypeData {
   // (they will be automatically converted to screen pxl units later on)
   ProjectileList * bulletManager; // needs to be valid while associated monsters exist. NOT freed by monster.
   std::string firePatternStr;
+  int alive_time_per_frame; // global frames per usual animation frame
+  int death_time_per_frame; // global frames per death animation frame
 };
 
 
@@ -31,6 +35,8 @@ class Monster {
     int frame = 0;
     int x;
     int y;
+    int spawnFrames = 0; // counts how many frames of spawning animation have played. when it reaches
+                          // NUM_SPAWN_FRAMES then the monster is "spawned" and active in its normal state
     bool dying = false;
     bool erase_this_monster = false;
     SDL_Rect rect; //rect in which monster is drawn (global coords)
