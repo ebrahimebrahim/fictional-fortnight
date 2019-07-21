@@ -93,8 +93,8 @@ int App::initialize() {
 	missile.explosion_img_frame_size = {80,80};
 	missile.width = 16;
 	missile.height = 49;
-	missile.explosion_width = 100;
-	missile.explosion_height = 100;
+	missile.explosion_width = 200;
+	missile.explosion_height = 200;
 	missile.projectile_hitbox = {0,0,16,30};
 	missile.explosion_hitbox  = {26,25,33,33};
 	missile.projectile_detonation_point = {8,5};
