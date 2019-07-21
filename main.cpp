@@ -396,6 +396,20 @@ void App::addScore(int s) {
 void App::spawnMonster() {
 	int monsterIndex = rand() % std::max(int(entityManagers_monster.size()),level-1);
 
-	entityManagers_monster[monsterIndex]->createMonster(rand()% (gamescreen_width  - entityManagers_monster[monsterIndex]->monsterTypeData.width ) ,
-																											rand()% (gamescreen_height - entityManagers_monster[monsterIndex]->monsterTypeData.height ) );
+	SDL_Rect spawnRect;
+	spawnRect.w = entityManagers_monster[monsterIndex]->monsterTypeData.width;
+	spawnRect.h = entityManagers_monster[monsterIndex]->monsterTypeData.height;
+	bool acceptableSpawnRect = false;
+	int tries = 0;
+
+	while (!acceptableSpawnRect && tries < 200 ) {
+			spawnRect.x = rand()% (gamescreen_width  - spawnRect.w ) ;
+			spawnRect.y = rand()% (gamescreen_height - spawnRect.h ) ;
+			if (!(rectContents(spawnRect) & CONTAINS_OBSTRUCTION )) {
+				acceptableSpawnRect=true;
+			}
+			++tries;
+	}
+	if (acceptableSpawnRect)
+		entityManagers_monster[monsterIndex]->createMonster(spawnRect.x,spawnRect.y);
 }

@@ -1,13 +1,9 @@
-horrifying bug: a monster can spawn inside the player, and then the player is stuck
+add more smoke dissipation frames to player missile explosion, to make use of the fadout.
 
 maybe things SHOULD be able to move more than just UDLR?
 then some monsters could try to aim for player
 maybe player could use mouse to aim
 idk... maybe i should keep this project simple.
-
-signaling: monsters should have an animated entrance (resize from 0 and spin animation?)
-           they should possibly fade out in their death animation, with a settable fade-out start frame
-           same for projectiles; fading out can be useful for the missile explosion smoke for example.
 
 player speed boost button? could be fun
   still need to show feedback etc. maybe only remain active while shift is held?
