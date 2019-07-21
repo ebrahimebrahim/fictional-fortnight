@@ -237,13 +237,10 @@ void App::render(){
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
 	scoreTextBox->renderCopy(10,10);
-	std::string timeString = std::to_string((SDL_GetTicks() - timerStart)/100);
-	timerTextBox->updateText(timeString.c_str());
-	timerTextBox->renderCopy(10,50);
 	std::string fpsString = "FPS: ";
 	fpsString += std::to_string(fps);
 	if (frame % 10 ==0 ) fpsTextBox->updateText(fpsString.c_str());
-	fpsTextBox->renderCopy(10,90);
+	fpsTextBox->renderCopy(90,10);
 
 	// Set the renderer's viewport to the left hand screen
   SDL_RenderSetViewport(renderer,&screen_rect);
@@ -260,14 +257,6 @@ void App::render(){
 		entityManager->render(this,renderer);
 	}
 
-
-	// SDL_SetRenderDrawColor(renderer,255,0,0,255);
-	// // SDL_Rect peup = {200,20,3,200-20};
-	// // SDL_RenderDrawRect(renderer,&peup);
-	// for (Projectile * projectile : projectileList->projectiles)
-	// if (projectile->exploding && projectile->explode_frame < projectileList->projectileTypeData.num_deadly_explosion_frames) {
-	// 	SDL_RenderDrawRect(renderer,&(projectile->explosionRect));
-	// }
 
 
 	SDL_RenderPresent( renderer );
@@ -303,9 +292,7 @@ int App::loadMedia(){
 
 	//Initialize text Textboxes
 	scoreTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
-	scoreTextBox->updateText(std::to_string(score).c_str());
-	timerTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
-	timerTextBox->updateText("[TIMER]");
+	updateScoreTextBox();
 	fpsTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
 	fpsTextBox->updateText("[FPS]");
 
@@ -326,7 +313,6 @@ void App::unloadMedia(){
 	}
 
 	delete scoreTextBox;
-	delete timerTextBox;
 	delete fpsTextBox;
 
 	TTF_CloseFont(font);
@@ -390,7 +376,13 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 
 void App::addScore(int s) {
 	score += s;
-	scoreTextBox->updateText(std::to_string(score).c_str());
+	updateScoreTextBox();
+}
+
+void App::updateScoreTextBox() {
+	std::string score_string = "Score: ";
+	score_string += std::to_string(score);
+	scoreTextBox->updateText(score_string.c_str());
 }
 
 void App::spawnMonster() {

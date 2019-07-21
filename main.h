@@ -93,4 +93,6 @@ class App {
     void addScore(int);
     void spawnMonster();
 
+    void updateScoreTextBox();
+
 };
