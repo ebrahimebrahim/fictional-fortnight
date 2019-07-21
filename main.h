@@ -25,9 +25,9 @@ class App {
 
 
     // Sizes of things
-    int right_menu_width = WINDOW_WIDTH * 0.2;
-    int gamescreen_width = WINDOW_WIDTH - right_menu_width;
-    int gamescreen_height = WINDOW_HEIGHT;
+    int info_area_height = WINDOW_HEIGHT * 0.1;
+    int gamescreen_width = WINDOW_WIDTH;
+    int gamescreen_height = WINDOW_HEIGHT - info_area_height;
 
 
     // Misc stuff
@@ -62,7 +62,7 @@ class App {
 
     // Rectangles for viewports
     SDL_Rect screen_rect = {0,0,gamescreen_width,gamescreen_height};
-    SDL_Rect right_menu_rect = {gamescreen_width,0,right_menu_width,WINDOW_HEIGHT};
+    SDL_Rect info_area_rect = {0,gamescreen_height,WINDOW_WIDTH,info_area_height};
 
     // Textboxes
     TextBox * scoreTextBox = nullptr;

@@ -232,7 +232,7 @@ void App::mainLoop(){
 void App::render(){
 
 	// Set the renderer's viewport to the right hand menu
-	SDL_RenderSetViewport(renderer,&right_menu_rect);
+	SDL_RenderSetViewport(renderer,&info_area_rect);
 
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
