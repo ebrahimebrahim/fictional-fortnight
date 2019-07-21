@@ -1,10 +1,3 @@
-add more smoke dissipation frames to player missile explosion, to make use of the fadout.
-
-maybe things SHOULD be able to move more than just UDLR?
-then some monsters could try to aim for player
-maybe player could use mouse to aim
-idk... maybe i should keep this project simple.
-
 player speed boost button? could be fun
   still need to show feedback etc. maybe only remain active while shift is held?
 
@@ -12,7 +5,6 @@ make some more monsters. ideas:
   an octopus that shoots ink which splats. the ink is wide but very slow
   a fungus that shoots spores that explode into a cloud. the spores are very small but the cloud is huge and deadly
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots.
-
 
 move score window to bottom and put useful info like
   ave fps rather than fps
