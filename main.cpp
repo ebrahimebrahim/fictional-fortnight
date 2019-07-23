@@ -249,6 +249,7 @@ void App::render(){
 	fpsTextBox->renderCopy(90,10);
 	missileLoadingIndicator->render(180,10);
 	speedBoostIndicator->render(330,10);
+	renderScoreIndicator(500,20);
 
 	// Set the renderer's viewport to the game screen
   SDL_RenderSetViewport(renderer,&screen_rect);
@@ -405,6 +406,33 @@ StatusIndicator * App::createStatusIndicator(int width, int height, const char *
 	return new StatusIndicator(width, height,green_msg,red_msg,
 														 font, &(palette[PALETTE_BLACK]), renderer, &log);
 }
+
+void App::renderScoreIndicator(int x, int y) {
+	const int indicator_width  = 200;
+	const int back_bar_height  = 5;
+	const int slider_width = 6;
+	const int slider_height = 15;
+	const int back_bar_y_offset = (slider_height/2) - (back_bar_height/2);
+	const int score_to_win = SCORE_PER_LEVEL_ADVANCE * num_levels;
+	const float distance_per_score =  float(indicator_width) / float(score_to_win - SCORE_TO_LOSE)  ;
+	const int back_bar_neg_width = int(distance_per_score*(-SCORE_TO_LOSE));
+	const int back_bar_pos_width = int(distance_per_score*(score_to_win));
+	const int slider_center_dist = int(distance_per_score*score + back_bar_neg_width);
+	const int slider_x_offset = slider_center_dist-(slider_width/2);
+
+	const SDL_Rect back_bar_neg = {x,y+back_bar_y_offset,back_bar_neg_width,back_bar_height};
+ 	SDL_SetRenderDrawColor(renderer,150,0,0,255);
+	SDL_RenderFillRect(renderer,&back_bar_neg);
+
+	const SDL_Rect back_bar_pos = {x+back_bar_neg_width,y+back_bar_y_offset,back_bar_pos_width,back_bar_height};
+ 	SDL_SetRenderDrawColor(renderer,0,180,0,255);
+	SDL_RenderFillRect(renderer,&back_bar_pos);
+
+	const SDL_Rect slider_rect = {x+slider_x_offset,y,slider_width,slider_height};
+ 	SDL_SetRenderDrawColor(renderer,50,50,50,10);
+	SDL_RenderFillRect(renderer,&slider_rect);
+}
+
 
 void App::spawnMonster() {
 	int monsterIndex = rand() % std::max(int(entityManagers_monster.size()),level-1);

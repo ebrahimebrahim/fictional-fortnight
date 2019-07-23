@@ -15,8 +15,8 @@ const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const int SCORE_FOR_KILLING_MONSTER = 5;
 const int SCORE_CHANGE_WHEN_PLAYER_HIT = -10;
-const int SCORE_TO_LOSE = -50;
-const int SCORE_PER_LEVEL_ADVANCE = 200; // The score to win is this times the number of levels.
+const int SCORE_TO_LOSE = -25;
+const int SCORE_PER_LEVEL_ADVANCE = 50; // The score to win is this times the number of levels.
                                          // The number of levels is just the number of monster types
                                          // Possibly +1 if a final boss is made
 
@@ -101,5 +101,6 @@ class App {
     void updateScoreTextBox();
     StatusIndicator * createStatusIndicator(int width, int height, const char * green_msg, const char * red_msg);
     // (creates a new status indicator using the font and logger and stuff that's already been initialized)
+    void renderScoreIndicator(int x, int y);
 
 };

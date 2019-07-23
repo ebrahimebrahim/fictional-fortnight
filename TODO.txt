@@ -1,8 +1,3 @@
-Now is the time to learn how to MOVE something. How do we move a textbox to the status indicator?
-
-player speed boost button? could be fun
-  still need to show feedback etc. maybe only remain active while shift is held?
-
 Gem monster death animation should have it breaking apart into four pieces
 
 make some more monsters. ideas:
@@ -17,9 +12,11 @@ move score window to bottom and put useful info like
 
 optimize vector calculations in various entity update steps
 
-player pickup -- alternative missile
-
 a main menu, a how to play, a win screen, a lose screen
+
+player pickup -- alternative missile. maybe the player can get all the different monster missiles somehow?
+perhaps by killing a different version of a monster, like a big boss version with hp
+
 
 
 --- General notes and things I've learned from this ---
@@ -28,3 +25,5 @@ Error logging should be handled in a better way perhaps by catching and throwing
 It was kind go a pain to pass the logger object around between methods.
 
 Planning out "architecture" before writing classes is pretty important. Exactly who is responsible for what?
+
+UI gets complicated when you build it from scratch, and it's worth thinking about a general way to handle things
