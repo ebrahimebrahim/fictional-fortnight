@@ -1,13 +1,14 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <vector>
 #include "logger.h"
 #include "textbox.h"
 #include "playerentity.h"
 #include "projectile.h"
 #include "monster.h"
 #include "utilities.h"
-#include <vector>
+#include "status_indicator.h"
 
 
 const int WINDOW_WIDTH = 800;
@@ -68,6 +69,9 @@ class App {
     TextBox * scoreTextBox = nullptr;
     TextBox * timerTextBox = nullptr;
     TextBox * fpsTextBox = nullptr;
+    StatusIndicator * missileLoadingIndicator = nullptr;
+    StatusIndicator * speedBoostIndicator = nullptr;
+
 
 
 
@@ -93,6 +97,9 @@ class App {
     void addScore(int);
     void spawnMonster();
 
+    // Misc stuff
     void updateScoreTextBox();
+    StatusIndicator * createStatusIndicator(int width, int height, const char * green_msg, const char * red_msg);
+    // (creates a new status indicator using the font and logger and stuff that's already been initialized)
 
 };

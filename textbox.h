@@ -14,6 +14,7 @@ class TextBox{
     accessing the appropriate member variables */
 
     ~TextBox();
+    TextBox(TextBox &&);
 
     int updateText(const char *);
     /* Update the text to be displayed, rendering a new texture which is stored internally.
@@ -28,6 +29,7 @@ class TextBox{
     /* Call SDL_RenderCopy on the renderer to draw the textbox at given location.
     Return 0 on success and negative error code on failure.
     The given location is the top left corner of the textbox. */
+
 
 
     /* Rect which will contain width and height of textbox after each call to updateText */

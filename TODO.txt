@@ -1,3 +1,5 @@
+Now is the time to learn how to MOVE something. How do we move a textbox to the status indicator?
+
 player speed boost button? could be fun
   still need to show feedback etc. maybe only remain active while shift is held?
 
@@ -18,3 +20,11 @@ optimize vector calculations in various entity update steps
 player pickup -- alternative missile
 
 a main menu, a how to play, a win screen, a lose screen
+
+
+--- General notes and things I've learned from this ---
+
+Error logging should be handled in a better way perhaps by catching and throwing exceptions.
+It was kind go a pain to pass the logger object around between methods.
+
+Planning out "architecture" before writing classes is pretty important. Exactly who is responsible for what?

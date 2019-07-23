@@ -224,6 +224,12 @@ void App::mainLoop(){
 	if (level > num_levels) won=true;
 	if (score < SCORE_TO_LOSE) lost=true;
 
+	// Update status indicators
+	if (playerEntity->missile_cooldown_countdown==0) missileLoadingIndicator->setGreen();
+	else missileLoadingIndicator->setRed();
+	if (playerEntity->speedboost_cooldown_countdown==0) speedBoostIndicator->setGreen();
+	else speedBoostIndicator->setRed();
+
 
 
 }
@@ -241,8 +247,10 @@ void App::render(){
 	fpsString += std::to_string(fps);
 	if (frame % 10 ==0 ) fpsTextBox->updateText(fpsString.c_str());
 	fpsTextBox->renderCopy(90,10);
+	missileLoadingIndicator->render(180,10);
+	speedBoostIndicator->render(330,10);
 
-	// Set the renderer's viewport to the left hand screen
+	// Set the renderer's viewport to the game screen
   SDL_RenderSetViewport(renderer,&screen_rect);
 
 	SDL_SetRenderDrawColor(renderer,80,80,80,255);
@@ -297,6 +305,12 @@ int App::loadMedia(){
 	fpsTextBox->updateText("[FPS]");
 
 
+	missileLoadingIndicator = createStatusIndicator(120,18,"Missile ready","Missile reloading");
+	speedBoostIndicator = createStatusIndicator(120,18,"Speedboost ready","Recharging speedboost");
+
+
+
+
 	return 0;
 }
 
@@ -314,6 +328,8 @@ void App::unloadMedia(){
 
 	delete scoreTextBox;
 	delete fpsTextBox;
+	delete missileLoadingIndicator;
+	delete speedBoostIndicator;
 
 	TTF_CloseFont(font);
 	font = nullptr;
@@ -383,6 +399,11 @@ void App::updateScoreTextBox() {
 	std::string score_string = "Score: ";
 	score_string += std::to_string(score);
 	scoreTextBox->updateText(score_string.c_str());
+}
+
+StatusIndicator * App::createStatusIndicator(int width, int height, const char * green_msg, const char * red_msg){
+	return new StatusIndicator(width, height,green_msg,red_msg,
+														 font, &(palette[PALETTE_BLACK]), renderer, &log);
 }
 
 void App::spawnMonster() {

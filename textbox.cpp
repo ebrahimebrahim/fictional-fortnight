@@ -16,9 +16,22 @@ TextBox::~TextBox(){
   freeTexture();
 }
 
+TextBox::TextBox(TextBox && other) {
+  color = other.color;
+  renderer=other.renderer;
+  font=other.font;
+  log=other.log;
+  textRect=other.textRect;
+
+  mTexture = other.mTexture;
+  other.mTexture = nullptr;
+}
+
 void TextBox::freeTexture(){
-  if (mTexture!=nullptr)
+  if (mTexture!=nullptr){
     SDL_DestroyTexture(mTexture);
+    mTexture = nullptr;
+  }
 }
 
 int TextBox::updateText(const char * text){
