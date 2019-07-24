@@ -1,5 +1,3 @@
-Gem monster death animation should have it breaking apart into four pieces
-
 make some more monsters. ideas:
   an octopus that shoots ink which splats. the ink is wide but very slow
   a fungus that shoots spores that explode into a cloud. the spores are very small but the cloud is huge and deadly

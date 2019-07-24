@@ -144,6 +144,49 @@ int App::initialize() {
 	entityManagers_nonprojectile.push_back(monster1List);
 	entityManagers_monster.push_back(monster1List);
 
+	ProjectileTypeData monster2bullets;
+	monster2bullets.num_frames = 6;
+	monster2bullets.num_explosion_frames = 6;
+	monster2bullets.num_deadly_explosion_frames = 3;
+	monster2bullets.num_fadeout_frames = 4;
+	monster2bullets.projectile_img_file = "monster2bullet.png";
+	monster2bullets.explosion_img_file = "monster2bullet_explode.png";
+	monster2bullets.projectile_img_frame_size = {80,80};
+	monster2bullets.explosion_img_frame_size = {80,80};
+	monster2bullets.width = 80;
+	monster2bullets.height = 80;
+	monster2bullets.explosion_width = 80;
+	monster2bullets.explosion_height = 80;
+	monster2bullets.projectile_hitbox = {13,29,53,21};
+	monster2bullets.explosion_hitbox  = {13,29,53,21};
+	monster2bullets.projectile_detonation_point = {0,0};
+	monster2bullets.explosion_detonation_point = {0,0};
+	monster2bullets.explosion_time_per_frame = 5;
+	monster2bulletList = new ProjectileList(monster2bullets);
+	entityManagers_projectile.push_back(monster2bulletList);
+
+	MonsterTypeData monster2;
+	monster2.name = "Octo";
+	monster2.monster_img_file = "monster2.png";
+	monster2.num_frames = 4;
+	monster2.alive_time_per_frame = 10;
+	monster2.num_death_frames = 6;
+	monster2.num_fadeout_frames = 5;
+	monster2.death_time_per_frame = 10;
+	monster2.monster_img_frame_size = vecI(80,80);
+	monster2.width  = 100;
+	monster2.height = 100;
+	monster2.hitbox = {31,30,16,18};
+	monster2.projectile_launch_center = {38,39};
+	monster2.projectile_launch_dist = 18;
+	monster2.bulletManager = monster2bulletList;
+	monster2.firePatternStr = "D:3;35 U:3;35 R:3;35 L:3;35 U:3;35 D:3;35 L:3;35 R:3;35";
+	monster2List = new MonsterList(monster2);
+	entityManagers_nonprojectile.push_back(monster2List);
+	entityManagers_monster.push_back(monster2List);
+
+
+
 
 
 	// ---
@@ -380,9 +423,10 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 	}
 
 
-	for (Monster * monster : monster1List->monsters)
-		if (SDL_HasIntersection(&r,&(monster->hitbox)) == SDL_TRUE)
-			contents |= CONTAINS_OBSTRUCTION | CONTAINS_MONSTER | CONTAINS_MONSTER1;
+	for (MonsterList * monsterManager : entityManagers_monster)
+		for (Monster * monster : monsterManager->monsters)
+			if (SDL_HasIntersection(&r,&(monster->hitbox)) == SDL_TRUE)
+				contents |= CONTAINS_OBSTRUCTION | CONTAINS_MONSTER | CONTAINS_MONSTER1;
 
 
 	if (SDL_HasIntersection(&r,&(playerEntity->playerRect))==SDL_TRUE && playerEntity!=ignore)
@@ -437,7 +481,7 @@ void App::renderScoreIndicator(int x, int y) {
 
 
 void App::spawnMonster() {
-	int monsterIndex = rand() % std::max(int(entityManagers_monster.size()),level-1);
+	int monsterIndex = rand() % std::min(int(entityManagers_monster.size()),level);
 
 	SDL_Rect spawnRect;
 	spawnRect.w = entityManagers_monster[monsterIndex]->monsterTypeData.width;
