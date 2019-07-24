@@ -57,6 +57,8 @@ template <class T> class Vector2D {
     friend Vector2D operator*(const T & s, const Vector2D & v1) { return v1*s; }
     friend T dot(const Vector2D & v1, const Vector2D & v2) {return (v1.x*v2.x)+(v1.y*v2.y);}
 
+    operator SDL_Point() {SDL_Point p = {int(x),int(y)}; return p;} // cast vector to SDL_Point
+
     void print() {printf("%d, %d\n",x,y);} // used for testing and should be deleted
 
     T x;

@@ -129,13 +129,15 @@ int App::initialize() {
 	monster1.monster_img_file = "monster1.png";
 	monster1.num_frames = 5;
 	monster1.alive_time_per_frame = 10;
-	monster1.num_death_frames = 8;
-	monster1.num_fadeout_frames = 4;
+	monster1.num_death_frames = 9;
+	monster1.num_fadeout_frames = 5;
 	monster1.death_time_per_frame = 10;
-	monster1.monster_img_frame_size = vecI(5,5);
-	monster1.width  = 20;
-	monster1.height = 20;
-	monster1.hitbox = {1,1,3,3};
+	monster1.monster_img_frame_size = vecI(25,25);
+	monster1.width  = 100;
+	monster1.height = 100;
+	monster1.hitbox = {10,11,3,3};
+	monster1.projectile_launch_center = {11,12};
+	monster1.projectile_launch_dist = 5;
 	monster1.bulletManager = monster1bulletList;
 	monster1.firePatternStr = "U:10;20 L:10;20 D:10;20 R:10;20";
 	monster1List = new MonsterList(monster1);
@@ -429,7 +431,7 @@ void App::renderScoreIndicator(int x, int y) {
 	SDL_RenderFillRect(renderer,&back_bar_pos);
 
 	const SDL_Rect slider_rect = {x+slider_x_offset,y,slider_width,slider_height};
- 	SDL_SetRenderDrawColor(renderer,50,50,50,10);
+ 	SDL_SetRenderDrawColor(renderer,50,50,50,255);
 	SDL_RenderFillRect(renderer,&slider_rect);
 }
 

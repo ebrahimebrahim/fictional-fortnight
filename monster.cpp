@@ -16,12 +16,15 @@ MonsterList::MonsterList(MonsterTypeData mtd) : monsterTypeData(mtd) {
   firePattern = parseFirePattern(mtd.firePatternStr);
 
   // Convert hitbox description from image file pixel units to screen pixel units
-  double screenpx_per_imgpx_x = double(monsterTypeData.width) / double(monsterTypeData.monster_img_frame_size.x);
-  double screenpx_per_imgpx_y = double(monsterTypeData.height) / double(monsterTypeData.monster_img_frame_size.y);
+  screenpx_per_imgpx_x = double(monsterTypeData.width) / double(monsterTypeData.monster_img_frame_size.x);
+  screenpx_per_imgpx_y = double(monsterTypeData.height) / double(monsterTypeData.monster_img_frame_size.y);
   this->monsterTypeData.hitbox.x *= screenpx_per_imgpx_x;
   this->monsterTypeData.hitbox.w *= screenpx_per_imgpx_x;
   this->monsterTypeData.hitbox.y *= screenpx_per_imgpx_y;
   this->monsterTypeData.hitbox.h *= screenpx_per_imgpx_y;
+
+  this->monsterTypeData.projectile_launch_center.x *= screenpx_per_imgpx_x;
+  this->monsterTypeData.projectile_launch_center.y *= screenpx_per_imgpx_y;
 }
 
 MonsterList::~MonsterList() {
@@ -123,14 +126,16 @@ void MonsterList::render(App * app, SDL_Renderer * renderer) {
       SDL_SetTextureAlphaMod(sprites,255);
     }
     else if (monster->spawnFrames < NUM_SPAWN_FRAMES) {
-      double spawn_progress = double(monster->spawnFrames)/double(NUM_SPAWN_FRAMES);
+      float spawn_progress = double(monster->spawnFrames)/double(NUM_SPAWN_FRAMES);
       SDL_Rect target_rect(monster->rect);
       target_rect.x += monster->rect.w/2 * (1-spawn_progress);
       target_rect.y += monster->rect.h/2 * (1-spawn_progress);
       target_rect.w *= spawn_progress;
       target_rect.h *= spawn_progress;
+      const SDL_Point rotCenter = {int(float(monsterTypeData.projectile_launch_center.x) * spawn_progress),
+                                   int(float(monsterTypeData.projectile_launch_center.y) * spawn_progress)};
       SDL_RenderCopyEx(renderer, sprites, &(frameToSpriteRect[monster->frame]), &(target_rect),
-                       spawn_progress*360,nullptr,SDL_FLIP_NONE);
+                       spawn_progress*360,&rotCenter,SDL_FLIP_NONE);
     }
     // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
     // SDL_RenderDrawRect(renderer, &(monster->hitbox)); // TEST
@@ -148,10 +153,12 @@ void MonsterList::createMonster(int x, int y) {
 }
 
 void MonsterList::fireBullet(Monster * monster, DirectionUDLR dir, int speed) {
-  vecI center = vecI(monster->x,monster->y) + vecI(monsterTypeData.width/2,monsterTypeData.height/2);
+  vecI center = vecI(monster->x,monster->y) + monsterTypeData.projectile_launch_center;
   vecI d = globals.directionToUnitVector[dir];
-  vecI bulletBackCenter = center + (abs(dot(d,vecI(monsterTypeData.width/2,monsterTypeData.height/2)))+5)*d;
-  // (there 5 is the size of the gap between monster and spawned bullet)
+  int projectile_launch_dist_in_screen_units = monsterTypeData.projectile_launch_dist * (dir==DIRECTION_UP||dir==DIRECTION_DOWN
+                                                                                         ? screenpx_per_imgpx_y
+                                                                                         : screenpx_per_imgpx_x);
+  vecI bulletBackCenter = center + projectile_launch_dist_in_screen_units*d;
   vecI bulletCenter = bulletBackCenter + (monsterTypeData.bulletManager->projectileTypeData.height/2)*d;
   vecI bulletTopLeft = bulletCenter - vecI(monsterTypeData.bulletManager->projectileTypeData.width/2,monsterTypeData.bulletManager->projectileTypeData.height/2);
   // that was the top left of the bullet BEFORE it gets rotated by the bullet manager. ugh, this is bad design.

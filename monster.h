@@ -21,6 +21,8 @@ struct MonsterTypeData {
   int height;
   SDL_Rect hitbox; // hitbox in LOCAL coords (origin is top left of monster), using IMAGE FILE PXLS
   // (they will be automatically converted to screen pxl units later on)
+  vecI projectile_launch_center; // center from which U/D/L/R projectiles will emanate (again in local image file pxls)
+  int  projectile_launch_dist;   // distance from projectile_launch_center that U/D/L/R projectiles spawn (again in local image file pxls)
   ProjectileList * bulletManager; // needs to be valid while associated monsters exist. NOT freed by monster.
   std::string firePatternStr;
   int alive_time_per_frame; // global frames per usual animation frame
@@ -72,6 +74,9 @@ class MonsterList :  public EntityManager {
     // State
     std::list<Monster*> monsters;
 
+    //Misc
+    double screenpx_per_imgpx_x=0;
+    double screenpx_per_imgpx_y=0;
 
 
 
