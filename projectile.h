@@ -38,6 +38,7 @@ class Projectile {
     ~Projectile();
 
     int frame = 0;
+    int explosion_global_frames_remaining = 0; // this counts game frames to do cool stuff with explode animation
     int x;
     int y;
     int v;

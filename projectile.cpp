@@ -121,9 +121,10 @@ void ProjectileList::update(App * app){
     else {
       if (projectile->animation_frame_countdown == 0) {
         ++(projectile->explode_frame);
-        projectile->animation_frame_countdown = projectileTypeData.explosion_time_per_frame;
+        projectile->animation_frame_countdown = projectileTypeData.explosion_time_per_frame-1;
       }
       else --projectile->animation_frame_countdown;
+      --projectile->explosion_global_frames_remaining;
       if (projectile->explode_frame >= projectileTypeData.num_explosion_frames) projectile->erase_this_projectile=true;
     }
 
@@ -146,7 +147,9 @@ void ProjectileList::render(App * app, SDL_Renderer * renderer) {
     }
     else {
       SDL_Rect target_rect = {projectile->x,projectile->y,projectileTypeData.explosion_width,projectileTypeData.explosion_height};
-      int alphaMod = std::min((projectileTypeData.num_explosion_frames-projectile->explode_frame)*255 / projectileTypeData.num_fadeout_frames,255);
+      int alphaMod = std::min( (255 * projectile->explosion_global_frames_remaining) /
+                               (projectileTypeData.num_fadeout_frames * projectileTypeData.explosion_time_per_frame) ,
+                              255);
       SDL_SetTextureAlphaMod(explosionFrames,alphaMod);
       SDL_RenderCopyEx(renderer, explosionFrames, &(frameToExplosionRect[projectile->explode_frame]),&(target_rect),
                        globals.directionToRotAngle[projectile->dir], nullptr, SDL_FLIP_NONE);
@@ -177,5 +180,6 @@ void ProjectileList::updateProjectileHitbox(Projectile * projectile) {
 void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir) {
   Projectile * new_projectile = new Projectile(x,y,v,dir);
   updateProjectileHitbox(new_projectile);
+  new_projectile->explosion_global_frames_remaining = projectileTypeData.explosion_time_per_frame * projectileTypeData.num_explosion_frames;
   projectiles.push_front(new_projectile);
 }

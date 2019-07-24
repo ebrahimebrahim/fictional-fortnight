@@ -36,6 +36,7 @@ class Monster {
     ~Monster();
 
     int frame = 0;
+    int death_animation_global_frames_remaining = 0; // this counts game frames to do cool stuff with death animation
     int x;
     int y;
     int spawnFrames = 0; // counts how many frames of spawning animation have played. when it reaches

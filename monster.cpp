@@ -97,6 +97,7 @@ void MonsterList::update(App * app) {
     }
     else if (monster->dying) {
       if (app->frame % monsterTypeData.death_time_per_frame == 0) ++(monster->frame);
+      --monster->death_animation_global_frames_remaining;
       if (monster->frame >= monsterTypeData.num_death_frames) monster->erase_this_monster=true;
     }
     else if (monster->spawnFrames < NUM_SPAWN_FRAMES) {
@@ -120,7 +121,9 @@ void MonsterList::render(App * app, SDL_Renderer * renderer) {
       SDL_RenderCopy(renderer, sprites, &(frameToSpriteRect[monster->frame]), &(monster->rect));
     }
     else if (monster->dying) {
-      int alphaMod = std::min((monsterTypeData.num_death_frames-monster->frame)*255 / monsterTypeData.num_fadeout_frames,255);
+      int alphaMod = std::min((255*monster->death_animation_global_frames_remaining) /
+                                  (monsterTypeData.num_fadeout_frames*monsterTypeData.death_time_per_frame),
+                              255);
       SDL_SetTextureAlphaMod(sprites,alphaMod);
       SDL_RenderCopy(renderer, sprites, &(frameToDeathSpriteRect[monster->frame]), &(monster->rect));
       SDL_SetTextureAlphaMod(sprites,255);
@@ -149,6 +152,7 @@ void MonsterList::createMonster(int x, int y) {
   new_monster->hitbox.x += x;
   new_monster->hitbox.y += y;
   new_monster->firePatternStepCountdown = rand() % 150 ; // to avoid overly synced shots between different monsters
+  new_monster->death_animation_global_frames_remaining = monsterTypeData.death_time_per_frame * monsterTypeData.num_death_frames;
   monsters.push_front(new_monster);
 }
 
