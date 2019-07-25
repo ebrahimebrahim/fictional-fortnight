@@ -12,8 +12,14 @@ Monster::Monster(int x, int y) : x(x), y(y) {
 Monster::~Monster() {
 }
 
-MonsterList::MonsterList(MonsterTypeData mtd) : monsterTypeData(mtd) {
+MonsterList::MonsterList(MonsterTypeData mtd, Logger * log) : monsterTypeData(mtd) {
   firePattern = parseFirePattern(mtd.firePatternStr);
+  if (firePattern.empty()) {
+    std::string error_str = "Firepattern for monster \"";
+    error_str += monsterTypeData.name;
+    error_str += "\" could not be parsed!";
+    log->error(error_str.c_str());
+  }
 
   // Convert hitbox description from image file pixel units to screen pixel units
   screenpx_per_imgpx_x = double(monsterTypeData.width) / double(monsterTypeData.monster_img_frame_size.x);

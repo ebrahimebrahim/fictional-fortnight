@@ -140,7 +140,7 @@ int App::initialize() {
 	monster1.projectile_launch_dist = 5;
 	monster1.bulletManager = monster1bulletList;
 	monster1.firePatternStr = "U:10;20 L:10;20 D:10;20 R:10;20";
-	monster1List = new MonsterList(monster1);
+	monster1List = new MonsterList(monster1,&log);
 	entityManagers_nonprojectile.push_back(monster1List);
 	entityManagers_monster.push_back(monster1List);
 
@@ -181,7 +181,7 @@ int App::initialize() {
 	monster2.projectile_launch_dist = 18;
 	monster2.bulletManager = monster2bulletList;
 	monster2.firePatternStr = "D:3;35 U:3;35 R:3;35 L:3;35 U:3;35 D:3;35 L:3;35 R:3;35";
-	monster2List = new MonsterList(monster2);
+	monster2List = new MonsterList(monster2,&log);
 	entityManagers_nonprojectile.push_back(monster2List);
 	entityManagers_monster.push_back(monster2List);
 
@@ -221,8 +221,8 @@ int App::initialize() {
 	monster3.projectile_launch_center = {39,38};
 	monster3.projectile_launch_dist = 29;
 	monster3.bulletManager = monster3bulletList;
-	monster3.firePatternStr = "D:3;35 U:3;35 R:3;35 L:3;35 U:3;35 D:3;35 L:3;35 R:3;35";
-	monster3List = new MonsterList(monster3);
+	monster3.firePatternStr = "R,L:12;15 R,L:12;30 U,D:12;15 U,D:12;30";
+	monster3List = new MonsterList(monster3,&log);
 	entityManagers_nonprojectile.push_back(monster3List);
 	entityManagers_monster.push_back(monster3List);
 
@@ -523,6 +523,7 @@ void App::renderScoreIndicator(int x, int y) {
 
 void App::spawnMonster() {
 	int monsterIndex = rand() % std::min(int(entityManagers_monster.size()),level);
+	// monsterIndex = 2; //DELETE THIS. TEST
 
 	SDL_Rect spawnRect;
 	spawnRect.w = entityManagers_monster[monsterIndex]->monsterTypeData.width;

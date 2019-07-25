@@ -6,6 +6,7 @@
 #include <string>
 #include "projectile.h"
 #include "firePatternParser.h"
+#include "logger.h"
 
 
 const int NUM_SPAWN_FRAMES = 50;
@@ -52,7 +53,7 @@ class Monster {
 
 class MonsterList :  public EntityManager {
   public:
-    MonsterList(MonsterTypeData);
+    MonsterList(MonsterTypeData, Logger *);
     ~MonsterList();
     virtual int loadMedia(SDL_Renderer *, Logger *);
     virtual void unloadMedia();
