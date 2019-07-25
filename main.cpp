@@ -185,6 +185,47 @@ int App::initialize() {
 	entityManagers_nonprojectile.push_back(monster2List);
 	entityManagers_monster.push_back(monster2List);
 
+	ProjectileTypeData monster3bullets;
+	monster3bullets.num_frames = 7;
+	monster3bullets.num_explosion_frames = 14;
+	monster3bullets.num_deadly_explosion_frames = 12;
+	monster3bullets.num_fadeout_frames = 7;
+	monster3bullets.projectile_img_file = "monster3bullet.png";
+	monster3bullets.explosion_img_file = "monster3bullet_explode.png";
+	monster3bullets.projectile_img_frame_size = {9,9};
+	monster3bullets.explosion_img_frame_size = {100,100};
+	monster3bullets.width = 9;
+	monster3bullets.height = 9;
+	monster3bullets.explosion_width = 200;
+	monster3bullets.explosion_height = 200;
+	monster3bullets.projectile_hitbox = {2,2,5,5};
+	monster3bullets.explosion_hitbox  = {16,16,73,67};
+	monster3bullets.projectile_detonation_point = {4,4};
+	monster3bullets.explosion_detonation_point = {50,52};
+	monster3bullets.explosion_time_per_frame = 5;
+	monster3bulletList = new ProjectileList(monster3bullets);
+	entityManagers_projectile.push_back(monster3bulletList);
+
+	MonsterTypeData monster3;
+	monster3.name = "Mushy";
+	monster3.monster_img_file = "monster3.png";
+	monster3.num_frames = 4;
+	monster3.alive_time_per_frame = 10;
+	monster3.num_death_frames = 6;
+	monster3.num_fadeout_frames = 5;
+	monster3.death_time_per_frame = 6;
+	monster3.monster_img_frame_size = vecI(80,80);
+	monster3.width  = 80;
+	monster3.height = 80;
+	monster3.hitbox = {19,14,44,49};
+	monster3.projectile_launch_center = {39,38};
+	monster3.projectile_launch_dist = 29;
+	monster3.bulletManager = monster3bulletList;
+	monster3.firePatternStr = "D:3;35 U:3;35 R:3;35 L:3;35 U:3;35 D:3;35 L:3;35 R:3;35";
+	monster3List = new MonsterList(monster3);
+	entityManagers_nonprojectile.push_back(monster3List);
+	entityManagers_monster.push_back(monster3List);
+
 
 
 

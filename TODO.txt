@@ -1,7 +1,7 @@
 make some more monsters. ideas:
   an octopus that shoots ink which splats. the ink is wide but very slow
   a fungus that shoots spores that explode into a cloud. the spores are very small but the cloud is huge and deadly
-  an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots.
+  an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
 
 move score window to bottom and put useful info like
   ave fps rather than fps
