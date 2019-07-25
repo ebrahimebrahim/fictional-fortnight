@@ -7,6 +7,7 @@
 
 
 struct ProjectileTypeData {
+  int id; // a hopefully unique identifier for this projectile type
   int num_frames;
   int num_explosion_frames;
   int num_deadly_explosion_frames; // number of frames (from head end of explosion frames) during which explosion hitbox is active

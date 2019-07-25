@@ -28,6 +28,7 @@ struct MonsterTypeData {
   std::string firePatternStr;
   int alive_time_per_frame; // global frames per usual animation frame
   int death_time_per_frame; // global frames per death animation frame
+  ContainsBitmask protected_by; // things that protect monster from death when it is touching them
 };
 
 

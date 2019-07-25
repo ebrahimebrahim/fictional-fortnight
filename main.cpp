@@ -83,6 +83,7 @@ int App::initialize() {
 	entityManagers_nonprojectile.push_back(playerEntity);
 
 	ProjectileTypeData missile;
+	missile.id=0;
 	missile.num_frames = 2;
 	missile.num_explosion_frames = 12;
 	missile.num_deadly_explosion_frames = 4;
@@ -104,6 +105,7 @@ int App::initialize() {
 	entityManagers_projectile.push_back(projectileList);
 
 	ProjectileTypeData monster1bullets;
+	monster1bullets.id=1;
 	monster1bullets.num_frames = 2;
 	monster1bullets.num_explosion_frames = 5;
 	monster1bullets.num_deadly_explosion_frames = 1;
@@ -140,11 +142,13 @@ int App::initialize() {
 	monster1.projectile_launch_dist = 5;
 	monster1.bulletManager = monster1bulletList;
 	monster1.firePatternStr = "U:10;20 L:10;20 D:10;20 R:10;20";
+	monster1.protected_by = CONTAINS_IMPOSSIBLE;
 	monster1List = new MonsterList(monster1,&log);
 	entityManagers_nonprojectile.push_back(monster1List);
 	entityManagers_monster.push_back(monster1List);
 
 	ProjectileTypeData monster2bullets;
+	monster2bullets.id=2;
 	monster2bullets.num_frames = 6;
 	monster2bullets.num_explosion_frames = 6;
 	monster2bullets.num_deadly_explosion_frames = 3;
@@ -181,11 +185,13 @@ int App::initialize() {
 	monster2.projectile_launch_dist = 18;
 	monster2.bulletManager = monster2bulletList;
 	monster2.firePatternStr = "D:3;35 U:3;35 R:3;35 L:3;35 U:3;35 D:3;35 L:3;35 R:3;35";
+	monster2.protected_by = CONTAINS_IMPOSSIBLE;
 	monster2List = new MonsterList(monster2,&log);
 	entityManagers_nonprojectile.push_back(monster2List);
 	entityManagers_monster.push_back(monster2List);
 
 	ProjectileTypeData monster3bullets;
+	monster3bullets.id=3;
 	monster3bullets.num_frames = 7;
 	monster3bullets.num_explosion_frames = 14;
 	monster3bullets.num_deadly_explosion_frames = 12;
@@ -196,8 +202,8 @@ int App::initialize() {
 	monster3bullets.explosion_img_frame_size = {100,100};
 	monster3bullets.width = 9;
 	monster3bullets.height = 9;
-	monster3bullets.explosion_width = 200;
-	monster3bullets.explosion_height = 200;
+	monster3bullets.explosion_width = 300;
+	monster3bullets.explosion_height = 300;
 	monster3bullets.projectile_hitbox = {2,2,5,5};
 	monster3bullets.explosion_hitbox  = {16,16,73,67};
 	monster3bullets.projectile_detonation_point = {4,4};
@@ -221,7 +227,8 @@ int App::initialize() {
 	monster3.projectile_launch_center = {39,38};
 	monster3.projectile_launch_dist = 29;
 	monster3.bulletManager = monster3bulletList;
-	monster3.firePatternStr = "R,L:12;15 R,L:12;30 U,D:12;15 U,D:12;30";
+	monster3.firePatternStr = "R:10,L:10;100 U:10,D:10;100";
+	monster3.protected_by = CONTAINS_SPORES;
 	monster3List = new MonsterList(monster3,&log);
 	entityManagers_nonprojectile.push_back(monster3List);
 	entityManagers_monster.push_back(monster3List);
@@ -455,8 +462,11 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 	for (ProjectileList * projectileManager : entityManagers_projectile) {
 		for (Projectile * projectile : projectileManager->projectiles)
 			if (projectile->exploding && projectile->explode_frame < projectileManager->projectileTypeData.num_deadly_explosion_frames) {
-				if (SDL_HasIntersection(&r,&(projectile->hitbox)) == SDL_TRUE)
+				if (SDL_HasIntersection(&r,&(projectile->hitbox)) == SDL_TRUE){
 					contents |= CONTAINS_DEADLY_EXPLOSION;
+					if (projectileManager->projectileTypeData.id == 3)
+						contents |= CONTAINS_SPORES;
+				}
 			}
 			else if (!projectile->exploding)
 				if (SDL_HasIntersection(&r,&(projectile->hitbox)) == SDL_TRUE && projectile!=ignore)
@@ -467,7 +477,7 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 	for (MonsterList * monsterManager : entityManagers_monster)
 		for (Monster * monster : monsterManager->monsters)
 			if (SDL_HasIntersection(&r,&(monster->hitbox)) == SDL_TRUE)
-				contents |= CONTAINS_OBSTRUCTION | CONTAINS_MONSTER | CONTAINS_MONSTER1;
+				contents |= CONTAINS_OBSTRUCTION | CONTAINS_MONSTER;
 
 
 	if (SDL_HasIntersection(&r,&(playerEntity->playerRect))==SDL_TRUE && playerEntity!=ignore)
@@ -523,7 +533,7 @@ void App::renderScoreIndicator(int x, int y) {
 
 void App::spawnMonster() {
 	int monsterIndex = rand() % std::min(int(entityManagers_monster.size()),level);
-	// monsterIndex = 2; //DELETE THIS. TEST
+	monsterIndex = 2; //DELETE THIS. TEST
 
 	SDL_Rect spawnRect;
 	spawnRect.w = entityManagers_monster[monsterIndex]->monsterTypeData.width;

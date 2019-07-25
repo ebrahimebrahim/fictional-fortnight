@@ -95,7 +95,9 @@ void MonsterList::update(App * app) {
 
 
       // check if it should start dying
-      if (app->rectContents(monster->hitbox) & CONTAINS_DEADLY_EXPLOSION) {
+      ContainsBitmask monster_hitbox_contents = app->rectContents(monster->hitbox);
+      if ( (monster_hitbox_contents & CONTAINS_DEADLY_EXPLOSION) &&
+           !(monster_hitbox_contents & monsterTypeData.protected_by) ) {
         monster->dying = true;
         monster->frame = 0; // we will now start using frame for death animation
         app->addScore(SCORE_FOR_KILLING_MONSTER);
