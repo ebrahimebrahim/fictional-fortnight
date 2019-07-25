@@ -30,6 +30,7 @@ const ContainsBitmask CONTAINS_OUTSIDE               = 1 << 5;
 const ContainsBitmask CONTAINS_MONSTER               = 1 << 6;
 const ContainsBitmask CONTAINS_SPORES                = 1 << 7;
 const ContainsBitmask CONTAINS_IMPOSSIBLE            = 1 << 8; // useful - something that no hitbox ever contains
+const ContainsBitmask CONTAINS_DEADLY_TO_PLAYER      = 1 << 9;
 
 
 

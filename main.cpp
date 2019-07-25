@@ -101,6 +101,7 @@ int App::initialize() {
 	missile.projectile_detonation_point = {8,5};
 	missile.explosion_detonation_point = {38,39};
 	missile.explosion_time_per_frame = 5;
+	missile.explosion_only_harms_player = false;
 	projectileList = new ProjectileList(missile);
 	entityManagers_projectile.push_back(projectileList);
 
@@ -123,6 +124,7 @@ int App::initialize() {
 	monster1bullets.projectile_detonation_point = {0,0};
 	monster1bullets.explosion_detonation_point = {19,10};
 	monster1bullets.explosion_time_per_frame = 5;
+	monster1bullets.explosion_only_harms_player = false;
 	monster1bulletList = new ProjectileList(monster1bullets);
 	entityManagers_projectile.push_back(monster1bulletList);
 
@@ -166,6 +168,7 @@ int App::initialize() {
 	monster2bullets.projectile_detonation_point = {0,0};
 	monster2bullets.explosion_detonation_point = {0,0};
 	monster2bullets.explosion_time_per_frame = 5;
+	monster2bullets.explosion_only_harms_player = false;
 	monster2bulletList = new ProjectileList(monster2bullets);
 	entityManagers_projectile.push_back(monster2bulletList);
 
@@ -202,13 +205,14 @@ int App::initialize() {
 	monster3bullets.explosion_img_frame_size = {100,100};
 	monster3bullets.width = 9;
 	monster3bullets.height = 9;
-	monster3bullets.explosion_width = 300;
-	monster3bullets.explosion_height = 300;
+	monster3bullets.explosion_width = 400;
+	monster3bullets.explosion_height = 400;
 	monster3bullets.projectile_hitbox = {2,2,5,5};
 	monster3bullets.explosion_hitbox  = {16,16,73,67};
 	monster3bullets.projectile_detonation_point = {4,4};
 	monster3bullets.explosion_detonation_point = {50,52};
 	monster3bullets.explosion_time_per_frame = 5;
+	monster3bullets.explosion_only_harms_player = true;
 	monster3bulletList = new ProjectileList(monster3bullets);
 	entityManagers_projectile.push_back(monster3bulletList);
 
@@ -228,7 +232,7 @@ int App::initialize() {
 	monster3.projectile_launch_dist = 29;
 	monster3.bulletManager = monster3bulletList;
 	monster3.firePatternStr = "R:10,L:10;100 U:10,D:10;100";
-	monster3.protected_by = CONTAINS_SPORES;
+	monster3.protected_by = CONTAINS_IMPOSSIBLE;
 	monster3List = new MonsterList(monster3,&log);
 	entityManagers_nonprojectile.push_back(monster3List);
 	entityManagers_monster.push_back(monster3List);
@@ -463,7 +467,10 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 		for (Projectile * projectile : projectileManager->projectiles)
 			if (projectile->exploding && projectile->explode_frame < projectileManager->projectileTypeData.num_deadly_explosion_frames) {
 				if (SDL_HasIntersection(&r,&(projectile->hitbox)) == SDL_TRUE){
-					contents |= CONTAINS_DEADLY_EXPLOSION;
+					if (projectileManager->projectileTypeData.explosion_only_harms_player)
+						contents |= CONTAINS_DEADLY_TO_PLAYER;
+					else
+						contents |= CONTAINS_DEADLY_EXPLOSION;
 					if (projectileManager->projectileTypeData.id == 3)
 						contents |= CONTAINS_SPORES;
 				}
@@ -533,7 +540,6 @@ void App::renderScoreIndicator(int x, int y) {
 
 void App::spawnMonster() {
 	int monsterIndex = rand() % std::min(int(entityManagers_monster.size()),level);
-	monsterIndex = 2; //DELETE THIS. TEST
 
 	SDL_Rect spawnRect;
 	spawnRect.w = entityManagers_monster[monsterIndex]->monsterTypeData.width;

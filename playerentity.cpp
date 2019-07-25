@@ -111,9 +111,9 @@ void PlayerEntity::update(App * app) {
   }
   trySpeed = false;
 
-  // check if player should die now:
+  // check if player should be harmed now:
 
-  if (app->rectContents(playerRect) & CONTAINS_DEADLY_EXPLOSION)
+  if (app->rectContents(playerRect) & (CONTAINS_DEADLY_EXPLOSION | CONTAINS_DEADLY_TO_PLAYER))
     if (hit_cooldown == 0) {
       app->addScore(SCORE_CHANGE_WHEN_PLAYER_HIT);
       hit_cooldown = 60;

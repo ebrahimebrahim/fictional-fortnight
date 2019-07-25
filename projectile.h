@@ -30,6 +30,7 @@ struct ProjectileTypeData {
   // Also pass this one in IMAGE pixels
   // (the above two points are going to match at the moment of detonation)
   int explosion_time_per_frame; // global frames per explosion frame
+  bool explosion_only_harms_player; // as opposed to also detonating projectiles and harming other monsters 
 };
 
 
