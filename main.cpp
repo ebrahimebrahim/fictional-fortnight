@@ -269,11 +269,26 @@ App::~App() {
 
 int App::execute(){
 
-	while (!quit){
+	while (ui_state!=UI_STATE_QUIT){
+
 		Uint32 t0 = SDL_GetTicks();
-		gameEvents();
-		gameUpdate();
-		gameRender();
+
+		switch (ui_state) {
+			case UI_STATE_MENU:
+				menuEvents();
+				menuUpdate();
+				menuRender();
+				break;
+			case UI_STATE_GAME:
+				gameEvents();
+				gameUpdate();
+				gameRender();
+				break;
+			case UI_STATE_ENDGAME:
+				break;
+			default: break;
+		}
+
 		Uint32 dt = SDL_GetTicks()-t0;
 		SDL_Delay( dt<20 ? 20-dt : 0 );
 	}
@@ -289,7 +304,7 @@ void App::gameEvents(){
 
 		switch (event.type) {
 			case SDL_QUIT:
-				quit=true;
+				ui_state=UI_STATE_QUIT;
 				break;
 			case SDL_KEYDOWN:
 				handleKeypress(&(event.key));
@@ -314,7 +329,7 @@ void App::gameUpdate(){
 		entityManager->update(this);
 
 	// Maybe spawn a monster
-	if (rand() % 100 == 0) spawnMonster();
+	if (rand() % 200 == 0) spawnMonster();
 
 	// Check if level increases or win state changes
 	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
@@ -441,7 +456,7 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 			timerStart = SDL_GetTicks();
 			break;
 		case SDL_SCANCODE_Q:
-			quit=true;
+			ui_state=UI_STATE_QUIT;
 			break;
 		default:
 			break;
@@ -557,4 +572,16 @@ void App::spawnMonster() {
 	}
 	if (acceptableSpawnRect)
 		entityManagers_monster[monsterIndex]->createMonster(spawnRect.x,spawnRect.y);
+}
+
+void App::menuEvents() {
+
+}
+
+void App::menuUpdate() {
+	ui_state = UI_STATE_GAME; // Right now we temporarily direct the user right into the game.
+}
+
+void App::menuRender() {
+
 }

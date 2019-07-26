@@ -21,6 +21,16 @@ const int SCORE_PER_LEVEL_ADVANCE = 10; // The score to win is this times the nu
                                          // Possibly +1 if a final boss is made
 
 
+enum UI_State {
+  UI_STATE_MENU,
+  UI_STATE_GAME,
+  UI_STATE_ENDGAME,
+  UI_STATE_QUIT,
+  UI_STATE_COUNT // always last
+};
+
+
+
 class App {
   public:
 
@@ -42,7 +52,7 @@ class App {
     TTF_Font * font = nullptr;
 
     // App state
-    bool quit = false;
+    UI_State ui_state = UI_STATE_MENU;
     Uint32 timerStart = 0;
     Uint32 lastFrameTime = 0;
     int fps = 0;
@@ -93,6 +103,10 @@ class App {
     void gameEvents();
     void gameUpdate();
     void gameRender();
+
+    void menuEvents();
+    void menuUpdate();
+    void menuRender();
 
     void handleKeypress(SDL_KeyboardEvent *);
 
