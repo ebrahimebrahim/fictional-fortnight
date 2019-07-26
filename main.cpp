@@ -297,21 +297,31 @@ int App::execute(){
 
 		switch (ui_state) {
 			case UI_STATE_MENU:
-				while(SDL_PollEvent(&event))
+				while(SDL_PollEvent(&event)) {
+					appEvent(&event);
 					mainMenu->events(&event);
+				}
 				mainMenu->update(this);
 				mainMenu->render(renderer);
 				break;
 			case UI_STATE_GAME:
-				gameEvents();
+				while(SDL_PollEvent(&event)) {
+					appEvent(&event);
+					gameEvent(&event);
+				}
 				gameUpdate();
 				gameRender();
 				break;
 			case UI_STATE_ENDGAME:
+				while(SDL_PollEvent(&event)) {
+					appEvent(&event);
+				}
 				break;
 			case UI_STATE_PAUSE:
-				while(SDL_PollEvent(&event))
+				while(SDL_PollEvent(&event)) {
+					appEvent(&event);
 					pauseMenu->events(&event);
+				}
 				pauseMenu->update(this);
 				pauseMenu->render(renderer);
 				break;
@@ -326,26 +336,25 @@ int App::execute(){
 }
 
 
-void App::gameEvents(){
-	SDL_Event event;
+void App::appEvent(SDL_Event * event) {
 
-	while(SDL_PollEvent(&event)){
-
-		switch (event.type) {
+		switch (event->type) {
 			case SDL_QUIT:
 				ui_state=UI_STATE_QUIT;
 				break;
 			case SDL_KEYDOWN:
-				handleKeypress(&(event.key));
+				handleKeypress(&(event->key));
 				break;
 		}
+}
 
-		for (EntityManager * entityManager : entityManagers_projectile)
-			entityManager->handleEvent(&event);
-		for (EntityManager * entityManager : entityManagers_nonprojectile)
-			entityManager->handleEvent(&event);
+void App::gameEvent(SDL_Event * event){
 
-	}
+	for (EntityManager * entityManager : entityManagers_projectile)
+		entityManager->handleEvent(event);
+	for (EntityManager * entityManager : entityManagers_nonprojectile)
+		entityManager->handleEvent(event);
+
 }
 
 
@@ -486,7 +495,8 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 			ui_state=UI_STATE_QUIT;
 			break;
 		case SDL_SCANCODE_ESCAPE:
-			ui_state=UI_STATE_PAUSE;
+			if (ui_state==UI_STATE_GAME) ui_state=UI_STATE_PAUSE;
+			else if (ui_state==UI_STATE_PAUSE) ui_state=UI_STATE_GAME;
 			break;
 		default:
 			break;

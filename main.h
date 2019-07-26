@@ -106,7 +106,8 @@ class App {
 
     int execute();
 
-    void gameEvents();
+    void appEvent(SDL_Event *); // app level event handler (used during all UI states)
+    void gameEvent(SDL_Event *); //event handler when in game
     void gameUpdate();
     void gameRender();
 
