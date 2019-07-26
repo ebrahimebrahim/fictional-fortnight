@@ -15,6 +15,8 @@ they have to come in waves for there to be any challenge
 
 add sounds?
 
+better score/health system: a shield plus the idea of hull damage.
+
 
 --- General notes and things I've learned from this ---
 
@@ -24,3 +26,12 @@ It was kind go a pain to pass the logger object around between methods.
 Planning out "architecture" before writing classes is pretty important. Exactly who is responsible for what?
 
 UI gets complicated when you build it from scratch, and it's worth thinking about a general way to handle things
+Instead of having one big app class manage the states of the game and all the UI elements, better to have
+separate classes for the different UIs that are available, like the different menus and stuff.
+Then each UI can have its own loop and the main app just manages the UIs. I.e. the main app decides
+which one is "active," or which multiple ones are active.
+
+For elements of a game that there are a lot of, or that there are lists of, it is good to have unique IDs.
+For objects that typically get instantiated by a factory type class (e.g. a bullet being fired by a monster),
+it would be nice to let the maker leave a mark and a unique ID, or something like that. Just think this kind of
+stuff through early in your design.
