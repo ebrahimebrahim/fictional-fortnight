@@ -28,7 +28,9 @@ int main( int argc, char* args[] ) {
 }
 
 
-App::App() : log{}
+App::App() : log{},
+						 mainMenu("Main Menu", &log),
+						 pauseMenu("Paused", &log)
 {
 }
 
@@ -77,8 +79,18 @@ int App::initialize() {
 	srand(time(nullptr));
 
 
+	// --- Build up menus ---
+	mainMenu.addItem("Start", [this] () {this->ui_state=UI_STATE_GAME;});
+	mainMenu.addItem("Quit",  [this] () {this->ui_state=UI_STATE_QUIT;});
+
+	pauseMenu.addItem("Resume", [this] () {this->ui_state=UI_STATE_GAME;});
+	pauseMenu.addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
+
+
 
 	// --- Create EntityManager objects ---
+	// This is where all monsters and projectiles are created.
+
 	playerEntity = new PlayerEntity(); // will be freed when all of entityManagers items are freed in ~App()
 	entityManagers_nonprojectile.push_back(playerEntity);
 
@@ -275,9 +287,11 @@ int App::execute(){
 
 		switch (ui_state) {
 			case UI_STATE_MENU:
-				menuEvents();
-				menuUpdate();
-				menuRender();
+				SDL_Event event;
+				while(SDL_PollEvent(&event))
+					mainMenu.events(&event);
+				mainMenu.update(this);
+				mainMenu.render(renderer);
 				break;
 			case UI_STATE_GAME:
 				gameEvents();
@@ -285,6 +299,8 @@ int App::execute(){
 				gameRender();
 				break;
 			case UI_STATE_ENDGAME:
+				break;
+			case UI_STATE_PAUSE:
 				break;
 			default: break;
 		}
@@ -572,16 +588,4 @@ void App::spawnMonster() {
 	}
 	if (acceptableSpawnRect)
 		entityManagers_monster[monsterIndex]->createMonster(spawnRect.x,spawnRect.y);
-}
-
-void App::menuEvents() {
-
-}
-
-void App::menuUpdate() {
-	ui_state = UI_STATE_GAME; // Right now we temporarily direct the user right into the game.
-}
-
-void App::menuRender() {
-
 }

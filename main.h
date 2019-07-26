@@ -9,6 +9,7 @@
 #include "monster.h"
 #include "utilities.h"
 #include "status_indicator.h"
+#include "menu.h"
 
 
 const int WINDOW_WIDTH = 800;
@@ -26,6 +27,7 @@ enum UI_State {
   UI_STATE_GAME,
   UI_STATE_ENDGAME,
   UI_STATE_QUIT,
+  UI_STATE_PAUSE,
   UI_STATE_COUNT // always last
 };
 
@@ -87,6 +89,10 @@ class App {
     StatusIndicator * missileLoadingIndicator = nullptr;
     StatusIndicator * speedBoostIndicator = nullptr;
 
+    // Menus
+    Menu mainMenu;
+    Menu pauseMenu;
+
 
 
 
@@ -103,10 +109,6 @@ class App {
     void gameEvents();
     void gameUpdate();
     void gameRender();
-
-    void menuEvents();
-    void menuUpdate();
-    void menuRender();
 
     void handleKeypress(SDL_KeyboardEvent *);
 
