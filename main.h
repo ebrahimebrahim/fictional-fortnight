@@ -90,9 +90,9 @@ class App {
 
     int execute();
 
-    void handleEvents();
-    void mainLoop();
-    void render();
+    void gameEvents();
+    void gameUpdate();
+    void gameRender();
 
     void handleKeypress(SDL_KeyboardEvent *);
 

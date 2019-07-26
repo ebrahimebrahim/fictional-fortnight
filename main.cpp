@@ -159,10 +159,10 @@ int App::initialize() {
 	monster2bullets.explosion_img_file = "monster2bullet_explode.png";
 	monster2bullets.projectile_img_frame_size = {80,80};
 	monster2bullets.explosion_img_frame_size = {80,80};
-	monster2bullets.width = 80;
-	monster2bullets.height = 80;
-	monster2bullets.explosion_width = 80;
-	monster2bullets.explosion_height = 80;
+	monster2bullets.width = 150;
+	monster2bullets.height = 100;
+	monster2bullets.explosion_width = 150;
+	monster2bullets.explosion_height = 100;
 	monster2bullets.projectile_hitbox = {13,29,53,21};
 	monster2bullets.explosion_hitbox  = {13,29,53,21};
 	monster2bullets.projectile_detonation_point = {0,0};
@@ -185,7 +185,7 @@ int App::initialize() {
 	monster2.height = 100;
 	monster2.hitbox = {31,30,16,18};
 	monster2.projectile_launch_center = {38,39};
-	monster2.projectile_launch_dist = 18;
+	monster2.projectile_launch_dist = 0;
 	monster2.bulletManager = monster2bulletList;
 	monster2.firePatternStr = "D:3;35 U:3;35 R:3;35 L:3;35 U:3;35 D:3;35 L:3;35 R:3;35";
 	monster2.protected_by = CONTAINS_IMPOSSIBLE;
@@ -271,9 +271,9 @@ int App::execute(){
 
 	while (!quit){
 		Uint32 t0 = SDL_GetTicks();
-		handleEvents();
-		mainLoop();
-		render();
+		gameEvents();
+		gameUpdate();
+		gameRender();
 		Uint32 dt = SDL_GetTicks()-t0;
 		SDL_Delay( dt<20 ? 20-dt : 0 );
 	}
@@ -282,7 +282,7 @@ int App::execute(){
 }
 
 
-void App::handleEvents(){
+void App::gameEvents(){
 	SDL_Event event;
 
 	while(SDL_PollEvent(&event)){
@@ -305,7 +305,7 @@ void App::handleEvents(){
 }
 
 
-void App::mainLoop(){
+void App::gameUpdate(){
 
 	// Let all entity managers do their updates
 	for (EntityManager * entityManager : entityManagers_projectile)
@@ -314,7 +314,7 @@ void App::mainLoop(){
 		entityManager->update(this);
 
 	// Maybe spawn a monster
-	if (rand() % 200 == 0) spawnMonster();
+	if (rand() % 100 == 0) spawnMonster();
 
 	// Check if level increases or win state changes
 	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
@@ -332,7 +332,7 @@ void App::mainLoop(){
 }
 
 
-void App::render(){
+void App::gameRender(){
 
 	// Set the renderer's viewport to the right hand menu
 	SDL_RenderSetViewport(renderer,&info_area_rect);

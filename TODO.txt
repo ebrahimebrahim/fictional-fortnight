@@ -1,20 +1,19 @@
 make some more monsters. ideas:
-  an octopus that shoots ink which splats. the ink is wide but very slow
-  a fungus that shoots spores that explode into a cloud. the spores are very small but the cloud is huge and deadly
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
-
-move score window to bottom and put useful info like
-  ave fps rather than fps
-  missile and boost ready status
-  a bar showing how close score is to game win state
-
-optimize vector calculations in various entity update steps
 
 a main menu, a how to play, a win screen, a lose screen
 
 player pickup -- alternative missile. maybe the player can get all the different monster missiles somehow?
 perhaps by killing a different version of a monster, like a big boss version with hp
 
+the rate at which monsters spawn can perhaps be more regular.
+maybe periodic with random noise added to the periodicity, rather than "poisson dist" style spawning.
+the rate could perhaps scale up with score, making players push harder towards the end and giving them a break if they
+lost all their score.
+also: when monsters spawn 1 by 1 it's easy to snipe them out before they even start shooting.
+they have to come in waves for there to be any challenge
+
+add sounds?
 
 
 --- General notes and things I've learned from this ---
