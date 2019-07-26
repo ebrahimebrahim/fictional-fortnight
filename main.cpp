@@ -28,9 +28,7 @@ int main( int argc, char* args[] ) {
 }
 
 
-App::App() : log{},
-						 mainMenu("Main Menu", &log),
-						 pauseMenu("Paused", &log)
+App::App() : log{}
 {
 }
 
@@ -79,12 +77,22 @@ int App::initialize() {
 	srand(time(nullptr));
 
 
-	// --- Build up menus ---
-	mainMenu.addItem("Start", [this] () {this->ui_state=UI_STATE_GAME;});
-	mainMenu.addItem("Quit",  [this] () {this->ui_state=UI_STATE_QUIT;});
+	//Load font
+	font  = TTF_OpenFont("Roboto-Regular.ttf",14);
+	if (font==nullptr){
+		log.TTF_Error("Error loading font");
+		return -1;
+	}
 
-	pauseMenu.addItem("Resume", [this] () {this->ui_state=UI_STATE_GAME;});
-	pauseMenu.addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
+
+	// --- Build up menus ---
+	mainMenu = new Menu("Main Menu",renderer,font,&log);
+	mainMenu->addItem("Start", [this] () {this->ui_state=UI_STATE_GAME;});
+	mainMenu->addItem("Quit",  [this] () {this->ui_state=UI_STATE_QUIT;});
+
+	pauseMenu = new Menu("Pause Menu",renderer,font,&log);
+	pauseMenu->addItem("Resume", [this] () {this->ui_state=UI_STATE_GAME;});
+	pauseMenu->addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
 
 
 
@@ -285,13 +293,14 @@ int App::execute(){
 
 		Uint32 t0 = SDL_GetTicks();
 
+		SDL_Event event;
+
 		switch (ui_state) {
 			case UI_STATE_MENU:
-				SDL_Event event;
 				while(SDL_PollEvent(&event))
-					mainMenu.events(&event);
-				mainMenu.update(this);
-				mainMenu.render(renderer);
+					mainMenu->events(&event);
+				mainMenu->update(this);
+				mainMenu->render(renderer);
 				break;
 			case UI_STATE_GAME:
 				gameEvents();
@@ -301,6 +310,10 @@ int App::execute(){
 			case UI_STATE_ENDGAME:
 				break;
 			case UI_STATE_PAUSE:
+				while(SDL_PollEvent(&event))
+					pauseMenu->events(&event);
+				pauseMenu->update(this);
+				pauseMenu->render(renderer);
 				break;
 			default: break;
 		}
@@ -420,12 +433,7 @@ int App::loadMedia(){
 		}
 	}
 
-	//Load fonts
-	font  = TTF_OpenFont("Roboto-Regular.ttf",14);
-	if (font==nullptr){
-		log.TTF_Error("Error loading font");
-		return -1;
-	}
+
 
 	//Initialize text Textboxes
 	scoreTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
@@ -460,6 +468,9 @@ void App::unloadMedia(){
 	delete missileLoadingIndicator;
 	delete speedBoostIndicator;
 
+	delete mainMenu; mainMenu = nullptr;
+	delete pauseMenu; pauseMenu = nullptr;
+
 	TTF_CloseFont(font);
 	font = nullptr;
 
@@ -473,6 +484,9 @@ void App::handleKeypress(SDL_KeyboardEvent * key){
 			break;
 		case SDL_SCANCODE_Q:
 			ui_state=UI_STATE_QUIT;
+			break;
+		case SDL_SCANCODE_ESCAPE:
+			ui_state=UI_STATE_PAUSE;
 			break;
 		default:
 			break;

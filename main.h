@@ -90,8 +90,8 @@ class App {
     StatusIndicator * speedBoostIndicator = nullptr;
 
     // Menus
-    Menu mainMenu;
-    Menu pauseMenu;
+    Menu * mainMenu  = nullptr;
+    Menu * pauseMenu = nullptr;
 
 
 
