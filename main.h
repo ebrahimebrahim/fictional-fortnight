@@ -95,6 +95,8 @@ class App {
     // Menus
     Menu * mainMenu  = nullptr;
     Menu * pauseMenu = nullptr;
+    Menu * winMenu = nullptr;
+    Menu * loseMenu = nullptr;
 
 
 

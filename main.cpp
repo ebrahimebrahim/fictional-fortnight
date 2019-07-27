@@ -94,6 +94,12 @@ int App::initialize() {
 	pauseMenu->addItem("Resume", [this] () {this->ui_state=UI_STATE_GAME;});
 	pauseMenu->addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
 
+	winMenu = new Menu("Win!  :D",renderer,font,&log);
+	winMenu->addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
+
+	loseMenu = new Menu("Lost.  :(",renderer,font,&log);
+	loseMenu->addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
+
 
 
 	// --- Create EntityManager objects ---
@@ -294,6 +300,7 @@ int App::execute(){
 		Uint32 t0 = SDL_GetTicks();
 
 		SDL_Event event;
+		Menu * endMenu = won ? winMenu : loseMenu;
 
 		switch (ui_state) {
 			case UI_STATE_MENU:
@@ -315,7 +322,10 @@ int App::execute(){
 			case UI_STATE_ENDGAME:
 				while(SDL_PollEvent(&event)) {
 					appEvent(&event);
+					endMenu->events(&event);
 				}
+				endMenu->update(this);
+				endMenu->render(renderer);
 				break;
 			case UI_STATE_PAUSE:
 				while(SDL_PollEvent(&event)) {
@@ -383,8 +393,8 @@ void App::gameUpdate(){
 
 	// Check if level increases or win state changes
 	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
-	if (level > num_levels) won=true;
-	if (score < SCORE_TO_LOSE) lost=true;
+	if (level > num_levels) {won=true; ui_state=UI_STATE_ENDGAME;}
+	if (score < SCORE_TO_LOSE) {lost=true; ui_state=UI_STATE_ENDGAME;}
 
 	// Update status indicators
 	if (playerEntity->missile_cooldown_countdown==0) missileLoadingIndicator->setGreen();
@@ -491,6 +501,8 @@ void App::unloadMedia(){
 
 	delete mainMenu; mainMenu = nullptr;
 	delete pauseMenu; pauseMenu = nullptr;
+	delete winMenu; winMenu = nullptr;
+	delete loseMenu; loseMenu = nullptr;
 
 	TTF_CloseFont(font);
 	font = nullptr;
