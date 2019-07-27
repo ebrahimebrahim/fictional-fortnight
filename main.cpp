@@ -366,8 +366,13 @@ void App::gameUpdate(){
 	for (EntityManager * entityManager : entityManagers_nonprojectile)
 		entityManager->update(this);
 
-	// Maybe spawn a monster
-	if (rand() % 200 == 0) spawnMonster();
+	// Update monster spawn wave countdown and spawn monsters if it's time
+	if (wave_countdown>0) --wave_countdown;
+	else {
+		wave_countdown = WAVE_COUNTDOWN_LENGTH + (rand() % (WAVE_COUNTDOWN_LENGTH/2));
+		spawnWave();
+	}
+
 
 	// Check if level increases or win state changes
 	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
@@ -612,4 +617,10 @@ void App::spawnMonster() {
 	}
 	if (acceptableSpawnRect)
 		entityManagers_monster[monsterIndex]->createMonster(spawnRect.x,spawnRect.y);
+}
+
+void App::spawnWave() {
+	int wave_size = (rand() % (WAVESIZE_MAX-WAVESIZE_MIN + 1)) + WAVESIZE_MIN;
+	for (int i = 0; i < wave_size; i++)
+		spawnMonster();
 }
