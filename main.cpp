@@ -87,18 +87,22 @@ int App::initialize() {
 
 	// --- Build up menus ---
 	mainMenu = new Menu("Main Menu",renderer,font,&log);
-	mainMenu->addItem("Start", [this] () {this->ui_state=UI_STATE_GAME;});
-	mainMenu->addItem("Quit",  [this] () {this->ui_state=UI_STATE_QUIT;});
+	mainMenu->addItem("Start", [this] () {this->updateUIState(UI_STATE_GAME);});
+	mainMenu->addItem("How to play", [this] () {this->updateUIState(UI_STATE_HOW_TO_PLAY);});
+	mainMenu->addItem("Quit",  [this] () {this->updateUIState(UI_STATE_QUIT);});
 
 	pauseMenu = new Menu("Pause Menu",renderer,font,&log);
-	pauseMenu->addItem("Resume", [this] () {this->ui_state=UI_STATE_GAME;});
-	pauseMenu->addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
+	pauseMenu->addItem("Resume", [this] () {this->updateUIState(UI_STATE_GAME);});
+	pauseMenu->addItem("How to play", [this] () {this->updateUIState(UI_STATE_HOW_TO_PLAY);});
+	pauseMenu->addItem("Quit",   [this] () {this->updateUIState(UI_STATE_QUIT);});
 
 	winMenu = new Menu("Win!  :D",renderer,font,&log);
-	winMenu->addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
+	winMenu->addItem("Quit",   [this] () {this->updateUIState(UI_STATE_QUIT);});
 
 	loseMenu = new Menu("Lost.  :(",renderer,font,&log);
-	loseMenu->addItem("Quit",   [this] () {this->ui_state=UI_STATE_QUIT;});
+	loseMenu->addItem("Quit",   [this] () {this->updateUIState(UI_STATE_QUIT);});
+
+	help = new HelpScreen(renderer,font,&log);
 
 
 
@@ -335,7 +339,19 @@ int App::execute(){
 				pauseMenu->update(this);
 				pauseMenu->render(renderer);
 				break;
-			default: break;
+			case UI_STATE_HOW_TO_PLAY:
+				while(SDL_PollEvent(&event)) {
+					appEvent(&event);
+					help->events(&event);
+				}
+				help->update(this);
+				help->render(renderer);
+				break;
+			default:
+				while(SDL_PollEvent(&event)) {
+					appEvent(&event);
+				}
+				break;
 		}
 
 		Uint32 dt = SDL_GetTicks()-t0;
@@ -503,6 +519,7 @@ void App::unloadMedia(){
 	delete pauseMenu; pauseMenu = nullptr;
 	delete winMenu; winMenu = nullptr;
 	delete loseMenu; loseMenu = nullptr;
+	delete help; help = nullptr;
 
 	TTF_CloseFont(font);
 	font = nullptr;
@@ -642,4 +659,14 @@ void App::spawnWave() {
 	int wave_size = (rand() % (WAVESIZE_MAX-WAVESIZE_MIN + 1)) + WAVESIZE_MIN;
 	for (int i = 0; i < wave_size; i++)
 		spawnMonster();
+}
+
+
+void App::updateUIState(UI_State new_state) {
+	previous_ui_state = ui_state;
+	ui_state = new_state;
+}
+
+void App::revertUIState() {
+	ui_state = previous_ui_state;
 }

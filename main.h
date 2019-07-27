@@ -10,6 +10,7 @@
 #include "utilities.h"
 #include "status_indicator.h"
 #include "menu.h"
+#include "helpscreen.h"
 
 
 const int WINDOW_WIDTH = 800;
@@ -30,6 +31,7 @@ enum UI_State {
   UI_STATE_ENDGAME,
   UI_STATE_QUIT,
   UI_STATE_PAUSE,
+  UI_STATE_HOW_TO_PLAY,
   UI_STATE_COUNT // always last
 };
 
@@ -57,6 +59,7 @@ class App {
 
     // App state
     UI_State ui_state = UI_STATE_MENU;
+    UI_State previous_ui_state = UI_STATE_MENU;
     Uint32 timerStart = 0;
     Uint32 lastFrameTime = 0;
     int fps = 0;
@@ -97,6 +100,7 @@ class App {
     Menu * pauseMenu = nullptr;
     Menu * winMenu = nullptr;
     Menu * loseMenu = nullptr;
+    HelpScreen * help = nullptr;
 
 
 
@@ -117,6 +121,9 @@ class App {
     void gameRender();
 
     void handleKeypress(SDL_KeyboardEvent *);
+
+    void updateUIState(UI_State new_state);
+    void revertUIState(); // Only remembers one previous state to revert to-- that's all we need here.
 
 
     // Methods that will be used by the entity managers
