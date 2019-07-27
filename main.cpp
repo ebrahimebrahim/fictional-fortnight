@@ -369,7 +369,14 @@ void App::gameUpdate(){
 	// Update monster spawn wave countdown and spawn monsters if it's time
 	if (wave_countdown>0) --wave_countdown;
 	else {
-		wave_countdown = WAVE_COUNTDOWN_LENGTH + (rand() % (WAVE_COUNTDOWN_LENGTH/2));
+		const int score_to_win = SCORE_PER_LEVEL_ADVANCE * num_levels;
+		const int wave_time_when_score_zero = 400;
+		const int wave_time_when_win = 130;
+		int wave_time_base = score * ((wave_time_when_win - wave_time_when_score_zero)/score_to_win)
+														   + wave_time_when_score_zero;
+		if (wave_time_base < wave_time_when_win) wave_time_base = wave_time_when_win;
+		// Condition in this if should not happen before win, but it's good to prevent possible % 0 below.
+		wave_countdown = wave_time_base + (rand() % (wave_time_base/2));
 		spawnWave();
 	}
 

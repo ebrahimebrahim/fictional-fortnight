@@ -1,10 +1,3 @@
-the rate at which monsters spawn can perhaps be more regular.
-maybe periodic with random noise added to the periodicity, rather than "poisson dist" style spawning.
-the rate could perhaps scale up with score, making players push harder towards the end and giving them a break if they
-lost all their score.
-also: when monsters spawn 1 by 1 it's easy to snipe them out before they even start shooting.
-they have to come in waves for there to be any challenge
-
 make some more monsters. ideas:
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
 
