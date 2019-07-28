@@ -1,6 +1,6 @@
 #include "textbox.h"
 
-TextBox::TextBox(TTF_Font* font, SDL_Color* color, SDL_Renderer * renderer, Logger * log){
+TextBox::TextBox(TTF_Font* font, SDL_Color* color, SDL_Renderer * renderer, Logger * log, int width){
 
   if (color==nullptr || renderer==nullptr || font==nullptr)
     log->error("TextBox: Null pointer passed to constructor");
@@ -9,6 +9,7 @@ TextBox::TextBox(TTF_Font* font, SDL_Color* color, SDL_Renderer * renderer, Logg
   this->renderer = renderer;
   this->font = font;
   this->log = log;
+  this->width = width;
 
 }
 
@@ -34,20 +35,26 @@ void TextBox::freeTexture(){
   }
 }
 
+SDL_Texture * TextBox::createTexture(const char * text, int * w, int * h) {
+  SDL_Surface * text_surface = TTF_RenderText_Blended(font, text, *color);
+  if (text_surface==nullptr) {log->TTF_Error("Failed to render text"); return nullptr;}
+  *w = text_surface->w;
+  *h = text_surface->h;
+  SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, text_surface);
+  SDL_FreeSurface(text_surface);
+  if (texture==nullptr) {log->SDL_Error("Failed to create textbox texture from surface"); return nullptr;}
+  return texture;
+}
+
 int TextBox::updateText(const char * text){
 
   if (color==nullptr  || renderer==nullptr || font==nullptr)
     log->error("TextBox: Some attribute has died before it should have");
   if (text==nullptr) log->error("TextBox: Null text has been passed");
 
-  SDL_Surface * text_surface = TTF_RenderText_Blended(font, text, *color);
-  if (text_surface==nullptr) {log->TTF_Error("Failed to render text"); return -1;}
   freeTexture();
-  mTexture = SDL_CreateTextureFromSurface(renderer, text_surface);
-  if (mTexture==nullptr) {log->SDL_Error("Failed to create textbox texture from surface"); return -1;}
-  textRect.w = text_surface->w;
-  textRect.h = text_surface->h;
-  SDL_FreeSurface(text_surface);
+  mTexture = createTexture(text,&(textRect.w),&(textRect.h));
+  if (mTexture == nullptr) return -1;
   return 0;
 }
 

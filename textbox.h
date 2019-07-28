@@ -6,7 +6,7 @@
 class TextBox{
   public:
 
-    TextBox(TTF_Font*, SDL_Color*, SDL_Renderer *, Logger *);
+    TextBox(TTF_Font*, SDL_Color*, SDL_Renderer *, Logger *, int width = -1);
     /* Create a text box drawer, setting font and color.
     It is the user's responsibility to ensure that the font, color, logger, and renderer survive
     for the lifetime of the TextBox. The TextBox will not create or free these items.
@@ -41,8 +41,16 @@ class TextBox{
     SDL_Color * color = nullptr;
     Logger * log = nullptr;
 
+    int width = -1;
+
   private:
     SDL_Texture * mTexture = nullptr;
+
+    SDL_Texture * createTexture(const char *, int*, int*);
+    // make a text texture and store width and height in given ints.
+    // logs errors. returns nullptr on fail.
+
     void freeTexture();
+    // free internally stored texture
 
 };
