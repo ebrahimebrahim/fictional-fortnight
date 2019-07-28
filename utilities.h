@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include "logger.h"
 #include <vector>
+#include <string>
 
 enum DirectionUDLR {
   DIRECTION_UP,
@@ -33,6 +34,8 @@ const ContainsBitmask CONTAINS_IMPOSSIBLE            = 1 << 8; // useful - somet
 const ContainsBitmask CONTAINS_DEADLY_TO_PLAYER      = 1 << 9;
 
 
+
+std::vector<std::string> split(std::string str, const char * delimiters);
 
 
 

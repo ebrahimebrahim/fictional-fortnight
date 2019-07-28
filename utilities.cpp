@@ -1,6 +1,25 @@
 #include "utilities.h"
 
 
+std::vector<std::string> split(std::string str, const char * delimiters) {
+
+  std::vector<std::string> split_string;
+
+  char * cstr = new char [str.length()];
+  strcpy(cstr,str.c_str());
+
+  char * pch = strtok(cstr,delimiters);
+  while(pch!=nullptr){
+    split_string.push_back(std::string(pch));
+    pch = strtok(nullptr,delimiters);
+  }
+
+  delete [] cstr;
+
+  return split_string; //RVO? I hope.
+}
+
+
 
 SDL_Texture	 *  loadImage(const char * filename, SDL_Renderer * renderer, Logger * log){
 	SDL_Surface * img = IMG_Load(filename);
