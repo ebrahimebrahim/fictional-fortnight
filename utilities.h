@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include "logger.h"
 #include <vector>
+#include <list>
 #include <string>
 
 enum DirectionUDLR {
@@ -36,6 +37,7 @@ const ContainsBitmask CONTAINS_DEADLY_TO_PLAYER      = 1 << 9;
 
 
 std::vector<std::string> split(std::string str, const char * delimiters);
+std::list<std::string> splitL(std::string str, const char * delimiters); // identical but uses list container
 
 
 

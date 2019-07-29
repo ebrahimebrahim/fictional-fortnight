@@ -78,7 +78,7 @@ int App::initialize() {
 
 
 	//Load font
-	font  = TTF_OpenFont("Roboto-Regular.ttf",14);
+	font  = TTF_OpenFont("Roboto-Regular.ttf",19);
 	if (font==nullptr){
 		log.TTF_Error("Error loading font");
 		return -1;
@@ -430,14 +430,24 @@ void App::gameRender(){
 
 	SDL_SetRenderDrawColor(renderer,100,100,50,255);
 	SDL_RenderFillRect(renderer,nullptr);
-	scoreTextBox->renderCopy(10,10);
+
+	int x = 10; int y = 10;
+	scoreTextBox->renderCopy(x,y);
+
+	x += 120;
 	std::string fpsString = "FPS: ";
 	fpsString += std::to_string(fps);
 	if (frame % 10 ==0 ) fpsTextBox->updateText(fpsString.c_str());
-	fpsTextBox->renderCopy(90,10);
-	missileLoadingIndicator->render(180,10);
-	speedBoostIndicator->render(330,10);
-	renderScoreIndicator(500,20);
+	fpsTextBox->renderCopy(x,y);
+
+	x += 100;
+	missileLoadingIndicator->render(x,y);
+
+	x += 175;
+	speedBoostIndicator->render(x,y);
+
+	x += 170; y += 10;
+	renderScoreIndicator(x,y);
 
 	// Set the renderer's viewport to the game screen
   SDL_RenderSetViewport(renderer,&screen_rect);
@@ -489,8 +499,8 @@ int App::loadMedia(){
 	fpsTextBox->updateText("[FPS]");
 
 
-	missileLoadingIndicator = createStatusIndicator(120,18,"Missile ready","Missile reloading");
-	speedBoostIndicator = createStatusIndicator(120,18,"Speedboost ready","Recharging speedboost");
+	missileLoadingIndicator = createStatusIndicator(160,25,"Missile ready","Missile reloading");
+	speedBoostIndicator = createStatusIndicator(165,25,"Speed ready","Recharging speed");
 
 
 

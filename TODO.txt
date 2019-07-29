@@ -5,6 +5,7 @@ a main menu, a how to play, a win screen, a lose screen
 
 player pickup -- alternative missile. maybe the player can get all the different monster missiles somehow?
 perhaps by killing a different version of a monster, like a big boss version with hp
+the speedboost is really dumb. there should be a different powerup that is more useful.
 
 add sounds?
 

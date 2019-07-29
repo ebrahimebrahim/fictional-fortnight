@@ -31,6 +31,10 @@ class TextBox{
     Return 0 on success and negative error code on failure.
     The given location is the top left corner of the textbox. */
 
+    int getTextWidth() {return textRect.w;}
+    int getTextHeight() {return textRect.h;}
+    /* Return width and height of textbox since last call to updateText */
+
     int width = -1;
     // Set this to enable text wrapping
     // Max width of text texture. If set to -1, then there is no text wrapping and thus no width.
@@ -44,6 +48,7 @@ class TextBox{
     TTF_Font * font = nullptr;
     SDL_Color * color = nullptr;
     Logger * log = nullptr;
+
 
   private:
 

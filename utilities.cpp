@@ -16,7 +16,25 @@ std::vector<std::string> split(std::string str, const char * delimiters) {
 
   delete [] cstr;
 
-  return split_string; //RVO? I hope.
+  return split_string; //RVO? Some kind move thing? I think it's fine.
+}
+
+std::list<std::string> splitL(std::string str, const char * delimiters) {
+
+  std::list<std::string> split_string;
+
+  char * cstr = new char [str.length()];
+  strcpy(cstr,str.c_str());
+
+  char * pch = strtok(cstr,delimiters);
+  while(pch!=nullptr){
+    split_string.push_back(std::string(pch));
+    pch = strtok(nullptr,delimiters);
+  }
+
+  delete [] cstr;
+
+  return split_string; //RVO? Some kind move thing? I think it's fine.
 }
 
 
