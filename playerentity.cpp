@@ -80,6 +80,25 @@ void PlayerEntity::update(App * app) {
     }
   }
 
+  // If player is in an obstruction, which can happen after orientation change, then pop them out of it.
+  playerHitbox = getPlayerHitbox(x,y,orientation);
+  if (app->rectContents(playerHitbox,this) & CONTAINS_OBSTRUCTION) {
+    bool success=false; int s = 1;
+    vecI pos(x,y);
+    while (!success && s<9999) {
+      vecI posToTry [4] = {pos + vecI(s,0), pos + vecI(0,s), pos + vecI(-s,0), pos + vecI(0,-s)};
+      for (int i=0; i<4; ++i) {
+        SDL_Rect tryHitbox = getPlayerHitbox(posToTry[i].x,posToTry[i].y,orientation);
+        if (!(app->rectContents(tryHitbox,this) & CONTAINS_OBSTRUCTION)) {
+          x = posToTry[i].x; y = posToTry[i].y;
+          success=true;
+          break;
+        }
+      }
+      ++s;
+    }
+  }
+
 
   vecI d = globals.directionToUnitVector[orientation];
   vecI locX = globals.directionToLocalX[orientation];
@@ -89,7 +108,7 @@ void PlayerEntity::update(App * app) {
       vecI pos(x,y);
       vecI forwardPos(pos+d);
       SDL_Rect forwardHitbox = getPlayerHitbox(forwardPos.x,forwardPos.y,orientation);
-      ContainsBitmask forwardContents = app->rectContents(SDL_Rect(forwardHitbox),this);
+      ContainsBitmask forwardContents = app->rectContents(forwardHitbox,this);
       if (!(forwardContents & CONTAINS_OBSTRUCTION)) {
         x = forwardPos.x; y =forwardPos.y;
         playerHitbox = forwardHitbox; // should optimize to a move I guess? IDK how to "move"

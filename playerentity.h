@@ -47,10 +47,10 @@ class PlayerEntity :  public EntityManager {
     // Constants (for now)
     int img_width = 200;  // image width and height in pixels of a single sprite in the image of sprites
     int img_height = 200;
-    int player_hitbox_x_img=50; // top left corner of player hitbox in local sprite image coords in pixels
-    int player_hitbox_y_img=50;
-    int player_hitbox_width_img = 100; // width and height og player hitbox in local sprite img coords in pxls
-    int player_hitbox_height_img = 80;
+    int player_hitbox_x_img=49; // top left corner of player hitbox in local sprite image coords in pixels
+    int player_hitbox_y_img=49;
+    int player_hitbox_width_img = 102; // width and height og player hitbox in local sprite img coords in pxls
+    int player_hitbox_height_img = 82;
     int player_hitbox_width_screen = 20; // width of player on screen. This relative to player_hitbox_width_img sets the scale.
     int missile_cooldown = 60;
     int speedboost_cooldown = 300;
