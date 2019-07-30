@@ -593,7 +593,7 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 				contents |= CONTAINS_OBSTRUCTION | CONTAINS_MONSTER;
 
 
-	if (SDL_HasIntersection(&r,&(playerEntity->playerRect))==SDL_TRUE && playerEntity!=ignore)
+	if (SDL_HasIntersection(&r,&(playerEntity->playerHitbox))==SDL_TRUE && playerEntity!=ignore)
 		contents |= CONTAINS_OBSTRUCTION | CONTAINS_PLAYER;
 
 	return contents;

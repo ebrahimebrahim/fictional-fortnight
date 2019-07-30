@@ -6,8 +6,25 @@
 
 extern Globals globals;
 
+SDL_Rect PlayerEntity::getPlayerHitbox(int x1, int y1, DirectionUDLR dir) {
+  SDL_Rect hitbox = {x1 - int(float(player_hitbox_width_img)/2 * screenpx_per_imgpx),
+                     y1 - int(float(player_hitbox_height_img)/2 * screenpx_per_imgpx),
+                     int(float(player_hitbox_width_img)*screenpx_per_imgpx),
+                     int(float(player_hitbox_height_img)*screenpx_per_imgpx)};
+  return rotateRect(hitbox,vecI(x1,y1),dir);
+}
+
+SDL_Rect PlayerEntity::getUnrotatedFullRect() {
+  SDL_Rect rect = {x - int((float(player_hitbox_width_img)/2  + player_hitbox_x_img) * screenpx_per_imgpx),
+                   y - int((float(player_hitbox_height_img)/2 + player_hitbox_y_img) * screenpx_per_imgpx),
+                   int(float(img_width)*screenpx_per_imgpx),
+                   int(float(img_height)*screenpx_per_imgpx)};
+  return rect;
+}
+
 PlayerEntity::PlayerEntity() : lastDirectionalKeys(128,SDL_SCANCODE_UNKNOWN) {
-  playerRect = {x,y,width,height};
+  screenpx_per_imgpx = float(player_hitbox_width_screen) / float(player_hitbox_width_img);
+  playerHitbox = getPlayerHitbox(x,y,orientation);
 }
 
 
@@ -17,13 +34,13 @@ PlayerEntity::~PlayerEntity() {
 
 
 int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
-  sprites = loadImage("player.png",renderer,log);
+  sprites = loadImage("player_remake.png",renderer,log);
 	if (sprites==nullptr){
 		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
 	}
   for (int i = 0 ; i < num_player_sprite_rects ; ++i) {
-    sprite_rects[i]={7*i,0,7,7};
+    sprite_rects[i]={img_width*i,0,img_width,img_height};
   }
 
   return 0;
@@ -71,11 +88,11 @@ void PlayerEntity::update(App * app) {
     for (v = 0; v<move_speed; ++v) {
       vecI pos(x,y);
       vecI forwardPos(pos+d);
-      SDL_Rect forwardRect = {forwardPos.x,forwardPos.y,width,height};
-      ContainsBitmask forwardContents = app->rectContents(SDL_Rect(forwardRect),this);
+      SDL_Rect forwardHitbox = getPlayerHitbox(forwardPos.x,forwardPos.y,orientation);
+      ContainsBitmask forwardContents = app->rectContents(SDL_Rect(forwardHitbox),this);
       if (!(forwardContents & CONTAINS_OBSTRUCTION)) {
         x = forwardPos.x; y =forwardPos.y;
-        playerRect = forwardRect; // should optimize to a move I guess? IDK how to "move"
+        playerHitbox = forwardHitbox; // should optimize to a move I guess? IDK how to "move"
       }
       else break;
     }
@@ -86,8 +103,8 @@ void PlayerEntity::update(App * app) {
   // resolve shoot attempt
   if (tryShoot && missile_cooldown_countdown==0) {
 
-      vecI p = vecI(x,y) + vecI(width/2,height/2)
-               + globals.directionToUnitVector[orientation]*((width + app->projectileList->projectileTypeData.height)/2)
+      vecI p = vecI(x,y)
+               + globals.directionToUnitVector[orientation]*((int(float(player_hitbox_height_img)*screenpx_per_imgpx) + app->projectileList->projectileTypeData.height)/2)
                - vecI(app->projectileList->projectileTypeData.width/2,app->projectileList->projectileTypeData.height/2);
       app->projectileList->createProjectile(p.x,p.y,v+3,orientation);
       missile_cooldown_countdown=missile_cooldown;
@@ -113,7 +130,7 @@ void PlayerEntity::update(App * app) {
 
   // check if player should be harmed now:
 
-  if (app->rectContents(playerRect) & (CONTAINS_DEADLY_EXPLOSION | CONTAINS_DEADLY_TO_PLAYER))
+  if (app->rectContents(playerHitbox) & (CONTAINS_DEADLY_EXPLOSION | CONTAINS_DEADLY_TO_PLAYER))
     if (hit_cooldown == 0) {
       app->addScore(SCORE_CHANGE_WHEN_PLAYER_HIT);
       hit_cooldown = 60;
@@ -129,11 +146,16 @@ void PlayerEntity::update(App * app) {
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
-  int sprite_rect_index = (missile_cooldown - missile_cooldown_countdown) * 3 / missile_cooldown ;
-  SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[sprite_rect_index]), &playerRect,
-                   globals.directionToRotAngle[orientation],nullptr,SDL_FLIP_NONE);
+  int sprite_rect_index = 0 ;
+  SDL_Rect target_rect = getUnrotatedFullRect();
+  SDL_Point center = {int(float(player_hitbox_x_img + player_hitbox_width_img/2)*screenpx_per_imgpx),
+                      int(float(player_hitbox_y_img + player_hitbox_height_img/2)*screenpx_per_imgpx)};
+  SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[sprite_rect_index]), &target_rect,
+                   globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
+  // SDL_SetRenderDrawColor(renderer, 0,255,0,255);  //TEST
+  // SDL_RenderDrawRect(renderer, &(target_rect)); // TEST
   // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST
-  // SDL_RenderDrawRect(renderer, &(playerRect)); // TEST
+  // SDL_RenderDrawRect(renderer, &(playerHitbox)); // TEST
 }
 
 DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {

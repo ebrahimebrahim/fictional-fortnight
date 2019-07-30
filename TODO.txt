@@ -1,7 +1,7 @@
+better score/health system: a shield plus the idea of hull damage.
+
 make some more monsters. ideas:
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
-
-a main menu, a how to play, a win screen, a lose screen
 
 player pickup -- alternative missile. maybe the player can get all the different monster missiles somehow?
 perhaps by killing a different version of a monster, like a big boss version with hp
@@ -9,8 +9,7 @@ the speedboost is really dumb. there should be a different powerup that is more 
 
 add sounds?
 
-better score/health system: a shield plus the idea of hull damage.
-
+improve how to play instructions
 
 --- General notes and things I've learned from this ---
 
