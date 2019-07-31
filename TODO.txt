@@ -1,5 +1,9 @@
 better score/health system: a shield plus the idea of hull damage.
 
+only monsters killed by player should count towards score
+
+if there are no monsters, then don't let the lull last for too long. force down the monster respawn countdown
+
 make some more monsters. ideas:
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
 

@@ -100,6 +100,7 @@ void PlayerEntity::update(App * app) {
   }
 
 
+  // Carry out movement to the extent possible
   vecI d = globals.directionToUnitVector[orientation];
   vecI locX = globals.directionToLocalX[orientation];
 
@@ -150,26 +151,40 @@ void PlayerEntity::update(App * app) {
   // check if player should be harmed now:
 
   if (app->rectContents(playerHitbox) & (CONTAINS_DEADLY_EXPLOSION | CONTAINS_DEADLY_TO_PLAYER))
-    if (hit_cooldown == 0) {
+    if (hit_timer == 0) {
       app->addScore(SCORE_CHANGE_WHEN_PLAYER_HIT);
-      hit_cooldown = 60;
-      SDL_SetTextureAlphaMod(sprites,60);
+      hit_timer = hit_cooldown;
+      SDL_SetTextureAlphaMod(sprites,128);
+
+      // remove shield if it was engaged. if not, then take hull damage.
+      if (shield_timer==0) {
+        shield_timer = shield_recharge_time;
+      }
+      else {
+        --hitpoints;
+      }
     }
 
-  if (hit_cooldown>0) {
-    --hit_cooldown;
-    if (hit_cooldown==1) SDL_SetTextureAlphaMod(sprites,255);
+  // tick down timers
+  if (hit_timer>0) {
+    --hit_timer;
+    if (hit_timer==1) SDL_SetTextureAlphaMod(sprites,255);
   }
-
+  if (shield_timer>0) {
+    --shield_timer;
+  }
 
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
-  int sprite_rect_index = 0 ;
+  SDL_Rect * sprite_rect = hitpoints<2 ? &(sprite_rects[1]) : &(sprite_rects[0]);
   SDL_Rect target_rect = getUnrotatedFullRect();
   SDL_Point center = {int(float(player_hitbox_x_img + player_hitbox_width_img/2)*screenpx_per_imgpx),
                       int(float(player_hitbox_y_img + player_hitbox_height_img/2)*screenpx_per_imgpx)};
-  SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[sprite_rect_index]), &target_rect,
+  SDL_RenderCopyEx(renderer, sprites, sprite_rect, &target_rect,
+                   globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
+  if (shield_timer==0)
+  SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[2]), &target_rect,
                    globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
   // SDL_SetRenderDrawColor(renderer, 0,255,0,255);  //TEST
   // SDL_RenderDrawRect(renderer, &(target_rect)); // TEST

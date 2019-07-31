@@ -410,7 +410,7 @@ void App::gameUpdate(){
 	// Check if level increases or win state changes
 	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
 	if (level > num_levels) {won=true; ui_state=UI_STATE_ENDGAME;}
-	if (score < SCORE_TO_LOSE) {lost=true; ui_state=UI_STATE_ENDGAME;}
+	if (score < SCORE_TO_LOSE || playerEntity->hitpoints <= 0) {lost=true; ui_state=UI_STATE_ENDGAME;}
 
 	// Update status indicators
 	if (playerEntity->missile_cooldown_countdown==0) missileLoadingIndicator->setGreen();
