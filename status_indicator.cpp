@@ -19,18 +19,20 @@ StatusIndicator::~StatusIndicator() {
 }
 
 void StatusIndicator::render(int x, int y) {
+  // draw red rect
+  SDL_SetRenderDrawColor(renderer, 255,0,0,255);
   SDL_Rect target_rect = {x,y,width,height};
-  if (green) SDL_SetRenderDrawColor(renderer, 0,255,0,255);
-  else       SDL_SetRenderDrawColor(renderer, 255,0,0,255);
   SDL_RenderFillRect(renderer,&target_rect);
-  if (green) greenText->renderCopy(x+2,y); // create bit of left margin there
+
+  // draw green rect
+  SDL_SetRenderDrawColor(renderer, 0,255,0,255);
+  target_rect = {x,y,int(float(width)*progress),height};
+  SDL_RenderFillRect(renderer,&target_rect);
+
+  if (progress>0.99) greenText->renderCopy(x+2,y); // create bit of left margin there
   else       redText->renderCopy(x+2,y);
 }
 
-void StatusIndicator::setGreen() {
-  green=true;
-}
-
-void StatusIndicator::setRed() {
-  green=false;
+void StatusIndicator::setProgress(float progress) {
+  this->progress=progress;
 }

@@ -59,7 +59,7 @@ class PlayerEntity :  public EntityManager {
     int speedboost_cooldown = 300;
     int speedboost_duration = 100; // time to remain in boosted state
     int speedboost = 5; // amount to boost speed when speed boost is used
-    int shield_recharge_time = 100;
+    int shield_recharge_time = 200;
 
     float screenpx_per_imgpx=0; // deduced from player_hitbox_width_img and player_hitbox_width_screen
 

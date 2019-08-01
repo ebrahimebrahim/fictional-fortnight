@@ -8,15 +8,14 @@ class StatusIndicator {
     ~StatusIndicator();
 
     void render(int x, int y);
-    void setGreen();
-    void setRed();
+    void setProgress(float);
 
   private:
     TextBox * greenText = nullptr;
     TextBox * redText = nullptr;
     int width;
     int height;
-    bool green = false;
+    float progress = 0;
     SDL_Renderer * renderer = nullptr;
     Logger * log = nullptr;
 };

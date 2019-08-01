@@ -1,4 +1,8 @@
-better score/health system: a shield plus the idea of hull damage.
+status indicators should be bars that show progress
+
+replace speedboost recharge indicator with a shield recharge indicator. and get rid of speedboost.
+
+add a player death animation. losing is too sudden
 
 only monsters killed by player should count towards score
 

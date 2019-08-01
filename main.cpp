@@ -413,10 +413,8 @@ void App::gameUpdate(){
 	if (score < SCORE_TO_LOSE || playerEntity->hitpoints <= 0) {lost=true; ui_state=UI_STATE_ENDGAME;}
 
 	// Update status indicators
-	if (playerEntity->missile_cooldown_countdown==0) missileLoadingIndicator->setGreen();
-	else missileLoadingIndicator->setRed();
-	if (playerEntity->speedboost_cooldown_countdown==0) speedBoostIndicator->setGreen();
-	else speedBoostIndicator->setRed();
+	missileLoadingIndicator->setProgress( float(playerEntity->missile_cooldown - playerEntity->missile_cooldown_countdown)/float(playerEntity->missile_cooldown) );
+	speedBoostIndicator->setProgress( float(playerEntity->speedboost_cooldown - playerEntity->speedboost_cooldown_countdown)/float(playerEntity->speedboost_cooldown) );
 
 
 
