@@ -1,5 +1,3 @@
-add a player death animation. losing is too sudden
-
 make some more monsters. ideas:
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
 

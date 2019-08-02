@@ -138,5 +138,7 @@ class App {
     // (creates a new status indicator using the font and logger and stuff that's already been initialized)
     void renderScoreIndicator(int x, int y);
     bool noMonsters(); // check if there are no spawned monsters now
+    void lose() {lost=true; ui_state=UI_STATE_ENDGAME;}
+    void win() {won=true; ui_state=UI_STATE_ENDGAME;}
 
 };

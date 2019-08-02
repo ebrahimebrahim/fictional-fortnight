@@ -25,6 +25,7 @@ SDL_Rect PlayerEntity::getUnrotatedFullRect() {
 PlayerEntity::PlayerEntity() : lastDirectionalKeys(128,SDL_SCANCODE_UNKNOWN) {
   screenpx_per_imgpx = float(player_hitbox_width_screen) / float(player_hitbox_width_img);
   playerHitbox = getPlayerHitbox(x,y,orientation);
+  global_frames_till_next_death_animation_frame = death_animation_frame_time;
 }
 
 
@@ -39,7 +40,7 @@ int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
 		log->error("Error: PlayerEntity sprite was not loaded.");
 		return -1;
 	}
-  for (int i = 0 ; i < num_player_sprite_rects ; ++i) {
+  for (int i = 0 ; i < NUM_PLAYER_SPRITE_RECTS ; ++i) {
     sprite_rects[i]={img_width*i,0,img_width,img_height};
   }
 
@@ -63,6 +64,18 @@ void PlayerEntity::handleEvent(SDL_Event * event){
 }
 
 void PlayerEntity::update(App * app) {
+
+  // If dying then just keep the death animation ticking and ignore all other usual update steps
+  if (hitpoints<=0) {
+    if (global_frames_till_next_death_animation_frame > 0)
+      --global_frames_till_next_death_animation_frame;
+    else {
+      global_frames_till_next_death_animation_frame=death_animation_frame_time;
+      if (death_animation_frame < num_death_animation_frames-1) ++death_animation_frame;
+      else app->lose();
+    }
+    return;
+  }
 
   const Uint8 * keyState = SDL_GetKeyboardState(nullptr);
 
@@ -163,15 +176,30 @@ void PlayerEntity::update(App * app) {
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
-  SDL_Rect * sprite_rect = (hitpoints>0) ? &(sprite_rects[3-hitpoints]) : &(sprite_rects[0]);
-  SDL_Rect target_rect = getUnrotatedFullRect();
-  SDL_Point center = {int(float(player_hitbox_x_img + player_hitbox_width_img/2)*screenpx_per_imgpx),
-                      int(float(player_hitbox_y_img + player_hitbox_height_img/2)*screenpx_per_imgpx)};
-  SDL_RenderCopyEx(renderer, sprites, sprite_rect, &target_rect,
-                   globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
-  if (shield_timer==0)
-    SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[3]), &target_rect,
+
+  if (hitpoints >0) {
+    // render player
+    SDL_Rect * sprite_rect = &(sprite_rects[PLAYER_MAX_HP-hitpoints]);
+    SDL_Rect target_rect = getUnrotatedFullRect();
+    SDL_Point center = {int(float(player_hitbox_x_img + player_hitbox_width_img/2)*screenpx_per_imgpx),
+                        int(float(player_hitbox_y_img + player_hitbox_height_img/2)*screenpx_per_imgpx)};
+    SDL_RenderCopyEx(renderer, sprites, sprite_rect, &target_rect,
                      globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
+
+    // render shield
+    if (shield_timer==0)
+      SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[PLAYER_MAX_HP]), &target_rect,
+                       globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
+  }
+  else {
+    // render death animation frame
+    SDL_Rect * sprite_rect = &(sprite_rects[PLAYER_MAX_HP+death_animation_frame+1]);
+    SDL_Rect target_rect = getUnrotatedFullRect();
+    SDL_Point center = {int(float(player_hitbox_x_img + player_hitbox_width_img/2)*screenpx_per_imgpx),
+                        int(float(player_hitbox_y_img + player_hitbox_height_img/2)*screenpx_per_imgpx)};
+    SDL_RenderCopyEx(renderer, sprites, sprite_rect, &target_rect,
+                     globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
+  }
   // SDL_SetRenderDrawColor(renderer, 0,255,0,255);  //TEST
   // SDL_RenderDrawRect(renderer, &(target_rect)); // TEST
   // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST

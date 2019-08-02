@@ -4,7 +4,8 @@
 #include "utilities.h"
 
 
-const int num_player_sprite_rects = 10;
+const int NUM_PLAYER_SPRITE_RECTS = 10;
+const int PLAYER_MAX_HP = 3; // This is also the number of rects in the player spritesheet which show different hull dmgs
 
 
 
@@ -25,7 +26,7 @@ class PlayerEntity :  public EntityManager {
     SDL_Texture * sprites = nullptr;
 
     // Useful tables and rects
-    SDL_Rect sprite_rects [num_player_sprite_rects];
+    SDL_Rect sprite_rects [NUM_PLAYER_SPRITE_RECTS];
     DirectionUDLR directionalKeyToPlayerDirection(SDL_Scancode);
 
     // State
@@ -41,7 +42,9 @@ class PlayerEntity :  public EntityManager {
     int missile_cooldown_countdown = 0;
     int hit_timer = 0; // counts down invincibility after getting hit
     int shield_timer = 0; // If 0 then the shield is on. when shield lost resets to shield_recharge_time
-    int hitpoints = 3; // for hull damage
+    int death_animation_frame = 0;
+    int global_frames_till_next_death_animation_frame;
+    int hitpoints = PLAYER_MAX_HP; // for hull damage. when 0 the player is currently dying and death animation is playing.
 
     // Constants (for now)
     int img_width = 200;  // image width and height in pixels of a single sprite in the image of sprites
@@ -54,6 +57,8 @@ class PlayerEntity :  public EntityManager {
     int missile_cooldown = 60;
     int hit_cooldown = 50; // invincibility time after getting hit
     int shield_recharge_time = 200;
+    int num_death_animation_frames = 6;
+    int death_animation_frame_time = 10;
 
     float screenpx_per_imgpx=0; // deduced from player_hitbox_width_img and player_hitbox_width_screen
 
