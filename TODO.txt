@@ -7,7 +7,7 @@ player pickup -- alternative missile. maybe the player can get all the different
 perhaps by killing a different version of a monster, like a big boss version with hp
 the speedboost is really dumb. there should be a different powerup that is more useful.
 
-add sounds?
+add sounds? and music.
 
 improve how to play instructions
 

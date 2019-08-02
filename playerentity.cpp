@@ -163,15 +163,15 @@ void PlayerEntity::update(App * app) {
 }
 
 void PlayerEntity::render(App * app, SDL_Renderer * renderer){
-  SDL_Rect * sprite_rect = hitpoints<2 ? &(sprite_rects[1]) : &(sprite_rects[0]);
+  SDL_Rect * sprite_rect = (hitpoints>0) ? &(sprite_rects[3-hitpoints]) : &(sprite_rects[0]);
   SDL_Rect target_rect = getUnrotatedFullRect();
   SDL_Point center = {int(float(player_hitbox_x_img + player_hitbox_width_img/2)*screenpx_per_imgpx),
                       int(float(player_hitbox_y_img + player_hitbox_height_img/2)*screenpx_per_imgpx)};
   SDL_RenderCopyEx(renderer, sprites, sprite_rect, &target_rect,
                    globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
   if (shield_timer==0)
-  SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[2]), &target_rect,
-                   globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, sprites, &(sprite_rects[3]), &target_rect,
+                     globals.directionToRotAngle[orientation],&center,SDL_FLIP_NONE);
   // SDL_SetRenderDrawColor(renderer, 0,255,0,255);  //TEST
   // SDL_RenderDrawRect(renderer, &(target_rect)); // TEST
   // SDL_SetRenderDrawColor(renderer, 255,0,0,255);  //TEST

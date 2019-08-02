@@ -4,7 +4,7 @@
 #include "utilities.h"
 
 
-const int num_player_sprite_rects = 4;
+const int num_player_sprite_rects = 10;
 
 
 
@@ -41,7 +41,7 @@ class PlayerEntity :  public EntityManager {
     int missile_cooldown_countdown = 0;
     int hit_timer = 0; // counts down invincibility after getting hit
     int shield_timer = 0; // If 0 then the shield is on. when shield lost resets to shield_recharge_time
-    int hitpoints = 2; // for hull damage
+    int hitpoints = 3; // for hull damage
 
     // Constants (for now)
     int img_width = 200;  // image width and height in pixels of a single sprite in the image of sprites
