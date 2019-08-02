@@ -177,9 +177,10 @@ void ProjectileList::updateProjectileHitbox(Projectile * projectile) {
   projectile->hitbox = rotateRect(projectile->hitbox,center,projectile->dir);
 }
 
-void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir) {
+void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir, bool created_by_player) {
   Projectile * new_projectile = new Projectile(x,y,v,dir);
   updateProjectileHitbox(new_projectile);
   new_projectile->explosion_global_frames_remaining = projectileTypeData.explosion_time_per_frame * projectileTypeData.num_explosion_frames;
+  new_projectile->launched_by_player=created_by_player; // false by default
   projectiles.push_front(new_projectile);
 }

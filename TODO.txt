@@ -1,10 +1,6 @@
-status indicators should be bars that show progress
-
 replace speedboost recharge indicator with a shield recharge indicator. and get rid of speedboost.
 
 add a player death animation. losing is too sudden
-
-only monsters killed by player should count towards score
 
 if there are no monsters, then don't let the lull last for too long. force down the monster respawn countdown
 

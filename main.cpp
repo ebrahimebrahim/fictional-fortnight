@@ -577,6 +577,8 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 						contents |= CONTAINS_DEADLY_EXPLOSION;
 					if (projectileManager->projectileTypeData.id == 3)
 						contents |= CONTAINS_SPORES;
+					if (projectile->launched_by_player)
+						contents |= CONTAINS_PLAYER_CAUSED_EXPLOSION;
 				}
 			}
 			else if (!projectile->exploding)

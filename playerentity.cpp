@@ -126,7 +126,7 @@ void PlayerEntity::update(App * app) {
       vecI p = vecI(x,y)
                + globals.directionToUnitVector[orientation]*((int(float(player_hitbox_height_img)*screenpx_per_imgpx) + app->projectileList->projectileTypeData.height)/2)
                - vecI(app->projectileList->projectileTypeData.width/2,app->projectileList->projectileTypeData.height/2);
-      app->projectileList->createProjectile(p.x,p.y,v+3,orientation);
+      app->projectileList->createProjectile(p.x,p.y,v+3,orientation,true);
       missile_cooldown_countdown=missile_cooldown;
   }
   tryShoot = false;

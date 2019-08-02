@@ -100,7 +100,9 @@ void MonsterList::update(App * app) {
            !(monster_hitbox_contents & monsterTypeData.protected_by) ) {
         monster->dying = true;
         monster->frame = 0; // we will now start using frame for death animation
-        app->addScore(SCORE_FOR_KILLING_MONSTER);
+
+        // only award score if player is killer
+        if (monster_hitbox_contents & CONTAINS_PLAYER_CAUSED_EXPLOSION) app->addScore(SCORE_FOR_KILLING_MONSTER);
       }
     }
     else if (monster->dying) {
