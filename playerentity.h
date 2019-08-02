@@ -33,15 +33,12 @@ class PlayerEntity :  public EntityManager {
     DirectionUDLR tryMove = DIRECTION_NEUTRAL;
     CircleBuffer<SDL_Scancode> lastDirectionalKeys;
     bool tryShoot = false;
-    bool trySpeed = false;
     int x = 100; // x,y on game screen of center of the player hitbox
     int y = 100;
     int v = 0; // current actual speed
     int move_speed = 5; // current move speed if tried to move and not obstructed (can be boosted)
     SDL_Rect playerHitbox;
     int missile_cooldown_countdown = 0;
-    int speedboost_cooldown_countdown = 0; // time left before speedbost can be used again
-    int speedboost_time_left = 0; // time (updates) left to remain in boosted state
     int hit_timer = 0; // counts down invincibility after getting hit
     int shield_timer = 0; // If 0 then the shield is on. when shield lost resets to shield_recharge_time
     int hitpoints = 2; // for hull damage
@@ -56,9 +53,6 @@ class PlayerEntity :  public EntityManager {
     int player_hitbox_width_screen = 20; // width of player on screen. This relative to player_hitbox_width_img sets the scale.
     int missile_cooldown = 60;
     int hit_cooldown = 50; // invincibility time after getting hit
-    int speedboost_cooldown = 300;
-    int speedboost_duration = 100; // time to remain in boosted state
-    int speedboost = 5; // amount to boost speed when speed boost is used
     int shield_recharge_time = 200;
 
     float screenpx_per_imgpx=0; // deduced from player_hitbox_width_img and player_hitbox_width_screen

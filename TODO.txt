@@ -1,5 +1,3 @@
-replace speedboost recharge indicator with a shield recharge indicator. and get rid of speedboost.
-
 add a player death animation. losing is too sudden
 
 if there are no monsters, then don't let the lull last for too long. force down the monster respawn countdown

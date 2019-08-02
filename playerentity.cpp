@@ -57,7 +57,7 @@ void PlayerEntity::handleEvent(SDL_Event * event){
   if (event->type==SDL_KEYDOWN && !(event->key.repeat)) {
     if (isArrowKey(event->key.keysym.scancode)) lastDirectionalKeys.push(event->key.keysym.scancode);
     if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)  tryShoot = true;
-    if (event->key.keysym.scancode == SDL_SCANCODE_LSHIFT) trySpeed = true;
+    //if (event->key.keysym.scancode == SDL_SCANCODE_LSHIFT) trySpeed = true;  // no more speed boost!
   }
 
 }
@@ -133,20 +133,6 @@ void PlayerEntity::update(App * app) {
 
   if (missile_cooldown_countdown > 0) --missile_cooldown_countdown;
 
-  // resolve spped attempt
-  if (trySpeed && speedboost_cooldown_countdown==0) {
-    move_speed += speedboost;
-    speedboost_cooldown_countdown = speedboost_cooldown;
-    speedboost_time_left = speedboost_duration;
-  }
-  if (speedboost_cooldown_countdown > 0) --speedboost_cooldown_countdown;
-  if (speedboost_time_left > 0) {
-    --speedboost_time_left;
-    if (speedboost_time_left == 0) {
-      move_speed -= speedboost;
-    }
-  }
-  trySpeed = false;
 
   // check if player should be harmed now:
 
