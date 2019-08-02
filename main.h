@@ -93,7 +93,7 @@ class App {
     TextBox * timerTextBox = nullptr;
     TextBox * fpsTextBox = nullptr;
     StatusIndicator * missileLoadingIndicator = nullptr;
-    StatusIndicator * speedBoostIndicator = nullptr;
+    StatusIndicator * shieldIndicator = nullptr;
 
     // Menus
     Menu * mainMenu  = nullptr;

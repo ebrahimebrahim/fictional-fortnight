@@ -414,7 +414,7 @@ void App::gameUpdate(){
 
 	// Update status indicators
 	missileLoadingIndicator->setProgress( float(playerEntity->missile_cooldown - playerEntity->missile_cooldown_countdown)/float(playerEntity->missile_cooldown) );
-	speedBoostIndicator->setProgress( float(playerEntity->speedboost_cooldown - playerEntity->speedboost_cooldown_countdown)/float(playerEntity->speedboost_cooldown) );
+	shieldIndicator->setProgress( float(playerEntity->shield_recharge_time - playerEntity->shield_timer)/float(playerEntity->shield_recharge_time) );
 
 
 
@@ -442,7 +442,7 @@ void App::gameRender(){
 	missileLoadingIndicator->render(x,y);
 
 	x += 175;
-	speedBoostIndicator->render(x,y);
+	shieldIndicator->render(x,y);
 
 	x += 170; y += 10;
 	renderScoreIndicator(x,y);
@@ -497,8 +497,8 @@ int App::loadMedia(){
 	fpsTextBox->updateText("[FPS]");
 
 
-	missileLoadingIndicator = createStatusIndicator(160,25,"Missile ready","Missile reloading");
-	speedBoostIndicator = createStatusIndicator(165,25,"Speed ready","Recharging speed");
+	missileLoadingIndicator = createStatusIndicator(160,25,"Missile ready","Reloading");
+	shieldIndicator = createStatusIndicator(165,25,"Shield on","Recharging");
 
 
 
@@ -521,7 +521,7 @@ void App::unloadMedia(){
 	delete scoreTextBox;
 	delete fpsTextBox;
 	delete missileLoadingIndicator;
-	delete speedBoostIndicator;
+	delete shieldIndicator;
 
 	delete mainMenu; mainMenu = nullptr;
 	delete pauseMenu; pauseMenu = nullptr;
