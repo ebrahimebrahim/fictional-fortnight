@@ -1,7 +1,5 @@
 add a player death animation. losing is too sudden
 
-if there are no monsters, then don't let the lull last for too long. force down the monster respawn countdown
-
 make some more monsters. ideas:
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
 

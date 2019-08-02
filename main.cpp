@@ -406,6 +406,9 @@ void App::gameUpdate(){
 		spawnWave();
 	}
 
+	// If there are currently no monsters, then tick down the wave countdown even further
+	if (wave_countdown>0 && noMonsters()) --wave_countdown;
+
 
 	// Check if level increases or win state changes
 	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
@@ -436,6 +439,7 @@ void App::gameRender(){
 	std::string fpsString = "FPS: ";
 	fpsString += std::to_string(fps);
 	if (frame % 10 ==0 ) fpsTextBox->updateText(fpsString.c_str());
+	// fpsTextBox->updateText((std::to_string(wave_countdown)).c_str()); // Putting random things here is a good way to test stuff sometimes
 	fpsTextBox->renderCopy(x,y);
 
 	x += 100;
@@ -679,4 +683,11 @@ void App::updateUIState(UI_State new_state) {
 
 void App::revertUIState() {
 	ui_state = previous_ui_state;
+}
+
+bool App::noMonsters() {
+	for (MonsterList * monsterManager : entityManagers_monster) {
+		if (!(monsterManager->monsters.empty())) return false;
+	}
+	return true;
 }

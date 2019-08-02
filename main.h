@@ -137,5 +137,6 @@ class App {
     StatusIndicator * createStatusIndicator(int width, int height, const char * green_msg, const char * red_msg);
     // (creates a new status indicator using the font and logger and stuff that's already been initialized)
     void renderScoreIndicator(int x, int y);
+    bool noMonsters(); // check if there are no spawned monsters now
 
 };
