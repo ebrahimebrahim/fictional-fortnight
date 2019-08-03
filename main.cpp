@@ -413,7 +413,6 @@ void App::gameUpdate(){
 	// Check if level increases or win state changes
 	if (score >= level * SCORE_PER_LEVEL_ADVANCE) ++level;
 	if (level > num_levels) win();
-	if (score < SCORE_TO_LOSE) lose();
 
 	// Update status indicators
 	missileLoadingIndicator->setProgress( float(playerEntity->missile_cooldown - playerEntity->missile_cooldown_countdown)/float(playerEntity->missile_cooldown) );
@@ -607,6 +606,7 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 
 void App::addScore(int s) {
 	score += s;
+	if (score < 0) score=0;
 	updateScoreTextBox();
 }
 
@@ -628,17 +628,12 @@ void App::renderScoreIndicator(int x, int y) {
 	const int slider_height = 15;
 	const int back_bar_y_offset = (slider_height/2) - (back_bar_height/2);
 	const int score_to_win = SCORE_PER_LEVEL_ADVANCE * num_levels;
-	const float distance_per_score =  float(indicator_width) / float(score_to_win - SCORE_TO_LOSE)  ;
-	const int back_bar_neg_width = int(distance_per_score*(-SCORE_TO_LOSE));
+	const float distance_per_score =  float(indicator_width) / float(score_to_win)  ;
 	const int back_bar_pos_width = int(distance_per_score*(score_to_win));
-	const int slider_center_dist = int(distance_per_score*score + back_bar_neg_width);
+	const int slider_center_dist = int(distance_per_score*score);
 	const int slider_x_offset = slider_center_dist-(slider_width/2);
 
-	const SDL_Rect back_bar_neg = {x,y+back_bar_y_offset,back_bar_neg_width,back_bar_height};
- 	SDL_SetRenderDrawColor(renderer,150,0,0,255);
-	SDL_RenderFillRect(renderer,&back_bar_neg);
-
-	const SDL_Rect back_bar_pos = {x+back_bar_neg_width,y+back_bar_y_offset,back_bar_pos_width,back_bar_height};
+	const SDL_Rect back_bar_pos = {x,y+back_bar_y_offset,back_bar_pos_width,back_bar_height};
  	SDL_SetRenderDrawColor(renderer,0,180,0,255);
 	SDL_RenderFillRect(renderer,&back_bar_pos);
 
