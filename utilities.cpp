@@ -5,7 +5,7 @@ std::vector<std::string> split(std::string str, const char * delimiters) {
 
   std::vector<std::string> split_string;
 
-  char * cstr = new char [str.length()];
+  char * cstr = new char [str.length()+1];
   strcpy(cstr,str.c_str());
 
   char * pch = strtok(cstr,delimiters);
