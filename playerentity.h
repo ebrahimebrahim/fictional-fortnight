@@ -24,6 +24,11 @@ class PlayerEntity :  public EntityManager {
 
     // Assets
     SDL_Texture * sprites = nullptr;
+    Mix_Chunk * hull_damage_sound;
+    Mix_Chunk * death_sound;
+    Mix_Chunk * shield_down_sound;
+    Mix_Chunk * shield_up_sound;
+    Mix_Chunk * reloaded_sound;
 
     // Useful tables and rects
     SDL_Rect sprite_rects [NUM_PLAYER_SPRITE_RECTS];

@@ -140,7 +140,7 @@ int App::initialize() {
 	missile.projectile_img_file = "missile.png";
 	missile.explosion_img_file = "missile_explode.png";
 	missile.projectile_launch_sound_file = "data/sounds/missile_launch.mp3";
-	missile.projectile_die_sound_file = "data/sounds/placeholder.mp3";
+	missile.projectile_die_sound_file = "data/sounds/missile_explode.mp3";
 	missile.projectile_img_frame_size = {16,49};
 	missile.explosion_img_frame_size = {80,80};
 	missile.width = 16;
@@ -165,7 +165,7 @@ int App::initialize() {
 	monster1bullets.projectile_img_file = "monster1bullet.png";
 	monster1bullets.explosion_img_file = "monster1bullet_explode.png";
 	monster1bullets.projectile_launch_sound_file = "data/sounds/gem_launch.mp3";
-	monster1bullets.projectile_die_sound_file = "data/sounds/placeholder.mp3";
+	monster1bullets.projectile_die_sound_file = "data/sounds/gem_bullet_break.mp3";
 	monster1bullets.projectile_img_frame_size = {7,28};
 	monster1bullets.explosion_img_frame_size = {47,51};
 	monster1bullets.width = 7;
@@ -184,7 +184,7 @@ int App::initialize() {
 	MonsterTypeData monster1;
 	monster1.name = "Gem";
 	monster1.monster_img_file = "monster1.png";
-	monster1.death_sound_file = "data/sounds/placeholder.mp3";
+	monster1.death_sound_file = "data/sounds/gem_crack.mp3";
 	monster1.num_frames = 5;
 	monster1.alive_time_per_frame = 10;
 	monster1.num_death_frames = 9;

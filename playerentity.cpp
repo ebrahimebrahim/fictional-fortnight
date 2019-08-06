@@ -44,11 +44,30 @@ int PlayerEntity::loadMedia(SDL_Renderer * renderer, Logger * log){
     sprite_rects[i]={img_width*i,0,img_width,img_height};
   }
 
+
+  death_sound = Mix_LoadWAV("data/sounds/player_death.mp3");
+  hull_damage_sound = Mix_LoadWAV("data/sounds/hull_damage.mp3");
+  shield_up_sound = Mix_LoadWAV("data/sounds/shield_up.mp3");
+  shield_down_sound = Mix_LoadWAV("data/sounds/shield_down.mp3");
+  reloaded_sound = Mix_LoadWAV("data/sounds/player_reload.mp3");
+  if (death_sound==nullptr || hull_damage_sound==nullptr || shield_up_sound==nullptr || shield_down_sound==nullptr || reloaded_sound==nullptr) {
+    log->MIX_Error("A player sound could not be loaded.");
+    return -1;
+  }
+
+
   return 0;
 }
 
 
 void PlayerEntity::unloadMedia(){
+
+  Mix_FreeChunk(death_sound);
+  Mix_FreeChunk(hull_damage_sound);
+  Mix_FreeChunk(shield_down_sound);
+  Mix_FreeChunk(shield_up_sound);
+  Mix_FreeChunk(reloaded_sound);
+
   SDL_DestroyTexture(sprites);
   sprites = nullptr;
 }
@@ -144,7 +163,10 @@ void PlayerEntity::update(App * app) {
   }
   tryShoot = false;
 
-  if (missile_cooldown_countdown > 0) --missile_cooldown_countdown;
+  if (missile_cooldown_countdown > 0) {
+    --missile_cooldown_countdown;
+    if (missile_cooldown_countdown==0) Mix_PlayChannel(-1,reloaded_sound,0);
+  }
 
 
   // check if player should be harmed now:
@@ -158,9 +180,11 @@ void PlayerEntity::update(App * app) {
       // remove shield if it was engaged. if not, then take hull damage.
       if (shield_timer==0) {
         shield_timer = shield_recharge_time;
+        Mix_PlayChannel(-1,shield_down_sound,0);
       }
       else {
         --hitpoints;
+        Mix_PlayChannel(-1, (hitpoints > 0) ? hull_damage_sound : death_sound,0);
       }
     }
 
@@ -171,6 +195,7 @@ void PlayerEntity::update(App * app) {
   }
   if (shield_timer>0) {
     --shield_timer;
+    if (shield_timer==0) Mix_PlayChannel(-1,shield_up_sound,0);
   }
 
 }
