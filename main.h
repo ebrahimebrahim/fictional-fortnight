@@ -102,8 +102,6 @@ class App {
     Menu * loseMenu = nullptr;
     HelpScreen * help = nullptr;
 
-    // This will be moved to appropriate class after some tests
-    Mix_Chunk * missile_launch = nullptr;
 
 
 

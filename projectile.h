@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <list>
 #include "entity.h"
 #include "utilities.h"
@@ -16,6 +17,7 @@ struct ProjectileTypeData {
   SDL_Rect explosion_hitbox;  // explosion hitbox in LOCAL coords IMAGE FILE PXLS (origin is top left of upward-facing projectile)
   // These will automatically get converted from the originally given pixel units.
   std::string projectile_img_file;
+  std::string projectile_launch_sound_file;
   vecI projectile_img_frame_size;
   std::string explosion_img_file;
   vecI explosion_img_frame_size;
@@ -74,6 +76,7 @@ class ProjectileList :  public EntityManager {
     SDL_Texture * explosionFrames = nullptr;
     SDL_Rect * frameToSpriteRect = nullptr;
     SDL_Rect * frameToExplosionRect;
+    Mix_Chunk * launch_sound_chunk = nullptr;
 
     // State
     std::list<Projectile*> projectiles;

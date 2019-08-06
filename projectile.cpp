@@ -66,11 +66,22 @@ int ProjectileList::loadMedia(SDL_Renderer * renderer, Logger * log){
                                projectileTypeData.explosion_img_frame_size.x  , projectileTypeData.explosion_img_frame_size.y};
   }
 
+
+  // Load sounds
+  launch_sound_chunk = Mix_LoadWAV(projectileTypeData.projectile_launch_sound_file.c_str());
+  if (launch_sound_chunk==nullptr) {
+    log->MIX_Error("A projectile launch sound could not be loaded.");
+    return -1;
+  }
+
+
+
   return 0;
 }
 
 
 void ProjectileList::unloadMedia(){
+  Mix_FreeChunk(launch_sound_chunk);
   SDL_DestroyTexture(sprites); sprites = nullptr;
   SDL_DestroyTexture(explosionFrames); explosionFrames = nullptr;
   delete frameToSpriteRect; frameToSpriteRect = nullptr;
@@ -183,4 +194,6 @@ void ProjectileList::createProjectile(int x, int y, int v, DirectionUDLR dir, bo
   new_projectile->explosion_global_frames_remaining = projectileTypeData.explosion_time_per_frame * projectileTypeData.num_explosion_frames;
   new_projectile->launched_by_player=created_by_player; // false by default
   projectiles.push_front(new_projectile);
+
+  Mix_PlayChannel(-1,launch_sound_chunk,0);
 }
