@@ -1,7 +1,6 @@
 #include "textbox.h"
 #include "utilities.h"
 #include <algorithm>
-#include <iostream> // TODO DELETE THIS WHEN DONE TESTING
 
 TextBox::TextBox(TTF_Font* font, SDL_Color* color, SDL_Renderer * renderer, Logger * log){
 
@@ -82,7 +81,7 @@ int TextBox::updateText(const char * text){
     }
     else { // If line wrapping enabled
       SDL_Texture * line_texture = nullptr;
-      int towrap_len = line_till_newline.length();
+      int towrap_len = line_till_newline.length() + 1; // +1 b/c of null character at end
       char * towrap = new char [towrap_len];
       strcpy(towrap,line_till_newline.c_str());
       char * head = towrap;
