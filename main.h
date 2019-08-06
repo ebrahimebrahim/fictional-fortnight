@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <vector>
 #include "logger.h"
 #include "textbox.h"
@@ -100,6 +101,9 @@ class App {
     Menu * winMenu = nullptr;
     Menu * loseMenu = nullptr;
     HelpScreen * help = nullptr;
+
+    // This will be moved to appropriate class after some tests
+    Mix_Chunk * missile_launch = nullptr;
 
 
 

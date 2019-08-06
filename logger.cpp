@@ -32,3 +32,10 @@ void Logger::TTF_Error(const char * msg){
   msg_str += TTF_GetError();
   error(msg_str.c_str());
 }
+
+void Logger::MIX_Error(const char * msg){
+  std::string msg_str = msg;
+  msg_str += " ; here's the latest SDL_Mixer error: ";
+  msg_str += Mix_GetError();
+  error(msg_str.c_str());
+}

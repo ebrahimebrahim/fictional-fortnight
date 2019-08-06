@@ -40,7 +40,7 @@ int App::initialize() {
 	// 	return -1;
 	// }
 
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 ) {
 		log.SDL_Error("Error initializing SDL");
 		return -1;
 	}
@@ -54,6 +54,19 @@ int App::initialize() {
 		log.TTF_Error("Error initializing SDL_ttf");
 		return -1;
 	}
+
+
+	// Due to some bug in SDL, Mix_OpenAudio needs to be called before Mix_Init
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,2,4096)<0) {
+		log.MIX_Error("Error opening audio in SDL_Mixer");
+		return -1;
+	}
+	if (!(Mix_Init(MIX_INIT_MP3) & MIX_INIT_MP3)) {
+		log.MIX_Error("Error initializing SDL_Mixer mp3 support");
+		return -1;
+	}
+	Mix_AllocateChannels(16);
+
 
 
 	window = SDL_CreateWindow( "SDL Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, 0 );
@@ -297,6 +310,8 @@ App::~App() {
 		delete entityManager;
 	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
+	Mix_Quit();
+	Mix_CloseAudio();
 	IMG_Quit();
 	TTF_Quit();
 	SDL_Quit();
@@ -510,6 +525,12 @@ int App::loadMedia(){
 	shieldIndicator = createStatusIndicator(120,25,"Shield on","Recharging");
 
 
+	// Load sounds
+	missile_launch = Mix_LoadWAV("data/sounds/missile_launch.mp3");
+	if (missile_launch==nullptr) {
+		log.MIX_Error("Could not load misile launch sound");
+		return -1;
+	}
 
 
 	return 0;
@@ -519,6 +540,8 @@ int App::loadMedia(){
 
 
 void App::unloadMedia(){
+
+	Mix_FreeChunk(missile_launch);
 
 	for (EntityManager * entityManager : entityManagers_projectile) {
 		entityManager->unloadMedia();

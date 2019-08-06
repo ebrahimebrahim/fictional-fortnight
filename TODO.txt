@@ -8,9 +8,6 @@ perhaps by killing a different version of a monster, like a big boss version wit
 
 add sounds? and music.
 
-add an MIT license
-
-
 --- General notes and things I've learned from this ---
 
 Error logging should be handled in a better way perhaps by catching and throwing exceptions.
