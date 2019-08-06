@@ -1,13 +1,4 @@
-right now the text wrapping seems to be peuping
-but also i'm getting issues even without wrapping, somehow related to reading text from file? idk.
-
-improve how to play instructions
-
 make lose screen tell which monster killed the player
-
-look into cleaner way to upscale text (perhaps SDL_HINT_RENDER_SCALE_QUALITY),
-or just a larger TTF_Font,
-or consider using only bigger font and downscaling smaller text instead
 
 make some more monsters. ideas:
   an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target

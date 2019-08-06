@@ -34,6 +34,12 @@ App::App() : log{}
 
 
 int App::initialize() {
+
+	// if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"2") == SDL_FALSE) {
+	// 	log.SDL_Error("Render scale quality hint not set.");
+	// 	return -1;
+	// }
+
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
 		log.SDL_Error("Error initializing SDL");
 		return -1;
@@ -78,7 +84,7 @@ int App::initialize() {
 
 
 	//Load font
-	font  = TTF_OpenFont("Roboto-Regular.ttf",19);
+	font  = TTF_OpenFont("Roboto-Regular.ttf",16);
 	if (font==nullptr){
 		log.TTF_Error("Error loading font");
 		return -1;
@@ -444,10 +450,10 @@ void App::gameRender(){
 	x += 100;
 	missileLoadingIndicator->render(x,y);
 
-	x += 175;
+	x += 130;
 	shieldIndicator->render(x,y);
 
-	x += 170; y += 10;
+	x += 150; y += 10;
 	renderScoreIndicator(x,y);
 
 	// Set the renderer's viewport to the game screen
@@ -493,15 +499,15 @@ int App::loadMedia(){
 
 
 
-	//Initialize text Textboxes
+	// Initialize text Textboxes
 	scoreTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
 	updateScoreTextBox();
 	fpsTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
 	fpsTextBox->updateText("[FPS]");
 
-
-	missileLoadingIndicator = createStatusIndicator(160,25,"Missile ready","Reloading");
-	shieldIndicator = createStatusIndicator(165,25,"Shield on","Recharging");
+	// Create statusIndicators
+	missileLoadingIndicator = createStatusIndicator(120,25,"Missile ready","Reloading");
+	shieldIndicator = createStatusIndicator(120,25,"Shield on","Recharging");
 
 
 
