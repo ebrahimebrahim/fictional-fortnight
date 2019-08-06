@@ -37,8 +37,7 @@ const ContainsBitmask CONTAINS_PLAYER_CAUSED_EXPLOSION  = 1 << 10;
 
 
 
-std::vector<std::string> split(std::string str, const char * delimiters);
-std::list<std::string> splitL(std::string str, const char * delimiters); // identical but uses list container
+std::vector<std::string> split(const std::string & str, const char delimiter);
 
 
 

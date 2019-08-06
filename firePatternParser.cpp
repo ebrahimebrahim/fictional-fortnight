@@ -3,15 +3,15 @@
 
 FirePattern parseFirePattern(std::string str) {
   FirePattern firePattern;
-  for (std::string firePatternStepStr : split(str," ")) {
+  for (std::string firePatternStepStr : split(str,' ')) {
     FirePatternStep firePatternStep;
-    std::vector<std::string> firePatternStepStrSplit = split(firePatternStepStr,";");
+    std::vector<std::string> firePatternStepStrSplit = split(firePatternStepStr,';');
     if (firePatternStepStrSplit.size()!=2)
       return FirePattern(); // parse error; return empty
     std::string firePatternStepDirsStr = firePatternStepStrSplit[0];
     std::string firePatternStepWaitStr = firePatternStepStrSplit[1];
-    for (std::string firePatterDirStr : split(firePatternStepDirsStr,",")){
-      std::vector<std::string> firePatternDirStrSplit = split(firePatterDirStr,":");
+    for (std::string firePatterDirStr : split(firePatternStepDirsStr,',')){
+      std::vector<std::string> firePatternDirStrSplit = split(firePatterDirStr,':');
       if (firePatternDirStrSplit.size()!=2)
         return FirePattern(); // parse error; return empty
       if (firePatternDirStrSplit[0].length()<1 || firePatternDirStrSplit[1].length()<1)

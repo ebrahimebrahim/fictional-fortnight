@@ -69,7 +69,7 @@ int TextBox::updateText(const char * text){
   std::vector<SDL_Texture *> line_textures;
   std::vector<int> line_widths;
   int w=0;
-  for (std::string line_till_newline : split(text,"\n")) {
+  for (std::string line_till_newline : split(text,'\n')) {
     if (width<0) { // No line wrapping
       SDL_Texture * line_texture = createTexture(line_till_newline.c_str(), &w, nullptr);
       if (line_texture == nullptr) {
@@ -79,7 +79,7 @@ int TextBox::updateText(const char * text){
       line_textures.push_back(line_texture);
       line_widths.push_back(w);
     }
-    else { // If line wrapping enabled
+    else if (!line_till_newline.empty()) { // If line wrapping enabled and this is not a line of length 0
       SDL_Texture * line_texture = nullptr;
       int towrap_len = line_till_newline.length() + 1; // +1 b/c of null character at end
       char * towrap = new char [towrap_len];
@@ -140,6 +140,10 @@ int TextBox::updateText(const char * text){
 
       delete [] towrap;
     }
+    else { // If line wrapping enabled and this is a line of length 0
+      line_textures.push_back(nullptr); // This will signal that at render we should make a blank newline
+      line_widths.push_back(0);
+    }
   }
 
   textRect.h = lineskip * int(line_textures.size()); // This is now nonzero iff line_textures is nonempty.
@@ -155,6 +159,7 @@ int TextBox::updateText(const char * text){
     SDL_SetRenderTarget(renderer, mTexture);
 
     for (int i = 0; i<int(line_textures.size()); i++) {
+      if (line_textures[i]==nullptr) continue; // skip the blank lines, just leaving space
       SDL_Rect line_rect = {0,i*lineskip,line_widths[i],lineskip};
       SDL_RenderCopy(renderer,line_textures[i],nullptr,&line_rect);
     }

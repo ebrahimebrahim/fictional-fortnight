@@ -1,41 +1,20 @@
 #include "utilities.h"
+#include <string>
+#include <sstream>
 
 
-std::vector<std::string> split(std::string str, const char * delimiters) {
+std::vector<std::string> split(const std::string & str, const char delimiter) {
 
   std::vector<std::string> split_string;
 
-  char * cstr = new char [str.length()+1];
-  strcpy(cstr,str.c_str());
+  std::istringstream iss(str);
+  std::string token{};
+  while(std::getline(iss,token,delimiter))
+    split_string.push_back(token);
 
-  char * pch = strtok(cstr,delimiters);
-  while(pch!=nullptr){
-    split_string.push_back(std::string(pch));
-    pch = strtok(nullptr,delimiters);
-  }
-
-  delete [] cstr;
-
-  return split_string; //RVO? Some kind move thing? I think it's fine.
+  return split_string;
 }
 
-std::list<std::string> splitL(std::string str, const char * delimiters) {
-
-  std::list<std::string> split_string;
-
-  char * cstr = new char [str.length()];
-  strcpy(cstr,str.c_str());
-
-  char * pch = strtok(cstr,delimiters);
-  while(pch!=nullptr){
-    split_string.push_back(std::string(pch));
-    pch = strtok(nullptr,delimiters);
-  }
-
-  delete [] cstr;
-
-  return split_string; //RVO? Some kind move thing? I think it's fine.
-}
 
 
 
