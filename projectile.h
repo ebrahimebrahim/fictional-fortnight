@@ -20,6 +20,7 @@ struct ProjectileTypeData {
   std::string projectile_launch_sound_file;
   vecI projectile_img_frame_size;
   std::string explosion_img_file;
+  std::string projectile_die_sound_file;
   vecI explosion_img_frame_size;
   int width;
   int height;
@@ -77,6 +78,7 @@ class ProjectileList :  public EntityManager {
     SDL_Rect * frameToSpriteRect = nullptr;
     SDL_Rect * frameToExplosionRect;
     Mix_Chunk * launch_sound_chunk = nullptr;
+    Mix_Chunk * die_sound_chunk = nullptr;
 
     // State
     std::list<Projectile*> projectiles;

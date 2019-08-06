@@ -57,7 +57,7 @@ int App::initialize() {
 
 
 	// Due to some bug in SDL, Mix_OpenAudio needs to be called before Mix_Init
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,2,512)<0) {
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,2,128)<0) {
 		log.MIX_Error("Error opening audio in SDL_Mixer");
 		return -1;
 	}
@@ -140,6 +140,7 @@ int App::initialize() {
 	missile.projectile_img_file = "missile.png";
 	missile.explosion_img_file = "missile_explode.png";
 	missile.projectile_launch_sound_file = "data/sounds/missile_launch.mp3";
+	missile.projectile_die_sound_file = "data/sounds/placeholder.mp3";
 	missile.projectile_img_frame_size = {16,49};
 	missile.explosion_img_frame_size = {80,80};
 	missile.width = 16;
@@ -163,7 +164,8 @@ int App::initialize() {
 	monster1bullets.num_fadeout_frames = 4;
 	monster1bullets.projectile_img_file = "monster1bullet.png";
 	monster1bullets.explosion_img_file = "monster1bullet_explode.png";
-	monster1bullets.projectile_launch_sound_file = "data/sounds/missile_launch.mp3";
+	monster1bullets.projectile_launch_sound_file = "data/sounds/gem_launch.mp3";
+	monster1bullets.projectile_die_sound_file = "data/sounds/placeholder.mp3";
 	monster1bullets.projectile_img_frame_size = {7,28};
 	monster1bullets.explosion_img_frame_size = {47,51};
 	monster1bullets.width = 7;
@@ -208,7 +210,8 @@ int App::initialize() {
 	monster2bullets.num_fadeout_frames = 4;
 	monster2bullets.projectile_img_file = "monster2bullet.png";
 	monster2bullets.explosion_img_file = "monster2bullet_explode.png";
-	monster2bullets.projectile_launch_sound_file = "data/sounds/missile_launch.mp3";
+	monster2bullets.projectile_launch_sound_file = "data/sounds/placeholder.mp3";
+	monster2bullets.projectile_die_sound_file = "data/sounds/placeholder.mp3";
 	monster2bullets.projectile_img_frame_size = {80,80};
 	monster2bullets.explosion_img_frame_size = {80,80};
 	monster2bullets.width = 150;
@@ -253,7 +256,8 @@ int App::initialize() {
 	monster3bullets.num_fadeout_frames = 7;
 	monster3bullets.projectile_img_file = "monster3bullet.png";
 	monster3bullets.explosion_img_file = "monster3bullet_explode.png";
-	monster3bullets.projectile_launch_sound_file = "data/sounds/missile_launch.mp3";
+	monster3bullets.projectile_launch_sound_file = "data/sounds/placeholder.mp3";
+	monster3bullets.projectile_die_sound_file = "data/sounds/placeholder.mp3";
 	monster3bullets.projectile_img_frame_size = {9,9};
 	monster3bullets.explosion_img_frame_size = {100,100};
 	monster3bullets.width = 9;

@@ -73,6 +73,11 @@ int ProjectileList::loadMedia(SDL_Renderer * renderer, Logger * log){
     log->MIX_Error("A projectile launch sound could not be loaded.");
     return -1;
   }
+  die_sound_chunk = Mix_LoadWAV(projectileTypeData.projectile_die_sound_file.c_str());
+  if (die_sound_chunk==nullptr) {
+    log->MIX_Error("A projectile death sound could not be loaded.");
+    return -1;
+  }
 
 
 
@@ -82,6 +87,7 @@ int ProjectileList::loadMedia(SDL_Renderer * renderer, Logger * log){
 
 void ProjectileList::unloadMedia(){
   Mix_FreeChunk(launch_sound_chunk);
+  Mix_FreeChunk(die_sound_chunk);
   SDL_DestroyTexture(sprites); sprites = nullptr;
   SDL_DestroyTexture(explosionFrames); explosionFrames = nullptr;
   delete frameToSpriteRect; frameToSpriteRect = nullptr;
@@ -115,7 +121,11 @@ void ProjectileList::update(App * app){
 
       // check if it should start exploding and align explosion and set projectile->hitbox to be correct.
       if (app->rectContents(projectile->hitbox, projectile) & (CONTAINS_OBSTRUCTION | CONTAINS_DEADLY_EXPLOSION | CONTAINS_PROJECTILE)) {
+
         projectile->exploding = true;
+
+        Mix_PlayChannel(-1,die_sound_chunk,0);
+
         projectile->animation_frame_countdown = projectileTypeData.explosion_time_per_frame;
 
         vecI r1(projectileTypeData.width/2,projectileTypeData.height/2);
