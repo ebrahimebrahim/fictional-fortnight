@@ -1,5 +1,8 @@
 #include "main.h"
 #include "helpscreen.h"
+#include <string>
+#include <sstream>
+#include <fstream>
 
 HelpScreen::HelpScreen(SDL_Renderer * renderer, TTF_Font * font, Logger * log) :
   renderer(renderer),
@@ -8,8 +11,20 @@ HelpScreen::HelpScreen(SDL_Renderer * renderer, TTF_Font * font, Logger * log) :
   textColor{0,0,0,255},
   helpTextBox(font,&textColor,renderer,log)
 {
-  helpTextBox.width=400;
-  helpTextBox.updateText("Use arrow keys to move around and space to shoot. Kill the monsters while avoiding taking damage.");
+  helpTextBox.width=600;
+  std::string helpFileName = "helptext.txt";
+  std::ifstream ifs(helpFileName.c_str());
+  if (!ifs) {
+    log->error((helpFileName+" could not be loaded.").c_str());
+    helpTextBox.updateText("Help text was not loaded.");
+  }
+  else {
+    std::stringstream ss;
+    ss << ifs.rdbuf();
+    std::string helpText = ss.str();
+    if (helpTextBox.updateText(helpText.c_str()) < 0) log->error("problem drawing help text");
+  }
+  ifs.close();
 }
 
 

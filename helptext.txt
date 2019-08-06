@@ -1,0 +1,8 @@
+Use arrow keys to move around and space to shoot.
+
+If you take too much hull damage, you will be destroyed.
+All explosions, including those coming from your own missiles, can cause damage!
+
+Killing monsters advances the score bar, and taking hits
+decreases the score bar.
+To win, advance the score bar to the end.
