@@ -14,6 +14,7 @@ const int NUM_SPAWN_FRAMES = 50;
 struct MonsterTypeData {
   std::string name;
   std::string monster_img_file;
+  std::string death_sound_file;
   int num_frames; // number of frames in monster's usual animation
   int num_death_frames;
   int num_fadeout_frames; // number of frames (from tail end of death frames) during which a fadeout is happening
@@ -72,6 +73,7 @@ class MonsterList :  public EntityManager {
     SDL_Texture * sprites = nullptr;
     SDL_Rect * frameToSpriteRect = nullptr;
     SDL_Rect * frameToDeathSpriteRect = nullptr;
+    Mix_Chunk * death_sound_chunk = nullptr;
 
 
     // State

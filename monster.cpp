@@ -55,11 +55,17 @@ int MonsterList::loadMedia(SDL_Renderer * renderer, Logger * log) {
                             monsterTypeData.monster_img_frame_size.x  , monsterTypeData.monster_img_frame_size.y};
   }
 
+  death_sound_chunk = Mix_LoadWAV(monsterTypeData.death_sound_file.c_str());
+  if (death_sound_chunk==nullptr) {
+    log->MIX_Error("A monster death sound could not be loaded.");
+    return -1;
+  }
 
   return 0;
 }
 
 void MonsterList::unloadMedia() {
+  Mix_FreeChunk(death_sound_chunk);
   SDL_DestroyTexture(sprites); sprites = nullptr;
   delete frameToSpriteRect;
   delete frameToDeathSpriteRect;
@@ -100,6 +106,8 @@ void MonsterList::update(App * app) {
            !(monster_hitbox_contents & monsterTypeData.protected_by) ) {
         monster->dying = true;
         monster->frame = 0; // we will now start using frame for death animation
+
+        Mix_PlayChannel(-1,death_sound_chunk,0);
 
         // only award score if player is killer
         if (monster_hitbox_contents & CONTAINS_PLAYER_CAUSED_EXPLOSION) app->addScore(SCORE_FOR_KILLING_MONSTER);

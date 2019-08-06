@@ -184,6 +184,7 @@ int App::initialize() {
 	MonsterTypeData monster1;
 	monster1.name = "Gem";
 	monster1.monster_img_file = "monster1.png";
+	monster1.death_sound_file = "data/sounds/placeholder.mp3";
 	monster1.num_frames = 5;
 	monster1.alive_time_per_frame = 10;
 	monster1.num_death_frames = 9;
@@ -230,6 +231,7 @@ int App::initialize() {
 	MonsterTypeData monster2;
 	monster2.name = "Octo";
 	monster2.monster_img_file = "monster2.png";
+	monster2.death_sound_file = "data/sounds/placeholder.mp3";
 	monster2.num_frames = 4;
 	monster2.alive_time_per_frame = 10;
 	monster2.num_death_frames = 6;
@@ -276,6 +278,7 @@ int App::initialize() {
 	MonsterTypeData monster3;
 	monster3.name = "Mushy";
 	monster3.monster_img_file = "monster3.png";
+	monster3.death_sound_file = "data/sounds/placeholder.mp3";
 	monster3.num_frames = 4;
 	monster3.alive_time_per_frame = 10;
 	monster3.num_death_frames = 6;
