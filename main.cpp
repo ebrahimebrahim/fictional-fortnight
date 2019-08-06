@@ -220,8 +220,8 @@ int App::initialize() {
 	monster2bullets.num_fadeout_frames = 4;
 	monster2bullets.projectile_img_file = "monster2bullet.png";
 	monster2bullets.explosion_img_file = "monster2bullet_explode.png";
-	monster2bullets.projectile_launch_sound_file = "data/sounds/placeholder.mp3";
-	monster2bullets.projectile_die_sound_file = "data/sounds/placeholder.mp3";
+	monster2bullets.projectile_launch_sound_file = "data/sounds/octo_launch.mp3";
+	monster2bullets.projectile_die_sound_file = "data/sounds/octo_bullet_break.mp3";
 	monster2bullets.projectile_img_frame_size = {80,80};
 	monster2bullets.explosion_img_frame_size = {80,80};
 	monster2bullets.width = 150;
@@ -240,7 +240,7 @@ int App::initialize() {
 	MonsterTypeData monster2;
 	monster2.name = "Octo";
 	monster2.monster_img_file = "monster2.png";
-	monster2.death_sound_file = "data/sounds/placeholder.mp3";
+	monster2.death_sound_file = "data/sounds/octo_die.mp3";
 	monster2.num_frames = 4;
 	monster2.alive_time_per_frame = 10;
 	monster2.num_death_frames = 6;

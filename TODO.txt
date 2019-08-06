@@ -6,7 +6,7 @@ make some more monsters. ideas:
 player pickup -- alternative missile. maybe the player can get all the different monster missiles somehow?
 perhaps by killing a different version of a monster, like a big boss version with hp
 
-add sounds? and music.
+make actual sounds and music to replace the current placeholders
 
 --- General notes and things I've learned from this ---
 
