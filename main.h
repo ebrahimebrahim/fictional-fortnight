@@ -56,6 +56,7 @@ class App {
 
     // Assets
     TTF_Font * font = nullptr;
+    Mix_Music * music = nullptr;
 
     // App state
     UI_State ui_state = UI_STATE_MENU;

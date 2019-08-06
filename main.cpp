@@ -124,6 +124,15 @@ int App::initialize() {
 	help = new HelpScreen(renderer,font,&log);
 
 
+	// --- Load music ---
+	music = Mix_LoadMUS("data/sounds/music.mp3");
+	if (music==nullptr) {
+		log.MIX_Error("Error loading game music");
+		return -1;
+	}
+
+
+
 
 	// --- Create EntityManager objects ---
 	// This is where all monsters and projectiles are created.
@@ -321,6 +330,7 @@ App::~App() {
 		delete entityManager;
 	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
+	Mix_FreeMusic(music);
 	Mix_Quit();
 	Mix_CloseAudio();
 	IMG_Quit();
@@ -705,6 +715,10 @@ void App::spawnWave() {
 
 
 void App::updateUIState(UI_State new_state) {
+	if (ui_state == UI_STATE_MENU && new_state == UI_STATE_GAME){
+		Mix_VolumeMusic(MIX_MAX_VOLUME/4);
+		Mix_FadeInMusic(music,-1,2000);
+	}
 	previous_ui_state = ui_state;
 	ui_state = new_state;
 }
