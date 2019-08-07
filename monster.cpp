@@ -6,7 +6,7 @@
 
 extern Globals globals;
 
-Monster::Monster(int x, int y) : x(x), y(y) {
+Monster::Monster(int x, int y, MonsterList * manager) : x(x), y(y), manager(manager) {
 }
 
 Monster::~Monster() {
@@ -164,7 +164,7 @@ void MonsterList::render(App * app, SDL_Renderer * renderer) {
 }
 
 void MonsterList::createMonster(int x, int y) {
-  Monster * new_monster = new Monster(x,y);
+  Monster * new_monster = new Monster(x,y,this);
   new_monster->rect = {x,y,monsterTypeData.width,monsterTypeData.height};
   new_monster->hitbox = monsterTypeData.hitbox;
   new_monster->hitbox.x += x;
@@ -184,5 +184,5 @@ void MonsterList::fireBullet(Monster * monster, DirectionUDLR dir, int speed) {
   vecI bulletCenter = bulletBackCenter + (monsterTypeData.bulletManager->projectileTypeData.height/2)*d;
   vecI bulletTopLeft = bulletCenter - vecI(monsterTypeData.bulletManager->projectileTypeData.width/2,monsterTypeData.bulletManager->projectileTypeData.height/2);
   // that was the top left of the bullet BEFORE it gets rotated by the bullet manager. ugh, this is bad design.
-  monsterTypeData.bulletManager->createProjectile(bulletTopLeft.x,bulletTopLeft.y,speed,dir);
+  monsterTypeData.bulletManager->createProjectile(bulletTopLeft.x,bulletTopLeft.y,speed,dir,false,monster);
 }

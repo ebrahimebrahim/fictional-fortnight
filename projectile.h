@@ -36,6 +36,7 @@ struct ProjectileTypeData {
   bool explosion_only_harms_player; // as opposed to also detonating projectiles and harming other monsters
 };
 
+class Monster; // forward declaration
 
 class Projectile {
   public:
@@ -49,6 +50,7 @@ class Projectile {
     int v;
     DirectionUDLR dir;
     bool launched_by_player = false; // turned on when projectile is launched by player
+    Monster * launching_monster = nullptr; // can be used when launched by monster rather than player
     bool exploding = false;
     int explode_frame = 0;
     int animation_frame_countdown = 0; // countdown to next frame of explosion animation
@@ -68,7 +70,7 @@ class ProjectileList :  public EntityManager {
     virtual void render(App *, SDL_Renderer *);
 
     void updateProjectileHitbox(Projectile *);
-    void createProjectile(int x, int y, int v, DirectionUDLR dir, bool created_by_player=false);
+    void createProjectile(int x, int y, int v, DirectionUDLR dir, bool created_by_player=false, Monster * launching_monster=nullptr);
 
     ProjectileTypeData projectileTypeData;
 

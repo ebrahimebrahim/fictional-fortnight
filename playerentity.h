@@ -7,7 +7,7 @@
 const int NUM_PLAYER_SPRITE_RECTS = 10;
 const int PLAYER_MAX_HP = 3; // This is also the number of rects in the player spritesheet which show different hull dmgs
 
-
+class Monster; // forward declaration
 
 class PlayerEntity :  public EntityManager {
   public:
@@ -21,6 +21,8 @@ class PlayerEntity :  public EntityManager {
 
     SDL_Rect getPlayerHitbox(int,int,DirectionUDLR); // get player hitbox from given  x and y position and rotation
     SDL_Rect getUnrotatedFullRect(); // get pre-rotation sprite (not hitbox) rect in game screen
+
+    Monster * findAttacker(); // Find monster who launched the projectile whose explosion is in the player hitbox, null on fail
 
     // Assets
     SDL_Texture * sprites = nullptr;

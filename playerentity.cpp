@@ -1,6 +1,7 @@
 #include "playerentity.h"
 #include "utilities.h"
 #include "main.h"
+#include "monster.h"
 #include <algorithm>
 #include <vector>
 
@@ -239,4 +240,9 @@ DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {
     case SDL_SCANCODE_DOWN: return DIRECTION_DOWN;
     default: return DIRECTION_NEUTRAL;
   }
+}
+
+
+Monster * findAttacker() {
+  return nullptr;
 }

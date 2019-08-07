@@ -33,17 +33,23 @@ struct MonsterTypeData {
 };
 
 
+class MonsterList; // forward declaration
+
 class Monster {
   public:
-    Monster(int x, int y);
+    Monster(int x, int y, MonsterList * manager);
     ~Monster();
+
 
     int frame = 0;
     int death_animation_global_frames_remaining = 0; // this counts game frames to do cool stuff with death animation
     int x;
     int y;
     int spawnFrames = 0; // counts how many frames of spawning animation have played. when it reaches
-                          // NUM_SPAWN_FRAMES then the monster is "spawned" and active in its normal state
+                         // NUM_SPAWN_FRAMES then the monster is "spawned" and active in its normal state
+
+    MonsterList * manager = nullptr;
+
     bool dying = false;
     bool erase_this_monster = false;
     SDL_Rect rect; //rect in which monster is drawn (global coords)
