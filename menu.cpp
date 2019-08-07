@@ -111,8 +111,8 @@ void Menu::render(SDL_Renderer * renderer){
 
   int lineskip = TTF_FontLineSkip(font);
 
-  int x = 150; // Just whatever. Not trying to make best UI framework ever here.
-  int y = 150;
+  int x = topleft_x;
+  int y = topleft_y;
 
   int w,h;
   SDL_QueryTexture(titleTextTexture,nullptr,nullptr,&w,&h);
@@ -138,8 +138,4 @@ void Menu::render(SDL_Renderer * renderer){
     y += lineskip;
   }
 
-
-
-
-  SDL_RenderPresent( renderer );
 }

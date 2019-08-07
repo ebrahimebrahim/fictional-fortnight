@@ -8,7 +8,7 @@
 #include <algorithm>
 #include "main.h"
 
-
+extern Globals globals;
 
 int main( int argc, char* args[] ) {
 
@@ -83,15 +83,6 @@ int App::initialize() {
 
 
 
-	// Initialize all colors to a noticable ugly purple,
-	// so that we remember to manually initialize each palette color below.
-	for (int c = 0; c < NUM_PALETTE_COLORS; c++){
-		palette[c] = {255, 0, 255, 255} ;
-	}
-	palette[PALETTE_BLACK] = {0,0,0,255};
-	palette[PALETTE_WHITE] = {255,255,255,255};
-
-
 	// Initialize random number generator
 	srand(time(nullptr));
 
@@ -118,7 +109,7 @@ int App::initialize() {
 	winMenu = new Menu("Win!  :D",renderer,font,&log);
 	winMenu->addItem("Quit",   [this] () {this->updateUIState(UI_STATE_QUIT);});
 
-	loseMenu = new Menu("Lost.  :(",renderer,font,&log);
+	loseMenu = new LoseMenu("Lost.  :(",renderer,font,&log);
 	loseMenu->addItem("Quit",   [this] () {this->updateUIState(UI_STATE_QUIT);});
 
 	help = new HelpScreen(renderer,font,&log);
@@ -396,6 +387,8 @@ int App::execute(){
 				break;
 		}
 
+		SDL_RenderPresent( renderer );
+
 		Uint32 dt = SDL_GetTicks()-t0;
 		SDL_Delay( dt<20 ? 20-dt : 0 );
 	}
@@ -507,9 +500,6 @@ void App::gameRender(){
 		entityManager->render(this,renderer);
 	}
 
-
-
-	SDL_RenderPresent( renderer );
 	int newFrameTime = SDL_GetTicks();
 	fps = 1000./float(newFrameTime - lastFrameTime);
 	lastFrameTime = newFrameTime;
@@ -536,9 +526,9 @@ int App::loadMedia(){
 
 
 	// Initialize text Textboxes
-	scoreTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
+	scoreTextBox = new TextBox(font, &(globals.palette[PALETTE_BLACK]), renderer, &log);
 	updateScoreTextBox();
-	fpsTextBox = new TextBox(font, &(palette[PALETTE_BLACK]), renderer, &log);
+	fpsTextBox = new TextBox(font, &(globals.palette[PALETTE_BLACK]), renderer, &log);
 	fpsTextBox->updateText("[FPS]");
 
 	// Create statusIndicators
@@ -670,7 +660,7 @@ void App::updateScoreTextBox() {
 
 StatusIndicator * App::createStatusIndicator(int width, int height, const char * green_msg, const char * red_msg){
 	return new StatusIndicator(width, height,green_msg,red_msg,
-														 font, &(palette[PALETTE_BLACK]), renderer, &log);
+														 font, &(globals.palette[PALETTE_BLACK]), renderer, &log);
 }
 
 void App::renderScoreIndicator(int x, int y) {

@@ -52,5 +52,4 @@ void HelpScreen::render(SDL_Renderer * renderer) {
   // SDL_Rect r = {150,150,helpTextBox.width,300};
   // SDL_RenderDrawRect(renderer,&r);
 
-  SDL_RenderPresent( renderer );
 }

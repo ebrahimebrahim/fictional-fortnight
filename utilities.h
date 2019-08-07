@@ -91,6 +91,7 @@ class Globals {
     vecI directionToUnitVector [DIRECTION_NUM_STATES];
     vecI directionToLocalX [DIRECTION_NUM_STATES];
     double directionToRotAngle [DIRECTION_NUM_STATES];
+    SDL_Color palette [NUM_PALETTE_COLORS];
 };
 
 

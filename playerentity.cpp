@@ -191,6 +191,10 @@ void PlayerEntity::update(App * app) {
         else {
           Mix_PlayChannel(-1, death_sound, 0);
           killer = app->findAttacker(playerHitbox);
+          if (killer != nullptr)
+            app->loseMenu->setKiller(killer->manager->monsterTypeData.name.c_str());
+          else
+            app->loseMenu->setKiller("Self");
         }
       }
     }

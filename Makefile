@@ -1,4 +1,4 @@
-OBJS = main.cpp logger.cpp textbox.cpp playerentity.cpp utilities.cpp projectile.cpp monster.cpp firePatternParser.cpp status_indicator.cpp menu.cpp helpscreen.cpp
+OBJS = main.cpp logger.cpp textbox.cpp playerentity.cpp utilities.cpp projectile.cpp monster.cpp firePatternParser.cpp status_indicator.cpp menu.cpp losemenu.cpp helpscreen.cpp
 
 OBJ_NAME = peup.out
 

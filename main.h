@@ -11,6 +11,7 @@
 #include "utilities.h"
 #include "status_indicator.h"
 #include "menu.h"
+#include "losemenu.h"
 #include "helpscreen.h"
 
 
@@ -51,7 +52,6 @@ class App {
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
     Logger log;
-    SDL_Color palette [NUM_PALETTE_COLORS];
     int num_levels = 0; //set in app initialization
 
     // Assets
@@ -100,7 +100,7 @@ class App {
     Menu * mainMenu  = nullptr;
     Menu * pauseMenu = nullptr;
     Menu * winMenu = nullptr;
-    Menu * loseMenu = nullptr;
+    LoseMenu * loseMenu = nullptr;
     HelpScreen * help = nullptr;
 
 

@@ -96,5 +96,13 @@ Globals::Globals() {
 	directionToRotAngle[DIRECTION_RIGHT] = 90;
 	directionToRotAngle[DIRECTION_DOWN] = 180;
 	directionToRotAngle[DIRECTION_LEFT] = 270;
+
+  // Initialize all colors to a noticable ugly purple,
+  // so that we remember to manually initialize each palette color below.
+  for (int c = 0; c < NUM_PALETTE_COLORS; c++){
+    palette[c] = {255, 0, 255, 255} ;
+  }
+  palette[PALETTE_BLACK] = {0,0,0,255};
+  palette[PALETTE_WHITE] = {255,255,255,255};
 }
 Globals globals;
