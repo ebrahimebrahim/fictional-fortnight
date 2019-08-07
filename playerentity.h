@@ -22,8 +22,6 @@ class PlayerEntity :  public EntityManager {
     SDL_Rect getPlayerHitbox(int,int,DirectionUDLR); // get player hitbox from given  x and y position and rotation
     SDL_Rect getUnrotatedFullRect(); // get pre-rotation sprite (not hitbox) rect in game screen
 
-    Monster * findAttacker(); // Find monster who launched the projectile whose explosion is in the player hitbox, null on fail
-
     // Assets
     SDL_Texture * sprites = nullptr;
     Mix_Chunk * hull_damage_sound;
@@ -52,6 +50,7 @@ class PlayerEntity :  public EntityManager {
     int death_animation_frame = 0;
     int global_frames_till_next_death_animation_frame;
     int hitpoints = PLAYER_MAX_HP; // for hull damage. when 0 the player is currently dying and death animation is playing.
+    Monster * killer = nullptr; // when player is killed, this might be set to indicate which monster did it
 
     // Constants (for now)
     int img_width = 200;  // image width and height in pixels of a single sprite in the image of sprites

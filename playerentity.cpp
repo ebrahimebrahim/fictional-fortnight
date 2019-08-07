@@ -185,7 +185,13 @@ void PlayerEntity::update(App * app) {
       }
       else {
         --hitpoints;
-        Mix_PlayChannel(-1, (hitpoints > 0) ? hull_damage_sound : death_sound,0);
+        if (hitpoints > 0) {
+          Mix_PlayChannel(-1, hull_damage_sound, 0);
+        }
+        else {
+          Mix_PlayChannel(-1, death_sound, 0);
+          killer = app->findAttacker(playerHitbox);
+        }
       }
     }
 
@@ -240,9 +246,4 @@ DirectionUDLR PlayerEntity::directionalKeyToPlayerDirection(SDL_Scancode sc) {
     case SDL_SCANCODE_DOWN: return DIRECTION_DOWN;
     default: return DIRECTION_NEUTRAL;
   }
-}
-
-
-Monster * findAttacker() {
-  return nullptr;
 }

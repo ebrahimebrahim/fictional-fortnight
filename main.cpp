@@ -646,6 +646,15 @@ ContainsBitmask App::rectContents(const SDL_Rect & r, const void * ignore) {
 
 }
 
+Monster * App::findAttacker(SDL_Rect hitbox) {
+	for (ProjectileList * projectileManager : entityManagers_projectile)
+		for (Projectile * projectile : projectileManager->projectiles)
+			if (projectile->exploding && projectile->explode_frame < projectileManager->projectileTypeData.num_deadly_explosion_frames)
+				if (SDL_HasIntersection(&hitbox,&(projectile->hitbox)) == SDL_TRUE)
+					return projectile->launching_monster;
+	return nullptr;
+}
+
 
 void App::addScore(int s) {
 	score += s;

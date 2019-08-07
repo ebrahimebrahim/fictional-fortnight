@@ -130,6 +130,7 @@ class App {
 
     // Methods that will be used by the entity managers
     ContainsBitmask rectContents(const SDL_Rect & r, const void * ignore = nullptr);
+    Monster * findAttacker(SDL_Rect); // Find monster who launched projectile with explosion in given hitbox, null on fail
     void addScore(int);
     void spawnMonster();
     void spawnWave();
