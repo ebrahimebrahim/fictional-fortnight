@@ -83,6 +83,8 @@ class App {
     ProjectileList * monster2bulletList = nullptr;
     MonsterList * monster3List = nullptr;
     ProjectileList * monster3bulletList = nullptr;
+    MonsterList * monster4List = nullptr;
+    ProjectileList * monster4bulletList = nullptr;
 
 
     // Rectangles for viewports

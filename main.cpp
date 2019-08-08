@@ -297,6 +297,52 @@ int App::initialize() {
 	entityManagers_nonprojectile.push_back(monster3List);
 	entityManagers_monster.push_back(monster3List);
 
+	ProjectileTypeData monster4bullets;
+	monster4bullets.id=4;
+	monster4bullets.num_frames = 2;
+	monster4bullets.num_explosion_frames = 2;
+	monster4bullets.num_deadly_explosion_frames = 2;
+	monster4bullets.num_fadeout_frames = 2;
+	monster4bullets.projectile_img_file = "monster4bullet.png";
+	monster4bullets.explosion_img_file = "monster4bullet.png";
+	monster4bullets.projectile_launch_sound_file = "data/sounds/placeholder.mp3";
+	monster4bullets.projectile_die_sound_file = "data/sounds/placeholder.mp3";
+	monster4bullets.projectile_img_frame_size = {50,400};
+	monster4bullets.explosion_img_frame_size = {50,400};
+	monster4bullets.width = 25;
+	monster4bullets.height = 400;
+	monster4bullets.explosion_width = 50;
+	monster4bullets.explosion_height = 400;
+	monster4bullets.projectile_hitbox = {20,20,20,360};
+	monster4bullets.explosion_hitbox  = {20,20,20,360};
+	monster4bullets.projectile_detonation_point = {20,20};
+	monster4bullets.explosion_detonation_point = {20,20};
+	monster4bullets.explosion_time_per_frame = 5;
+	monster4bullets.explosion_only_harms_player = false;
+	monster4bulletList = new ProjectileList(monster4bullets);
+	entityManagers_projectile.push_back(monster4bulletList);
+
+	MonsterTypeData monster4;
+	monster4.name = "Zapp";
+	monster4.monster_img_file = "monster4.png";
+	monster4.death_sound_file = "data/sounds/placeholder.mp3";
+	monster4.num_frames = 5;
+	monster4.alive_time_per_frame = 3;
+	monster4.num_death_frames = 5;
+	monster4.num_fadeout_frames = 2;
+	monster4.death_time_per_frame = 12;
+	monster4.monster_img_frame_size = vecI(200,200);
+	monster4.width  = 200;
+	monster4.height = 200;
+	monster4.hitbox = {95,95,10,10};
+	monster4.projectile_launch_center = {100,100};
+	monster4.projectile_launch_dist = 20;
+	monster4.bulletManager = monster4bulletList;
+	monster4.firePatternStr = "R:20,L:20;300 U:20,D:20;300 R:20,L:20,U:20,D:20;15 R:20,L:20,U:20,D:20;15 R:20,L:20,U:20,D:20;300";
+	monster4.protected_by = CONTAINS_IMPOSSIBLE;
+	monster4List = new MonsterList(monster4,&log);
+	entityManagers_nonprojectile.push_back(monster4List);
+	entityManagers_monster.push_back(monster4List);
 
 
 

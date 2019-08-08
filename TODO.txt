@@ -1,5 +1,5 @@
 make some more monsters. ideas:
-  an electric orb thing that shoots electricity bolts. they are fast and long and disappear quickly. infrequent shots. small target
+  need more ideas...
 
 player pickup -- alternative missile. maybe the player can get all the different monster missiles somehow?
 perhaps by killing a different version of a monster, like a big boss version with hp
