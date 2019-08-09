@@ -22,8 +22,8 @@ const int SCORE_CHANGE_WHEN_PLAYER_HIT = -10;
 const int SCORE_PER_LEVEL_ADVANCE = 50; // The score to win is this times the number of levels.
                                          // The number of levels is just the number of monster types
                                          // Possibly +1 if a final boss is made
-const int WAVESIZE_MIN = 1;
-const int WAVESIZE_MAX = 5;
+const int WAVESIZE_MIN = 3;
+const int WAVESIZE_MAX = 7;
 
 
 enum UI_State {

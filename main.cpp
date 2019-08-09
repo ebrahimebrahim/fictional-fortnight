@@ -191,8 +191,8 @@ int App::initialize() {
 	monster1.num_fadeout_frames = 5;
 	monster1.death_time_per_frame = 10;
 	monster1.monster_img_frame_size = vecI(25,25);
-	monster1.width  = 100;
-	monster1.height = 100;
+	monster1.width  = 150;
+	monster1.height = 150;
 	monster1.hitbox = {10,11,3,3};
 	monster1.projectile_launch_center = {11,12};
 	monster1.projectile_launch_dist = 5;
