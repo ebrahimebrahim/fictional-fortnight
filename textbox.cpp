@@ -85,7 +85,7 @@ int TextBox::updateText(const char * text){
       char * towrap = new char [towrap_len];
       strcpy(towrap,line_till_newline.c_str());
       char * head = towrap;
-      int end_index = towrap_len; // throughout loop we will maintain that head[end_index] is the very last null character
+      int end_index = towrap_len-1; // throughout loop we will maintain that head[end_index] is the very last null character
       char swapchar;
       int i;
       int previous_cut_index;
