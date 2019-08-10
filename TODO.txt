@@ -1,10 +1,15 @@
 make some more monsters. ideas:
-  need more ideas...
+  a bot/probe monster that continually emits radial pulses that destroy the player missile only
+
+use valgrind to analyze memory management
+there was a random segfault that happened just once and idk how to reproduce it...
+
+later on monsters can spawn with some visual armor thing which indicates that they can only be killed by player
 
 player pickup -- alternative missile. maybe the player can get all the different monster missiles somehow?
 perhaps by killing a different version of a monster, like a big boss version with hp
 
-make actual sounds and music to replace the current placeholders
+make actual sounds to replace the current placeholders
 
 --- General notes and things I've learned from this ---
 
@@ -23,3 +28,6 @@ For elements of a game that there are a lot of, or that there are lists of, it i
 For objects that typically get instantiated by a factory type class (e.g. a bullet being fired by a monster),
 it would be nice to let the maker leave a mark and a unique ID, or something like that. Just think this kind of
 stuff through early in your design.
+
+When handling memory manually, start using a tool like valgrind early on rather than later.
+It becomes difficult later on to pinpoint the source of a memory leak when you don't know if it's old or newly introduced.
