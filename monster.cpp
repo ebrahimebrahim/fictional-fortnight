@@ -67,8 +67,8 @@ int MonsterList::loadMedia(SDL_Renderer * renderer, Logger * log) {
 void MonsterList::unloadMedia() {
   Mix_FreeChunk(death_sound_chunk);
   SDL_DestroyTexture(sprites); sprites = nullptr;
-  delete frameToSpriteRect;
-  delete frameToDeathSpriteRect;
+  delete [] frameToSpriteRect;
+  delete [] frameToDeathSpriteRect;
 }
 
 void MonsterList::handleEvent(SDL_Event * event){

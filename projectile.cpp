@@ -91,8 +91,8 @@ void ProjectileList::unloadMedia(){
   Mix_FreeChunk(die_sound_chunk);
   SDL_DestroyTexture(sprites); sprites = nullptr;
   SDL_DestroyTexture(explosionFrames); explosionFrames = nullptr;
-  delete frameToSpriteRect; frameToSpriteRect = nullptr;
-  delete frameToExplosionRect; frameToExplosionRect = nullptr;
+  delete [] frameToSpriteRect; frameToSpriteRect = nullptr;
+  delete [] frameToExplosionRect; frameToExplosionRect = nullptr;
 }
 
 
