@@ -1,3 +1,5 @@
+use valgrind and fix the memory bugs
+
 make some more monsters. ideas:
   a bot/probe monster that continually emits radial pulses that destroy the player missile only
 
