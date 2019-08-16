@@ -170,6 +170,7 @@ void MonsterList::createMonster(int x, int y) {
   new_monster->hitbox.x += x;
   new_monster->hitbox.y += y;
   new_monster->firePatternStepCountdown = rand() % 150 ; // to avoid overly synced shots between different monsters
+  new_monster->firePatternStepIndex = rand() % firePattern.size();
   new_monster->death_animation_global_frames_remaining = monsterTypeData.death_time_per_frame * monsterTypeData.num_death_frames;
   monsters.push_front(new_monster);
 }
