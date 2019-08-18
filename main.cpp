@@ -291,7 +291,7 @@ int App::initialize() {
 	monster3.projectile_launch_center = {39,38};
 	monster3.projectile_launch_dist = 29;
 	monster3.bulletManager = monster3bulletList;
-	monster3.firePatternStr = "R:10,L:10;100 U:10,D:10;100";
+	monster3.firePatternStr = "R:6,L:6;100 U:6,D:6;100";
 	monster3.protected_by = CONTAINS_IMPOSSIBLE;
 	monster3List = new MonsterList(monster3,&log);
 	entityManagers_nonprojectile.push_back(monster3List);
